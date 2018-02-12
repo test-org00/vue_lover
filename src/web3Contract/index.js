@@ -1,5 +1,7 @@
 // import Web3 from 'web3'
 import config from './config'
+// import abiDecoder from 'ethereumjs-abi';
+import decoder from '@/assets/js/abiDecoder';
 
 window.addEventListener('load', function() {
   // Checking if Web3 has been injected by the browser (Mist/MetaMask)

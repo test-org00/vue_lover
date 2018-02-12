@@ -173,7 +173,7 @@
 import _ from 'lodash'
 import Vows from '@/components/Vows'
 import VCreate from '@/components/Create'
-import ethApi from '@/ethApi'
+// import ethApi from '@/ethApi'
 import axios from 'axios'
 import { mapState } from "vuex"
 import { contractInstance,localWeb3 } from '@/web3Contract'

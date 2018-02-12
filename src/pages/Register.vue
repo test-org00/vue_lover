@@ -23,9 +23,13 @@
 </template>
 
 <script>
-import { contractInstance } from '@/web3Contract'
+import { contractInstance,decoder } from '@/web3Contract'
 import { mapState } from 'vuex'
+// import decoder from 'ethereumjs-abi';
+// import decoder from '@/assets/js/abiDecoder';
 
+
+// import abiDecoder from 'abi-decoder'
 export default {
   name: 'Register',
   data() {
@@ -87,6 +91,8 @@ export default {
         if (valid) {
 	   			contractInstance.regist(this.form.nickname,this.form.email,function(error, result){
             console.log(error,result);
+            console.log('decoder');
+            // decoder.rawDecode('regist',result);
 						if (!error) {
             // console.log("Good way - the returned value after set method :");
            		// that.$store.dispatch('setPid',result);

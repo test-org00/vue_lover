@@ -16,15 +16,17 @@
 						</p>
 						<p class="emailbox">{{item.loverNickName}} email:{{item.loverEmail}}</p>
 					</div>
-	  			<p><a
-	  			 
-	  			 ><img @click="shareEmail" src="../assets/share.png" alt=""></a></p>
+	  			<el-row type="flex" class="row-bg" justify="center">
+ 						<el-col :span="2"><v-share></v-share></el-col>
+	  			</el-row>
 	  		</div>
 	  	</el-main>
 	  </div>
 </template>
 
 <script>
+import VShare from '@/components/Share'
+
 import axios from 'axios'
 import qs from 'qs';
 export default {
@@ -74,18 +76,7 @@ export default {
   	}
   },
   methods:{
-  	shareEmail(){
-  		axios({
-  			url:'/v1/foreverlovechain/email',
-  			method: 'post',
-			  data: {
-			    "receiver": "alexgreenbar@qq.com",
-			    "url": "http://www.foreverlovechain.com"
-			  },
-  		}).then(res =>{
-  			console.log(res);
-  		})
-  	},
+  	
   	// share(){
   	// 	this.$message({
   	// 		message:'share',
@@ -145,6 +136,9 @@ export default {
     //   },
     //   deep: true
     // }
+  },
+  components:{
+  	'v-share':VShare
   }
 
 }
@@ -197,6 +191,9 @@ export default {
 			}
 			&.emailbox{
 				color:#969898;
+			}
+			&.info-share{
+				text-align:center;
 			}
 
 			// .share{

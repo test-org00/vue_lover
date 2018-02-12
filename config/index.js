@@ -12,10 +12,10 @@ module.exports = {
     assetsPublicPath: '/',
     proxyTable: {
         
-         "^/v1": {
+        "^/v1": {
             target: "http://47.88.57.130",
             // pathRewrite: {"^/api" : ""} //后面可以使重写的新路径，一般不做更改
-          }
+        }
     },
 
     // Various Dev Server settings

@@ -9,6 +9,7 @@ const createStore = () => {
     	accounts:[],
     	balance:null,
       network:1,
+      userInfo:null,
       // imageCDN: '你的七牛 CDN',
       // homePageScroll: {
       //   'home': 0,

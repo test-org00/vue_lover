@@ -30,4 +30,7 @@ export default {
   setPid ({ commit }, pid) {
     commit('SET_PID', pid)
   },
+  // setUserInfo ({ commit }, data) {
+  //   commit('SET_USER_INFO', data)
+  // },
 }

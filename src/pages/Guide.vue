@@ -4,12 +4,12 @@
     <div class="image-box">
       <!-- <img src="../assets/road.jpg" width="100%" alt=""> -->
       <!-- <p v-if="unknowNetwork">Unknow Network</p> -->
-      <div v-if="networkTest > 1 && account" class="wrapstatus">
+      <!-- <div v-if="networkTest > 1 && account" class="wrapstatus">
         <h1>Oops, you’re on the wrong network</h1>
         <p>Simply open MetaMask and switch over to the <strong>Main Ethereum Network</strong>.</p>
         <img src="@/assets/main-network.png" class="hero-image" alt="">
 
-      </div>
+      </div> -->
       <div v-if="!metaMask && !account" class="wrapstatus metaMask">
         <h1>Wanna Play?</h1>
         <p>You’ll need a safe place to store all of your adorable CryptoKitties! The perfect place is in a secure wallet like MetaMask. This will also act as your login to the game (no extra password needed).</p>
@@ -67,9 +67,10 @@ export default {
     return {
       activeNames: ['1'],
       metaMask:false,
-      networkTest:false,
+      // networkTest:false,
       // unknowNetwork:false,
       account:false,
+      queryObj:null,
     };
   },
   props:{
@@ -84,7 +85,8 @@ export default {
     console.log(this.$store.state.accounts)
     this.account = this.$store.state.account && this.$store.state.account[0];
     this.metaMask = !!localWeb3;
-    this.networkTest = this.$store.state.network;
+    this.queryObj = this.$route.query;
+    // this.networkTest = this.$store.state.network;
     // if(this.$route.params){
       // this.network = this.$route.params.network;
       // this.unknowNetwork = this.$route.params.unknowNetwork;
@@ -96,10 +98,18 @@ export default {
     },
     jumpToDetail(){
       // debugger;
-      if(this.networkTest == 1 && this.account){
+      if( this.account){
         // 判断有没有账号
-        contractInstance.getInfo(function(error, result){
+        contractInstance.getInfo((error, result)=>{
+          console.log(error,result);
+          // this.$store.dispatch('setUserInfo',result)
           if(!error){
+            if(this.queryObj.certId){
+              this.push({
+                path:'/certificate',
+                query:this.queryObj
+              })
+            }
             if(result.email){
               this.push({
                 path:'/detail',
@@ -129,14 +139,14 @@ export default {
       },
       deep: true
     },
-    network:{
-      handler(val, oldVal) {
-        console.log(val)
-        this.networkTest  = val ;
-        this.jumpToDetail()
-      },
-      deep: true
-    }
+    // network:{
+    //   handler(val, oldVal) {
+    //     console.log(val)
+    //     this.networkTest  = val ;
+    //     this.jumpToDetail()
+    //   },
+    //   deep: true
+    // }
 
     
   }

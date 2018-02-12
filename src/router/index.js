@@ -6,6 +6,7 @@ import Detail from '@/pages/Detail'
 import CreateCert from '@/pages/CreateCert'
 import Settings from '@/pages/Settings'
 import Certificate from '@/pages/Certificate'
+import index from '@/pages/index'
 
 Vue.use(Router)
 
@@ -13,8 +14,8 @@ export default new Router({
   routes: [
     {
       path: '/',
-      name: 'guide',
-      component: Guide,
+      name: 'index',
+      component: index,
     },
     {
       path: '/register',

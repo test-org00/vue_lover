@@ -3,11 +3,11 @@
     <div class="inner-foot">
       
       <el-row type="flex" class="foot-link" justify="space-between">
-        <el-col :span="4">
+        <el-col :span="12">
           <div class="grid-content bg-purple-light">
-            <a href="">Support</a>
-            <a href="">About</a>
-            <a href="">FAQs</a>
+            <a href="">联系我们: info@foreverlovechain.com</a>
+            <a href="">常见问题</a>
+            <a href="">使用协议</a>
           </div>
         </el-col>
         <el-col v-if="" :span="3">

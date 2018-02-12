@@ -46,20 +46,21 @@ export default {
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style lang="scss" scoped>
 @import url(../assets/scss/base.scss);
-
+.header-wrap{
+  background-color:#f2f2f2;
+}
 .el-header-inner {
   max-width: 1200px;
   margin: 0 auto;
-  height: 52px;
   .logo {
-    height: 52px;
-    background: url(../assets/logo.png) left center no-repeat;
+    height: 60px;
+    background: url(../assets/logo.png) left bottom no-repeat;
   }
   .searchInput {
-    margin-top: 6px;
+    margin-top: 8px;
   }
   .btnArea {
-    line-height: 52px;
+    line-height: 60px;
     .btn {
       text-align: center;
     }

@@ -1,7 +1,7 @@
 <template>
   <div class="header-wrap">
     <el-header class="el-header-inner">
-      <el-row gutter="20">
+      <el-row :gutter="20">
         <el-col :span="12" class="logo"></el-col>
         <el-col :span="8">
           <input class="searchInput" placeholder="搜索姓名/邮箱" @keyup.13="test" v-model="searchInput"></input>

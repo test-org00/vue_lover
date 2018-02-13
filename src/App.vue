@@ -1,6 +1,6 @@
 <template>
   <div id="app" >
-    <v-head :localWeb="localWeb" :account="accounts[0]" ></v-head>
+    <v-head :localWeb="localWeb"  ></v-head>
     <router-view/>
     <v-foot></v-foot>
   </div>
@@ -27,43 +27,43 @@ export default {
   },
 
   computed:{
-    ...mapState([
-      "accounts"
-    ])
+    // ...mapState([
+    //   "accounts"
+    // ])
   },
   
   created(){
-    if(localWeb3){
-      this.localWeb = true;
-      console.log(this.localWeb,localWeb3);
-      this.$store.dispatch('fetchAccount');
-      this.$store.dispatch('fetchNetwork');
-    }
+    // if(localWeb3){
+      // this.localWeb = true;
+      // console.log(this.localWeb,localWeb3);
+      // this.$store.dispatch('fetchAccount');
+      // this.$store.dispatch('fetchNetwork');
+    // }
   },
   watch:{
-    accounts:{
-      handler(curVal, oldVal){
-        console.log(curVal[0], oldVal[0]);
-        console.log(this);
-        if(typeof curVal[0] !=='undefined'){
-          // console.log(contractInstance.getInfo())
-          contractInstance.getInfo(function(error, result){
-            if(!error){
+    // accounts:{
+    //   handler(curVal, oldVal){
+    //     console.log(curVal[0], oldVal[0]);
+    //     console.log(this);
+    //     if(typeof curVal[0] !=='undefined'){
+    //       // console.log(contractInstance.getInfo())
+    //       contractInstance.getInfo(function(error, result){
+    //         if(!error){
 
-              if(!result.email){
-                this.$router.push({
-                  path:'/register',
-                })
-              }else{
-                this.$router.push({
-                  path:'/detail',
-                  params:result
-                })
-              }
-            }
-            console.log(error);
-          });
-        }else{
+    //           if(!result.email){
+    //             this.$router.push({
+    //               path:'/register',
+    //             })
+    //           }else{
+    //             this.$router.push({
+    //               path:'/detail',
+    //               params:result
+    //             })
+    //           }
+    //         }
+    //         console.log(error);
+    //       });
+    //     }else{
           // console.log(1111);
           // this.$router.push({
           //   path:'/',
@@ -71,10 +71,10 @@ export default {
           //     localWeb3:this.localWeb
           //   }
           // })
-        }
-      },
-      deep:true
-    },
+    //     }
+    //   },
+    //   deep:true
+    // },
     
   }
 }

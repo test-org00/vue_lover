@@ -10,40 +10,9 @@
             <a href="">使用协议</a>
           </div>
         </el-col>
-        <el-col v-if="" :span="3">
+        <el-col v-if="" :span="2">
           <div class="grid-content bg-purple share">
-            <social-sharing url="https://vuejs.org/" inline-template>
-              <div class="icons-wrap">
-                  <network network="facebook">
-                    <i style="padding:0 5px;font-size:20px; cursor:pointer;" class="icon-facebook"></i> 
-                  </network>
-                  
-                 <!--  <network network="linkedin">
-                    <i class="fa fa-linkedin"></i> LinkedIn
-                  </network>
-                  <network network="pinterest">
-                    <i class="fa fa-pinterest"></i> Pinterest
-                  </network>
-                  <network network="reddit">
-                    <i class="fa fa-reddit"></i> Reddit
-                  </network> -->
-                  <network network="twitter">
-                    <i style="padding:0 5px;font-size:20px;cursor:pointer;" class="icon-twitter"></i>
-                  </network>
-                  <network network="googleplus">
-                    <i style="padding:0 5px;font-size:20px;cursor:pointer;" class="icon-google"></i>
-                  </network>
-                  <!-- <network network="vk">
-                    <i class="fa fa-vk"></i> VKontakte
-                  </network>
-                  <network network="weibo">
-                    <i class="fa fa-weibo"></i> Weibo
-                  </network> 
-                  <network network="whatsapp">
-                    <i class="fa fa-whatsapp"></i> Whatsapp
-                  </network> -->
-              </div>
-            </social-sharing>
+            <v-share></v-share>
           </div>
         </el-col>
         
@@ -63,12 +32,16 @@
 </template>
 
 <script>
+import VShare from '@/components/Share'
 export default {
   name: 'foot',
   data () {
     return {
       msg: 'Welcome to Your Vue.js App'
     }
+  },
+  components:{
+    'v-share':VShare
   }
 }
 </script>

@@ -20,7 +20,7 @@
       <div class="contentInner">
         <img src="../assets/previewImg.png" alt="">
         <div class="handleArea">
-          <img src="../assets/createHover.png" alt="">
+          <img src="../assets/createHover.png" @click="goToCreate" alt="">
           <div class="text">
             <p>用一生一次的一生爱链</p>
             <p>向他/她表白吧</p>
@@ -31,6 +31,8 @@
   </div>
 </template>
 <script>
+
+
 export default {
   name: '',
   props: {},
@@ -46,7 +48,9 @@ export default {
 
   },
   methods: {
-
+    goToCreate(){
+      // window.location = ''
+    }
   }
 
 }

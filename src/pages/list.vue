@@ -8,29 +8,62 @@
         </div>
         <div class="handleArea">
           <input class="searchInput" v-model="input" placeholder="请输入内容" />
-          <el-button icon="el-icon-search" class="searchBtn">搜索</el-button>
+          <el-button icon="el-icon-search" @click="search" class="searchBtn">搜索</el-button>
         </div>
       </el-row>
     </div>
+    <v-vows v-for="(item,index) in curPageDetailList" :item="item" :index="index"></v-vows> 
   </div>
 </template>
 <script>
+import Vows from '@/components/Vows'
+import { contractInstance } from '@/web3Contract'
+import useCon from '@/assets/js/utils'
 export default {
   name: '',
   props: {},
   data() {
     return {
-
+      input:'',
+      curPageDetailList:null,
     }
   },
   created() {
-
+    this.curPageDetailList = this.$route.params.list
+    // this.curPageDetailList=[{
+    //   nickName:'aaa',
+    //   email:'aaa@qq.com',
+    //   loverNickName:'bbb',
+    //   loverEmail:'bbb@qq.com',
+    //   certTime:"1518343653",
+    //   loveMsg:'dfsdf sdfsdf  sdfsdf sdfsdf '
+    // },{
+    //   nickName:'ccc',
+    //   email:'ccc@qq.com',
+    //   loverNickName:'ddd',
+    //   loverEmail:'ddd@qq.com',
+    //   certTime:"1518343653",
+    //   loveMsg:'dfsdf sdfsdf cccc sdfsdf sdfsdf '
+    // }]
   },
   components: {
-
+    'v-vows':Vows
   },
   methods: {
-
+    search(){
+      console.log(111);
+     useCon.getCertsIdsByQuery(this.input).then((res)=>{
+      var arr = [];
+      for(var i = 0;i<res.length;i++){
+        this.getCertsByCertId(this.decode(res[i])).then(res=>{
+          var arr=['nickName','email','loverNickName','loverEmail','certTime','loveMsg'];
+          arr.push(this.formatRes(arr,res));
+        })
+        
+      }
+      this.curPageDetailList = arr;
+     })
+    }
   }
 
 }

@@ -3,9 +3,8 @@
     <el-header class="el-header-inner">
       <el-row gutter="20">
         <el-col :span="12" class="logo"></el-col>
-        <el-col :span="8" class="searchInput">
-          <el-input placeholder="搜索姓名/邮箱" suffix-icon="el-icon-search" v-model="searchInput">
-          </el-input>
+        <el-col :span="8">
+          <input class="searchInput" placeholder="搜索姓名/邮箱" @keyup.13="test" v-model="searchInput"></input>
         </el-col>
         <el-col :span="4" class="btnArea">
           <el-row>
@@ -32,6 +31,9 @@ export default {
   },
 
   methods: {
+    test(){
+      alert(1)
+    },
     inviteHandle() {
 
     },
@@ -46,9 +48,10 @@ export default {
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style lang="scss" scoped>
 @import url(../assets/scss/base.scss);
-.header-wrap{
-  background-color:#f2f2f2;
+.header-wrap {
+  background-color: #f2f2f2;
 }
+
 .el-header-inner {
   max-width: 1200px;
   margin: 0 auto;
@@ -57,7 +60,17 @@ export default {
     background: url(../assets/logo.png) left bottom no-repeat;
   }
   .searchInput {
+    height:38px;
+    width:100%;
+    border-radius:6px;
+    font-size:16px;
+    outline:none;
+    border:1px solid #ccc;
     margin-top: 8px;
+    padding-left:8px;
+    padding-rignt: 15px;
+    box-sizing:border-box;
+    background:url(../assets/search_icon_gray.png) 95% center no-repeat;
   }
   .btnArea {
     line-height: 60px;

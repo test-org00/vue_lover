@@ -18,7 +18,7 @@
 							v-clipboard:copy="myAddress"
 				      v-clipboard:success="onCopy"
 				      v-clipboard:error="onError"
-						>Copy address</a><span></span><router-link class='address' to="/settings">Settings</router-link>
+						>Copy address</a><span></span><a class='address'  @click='settings'>Settings</a>
 					</p>
 				</div>
 	    </div>
@@ -28,7 +28,7 @@
         <el-col :span="8"><h3 class="vows">My Indestructible Vows</h3></el-col>
         <el-col :span="3" class="create-btnwrap">
           <el-button type="primary" >
-            <router-link class="create" to="createCert">Create</router-link>
+            <span class="create" @click="createTo">Create</span>
           </el-button>
           
         </el-col>
@@ -177,16 +177,17 @@ import VCreate from '@/components/Create'
 import axios from 'axios'
 import { mapState } from "vuex"
 import { contractInstance,localWeb3 } from '@/web3Contract'
+import useCon from '@/assets/js/utils'
 
 export default {
   name: 'Detail',
   data() {
   	var validatePass = (rule, value, callback) => {
         if (value === '') {
-          callback(new Error('请输入邮箱'));
+          callback(new Error('Enter your email'));
         } else {
         	if(!/^[a-zA-Z0-9_-]+@[a-zA-Z0-9_-]+(\.[a-zA-Z0-9_-]+)+$/.test(value)){
-        		callback(new Error('邮箱格式不正确'));
+        		callback(new Error('Incorrect email format'));
         	}
           // if (this.ruleForm2.checkPass !== '') {
           //   this.$refs.ruleForm2.validateField('checkPass');
@@ -238,11 +239,11 @@ export default {
       // askTogether:false,
       
 			myAddress:"0x2626D77df65989C90D85a88d03Bd46A11Dc7321E",
-      userInfo:null,
-      userInfo:{
-      	email:'aaa@qq.com',
-      	nickname:'aaa',
-        address:'0x2626D77df65989C90D85a88d03Bd46A11Dc7321E',
+      userInfo:{},
+      // userInfo:{
+      	// email:'aaa@qq.com',
+      	// nickname:'aaa',
+       //  address:'0x2626D77df65989C90D85a88d03Bd46A11Dc7321E',
 
         /*account;     // 分红金额
         deposit;     // 保证金
@@ -264,19 +265,19 @@ export default {
         depositTime; // 成员的最后一次充值保证金时间
         inLoveTime;  // 成员恋爱正式开始的时间
         splitTime;   // 成员分手时间*/
-      },
+      // },
 
       loverInfo:null,
       loverAddress:null,
 
 
-      certsList:null,
-      curPageList:null,
+      certsList:[],
+      curPageList:[],
       page:null,
       purPage:5,
       totalPage:0,
 
-      curPageDetailList:null,
+      curPageDetailList:{},
       // errorMsg:'Not found,please make sure you input the right email address or nickname.',
       
       // formCash:{
@@ -304,9 +305,9 @@ export default {
   },
 
   computed:{
-  	// ...mapState([
-  	// 	'network'
-  	// ]),
+  	...mapState([
+  		'accounts'
+  	]),
     // myStream(){
     //   return this.domain + this.myAddress
     // },
@@ -315,36 +316,43 @@ export default {
     // }
 
   },
+
   created(){
 
+   console.log(this.$route.params);
     // if(!this.$route.params){
     //   this.$route.push({
     //     path:'/'
     //   })
     // }  
-         
-    _.assign(this.userInfo,this.$route.params);
+    
+    this.userInfo=this.$route.params;
     this.page = 1;
-
     // 获取证书id列表
-    //this.getCertsIdList();
+
+    if(this.userInfo.email){
+
+      this.getCertsIdList();
+    }else{
+      // this.
+    }
 
 
-    this.curPageDetailList=[{
-      nickName:'aaa',
-      email:'aaa@qq.com',
-      loverNickName:'bbb',
-      loverEmail:'bbb@qq.com',
-      certTime:"1518343653",
-      loveMsg:'dfsdf sdfsdf  sdfsdf sdfsdf '
-    },{
-      nickName:'ccc',
-      email:'ccc@qq.com',
-      loverNickName:'ddd',
-      loverEmail:'ddd@qq.com',
-      certTime:"1518343653",
-      loveMsg:'dfsdf sdfsdf cccc sdfsdf sdfsdf '
-    }]
+    // this.curPageDetailList=[{
+    //   nickName:'aaa',
+    //   email:'aaa@qq.com',
+    //   loverNickName:'bbb',
+    //   loverEmail:'bbb@qq.com',
+    //   certTime:"1518343653",
+    //   loveMsg:'dfsdf sdfsdf  sdfsdf sdfsdf '
+    // },{
+    //   nickName:'ccc',
+    //   email:'ccc@qq.com',
+    //   loverNickName:'ddd',
+    //   loverEmail:'ddd@qq.com',
+    //   certTime:"1518343653",
+    //   loveMsg:'dfsdf sdfsdf cccc sdfsdf sdfsdf '
+    // }]
 
     // this.handleCurrentChange()
   	// this.$store.dispatch('fetchNetwork');
@@ -355,7 +363,7 @@ export default {
 		// this.inviteLoverStatus = 0 // 0 no lover 允许邀请, 1 邀请aaa中，2 已恋爱 
   //   this.beInvitedLoverStatus = 1;
 
-    this.myAddress = this.userInfo.address
+    this.myAddress = this.$store.state.accounts[0]
   	// 大于4个月，分手
   	// if(this.biggerThanMonth(4)){
 
@@ -377,58 +385,44 @@ export default {
   	
   },
   watch:{
-  	// network:{
-  	//   handler(curVal, oldVal){
-   //      if(curVal>1){
-   //        this.gotoGuide(curVal);
-   //      }
-  	    // if( curVal ){
-       //    console.log('network',curVal);
-  	    //   switch (curVal) {
-  	    //     case "1":
-  	    //       console.log('This is mainnet')
-  	    //       this.network = true;
-  	    //       break
-  	    //     case "2":
-  	    //       console.log('This is the deprecated Morden test network.')
-  	    //       this.network = false;
-  	    //       this.gotoGuide();
-  	    //       break
-  	    //     case "3":
-  	    //       console.log('This is the ropsten test network.')
-  	    //       this.network = false;
-  	    //       this.gotoGuide();
-  	    //       break
-  	    //     case "4":
-  	    //       console.log('This is the Rinkeby test network.')
-  	    //       this.network = false;
-  	    //       this.gotoGuide();
-  	    //       break
-  	    //     case "42":
-  	    //       console.log('This is the Kovan test network.')
-  	    //       this.network = false;
-  	    //       this.gotoGuide();
-  	    //       break
-  	    //     default:
-  	    //       this.$message({
-  	    //         message:'This is an unknown network.',
-  	    //         type:'warning'
-  	    //       })
-  	    //   }
+    accounts:{
+      handler(cur, old){
+        this.account = cur[0];
+        if(!this.account){
+          this.$router.push({
+            path:'/game/guide',
 
-  	    // }
-  	//   },
-  	//   deep:true
-  	// }
+          })
+        }
+      },
+      deep:true
+    }
+
+     
   },
   methods: {
+    settings(){
+      console.log(this.userInfo);
+      this.$router.push({
+        name:'settings',
+        params:this.userInfo
+      })
+    },
+    createTo(){
+      this.$router.push({
+        name:'createCert',
+        params:this.userInfo
+      })
+    },
     updateList(list){
       var promiseArr = [];
       for(var i = 0; i< list.length; i++){
         promiseArr.push(new Promise((resolve,reject) => {
-          contractInstance.getCertsByCertId(list[i],(error, result)=>{
+          contractInstance.getCertsByCertId( useCon.decode(list[i]),(error, result)=>{
             if(!error){
-              resolve(result)// 如果不是json 处理成json
+              var arr = ['nickName','email','ID','certNumber'];
+              var resultObj = useCon.formatRes(arr,result);
+              resolve(resultObj)// 如果不是json 处理成json
             }else{
               reject(error)
             }
@@ -451,248 +445,28 @@ export default {
 
       contractInstance.getCertsIdsByQuery(this.userInfo.email, (error, result) => {
         this.certsList = result;
-        // this.totalPage = result.length/this.purPage
-        this.totalPage = 50;
+
+        this.totalPage = result.length/this.purPage
+        // this.totalPage = 50;
         this.handleCurrentChange()
       })
     },
-    // whoInviteMe(){
-    //   if(this.userInfo.contractFrom){
-    //     contractInstance.getMemberInfo(this.userInfo.contractFrom,(error, result) => {
-    //       if(!error){
-    //         this.beInvitedLoverStatus=1;
-    //         this.whoInviteMeObj = result;
-    //       }
-    //     })
-    //   }
-    // },
-    // inviteLover(){
-    //   if(this.userInfo.contractTo){
-    //     contractInstance.getMemberInfo(this.userInfo.contractTo,(error, result) => {
-    //       if(!error){
-    //         this.inviteLoverStatus=1;
-    //         this.iInviteSomeone = result;
-    //       }
-    //     })
-    //   }
-    // },
+  
   	gotoGuide(val){
   		this.$router.push({
-        path:'/',
+        path:'/game/guide',
         // params:{
         // 	network:val,
         // }
       })
   	},
 
-  	// inLoveRemain(){
-  	// 	contractInstance.inLoveRemain(function(error,result){
-  	// 		if(!error){
-   //        this.askTogether = true;		 
-   //    		this.$message({
-   //    			message:'确认恋爱关系成功',
-   //    			type:'success'
-   //    		})
-   //    	}else{
-			// 		this.$message({
-   //    			message:'确认恋爱关系失败，请稍后重试',
-   //    			type:'warning'
-   //    		})
-   //    	}
-  	// 	})
-  	// },
 
-  	// cashInEth(){
-   //  	this.$refs['formCash'].validate((valid) => {
-
-   //      if (valid) {
-   //        contractInstance.getDividends(this.formCash.eth,function(error,result){
-   //        	if(!error){
-          		 
-   //        		this.$message({
-   //        			message:'提现成功，提取以太币'+this.formCash.eth,
-   //        			type:'success'
-   //        		})
-   //        	}else{
-			// 				this.$message({
-   //        			message:'提现失败，请稍后重试',
-   //        			type:'warning'
-   //        		})
-   //        	}
-   //        })
-   //      } else {
-   //        console.log('error Cash in!!');
-   //        return false;
-   //      }
-   //    });
-  		
-  	// },
-
-  	// formatTime(seconds){
-  	// 	var datetime = new Date();
-			// datetime.setTime(seconds*1000);
-			// var year = datetime.getFullYear();
-			// var month = datetime.getMonth() + 1;
-			// var date = datetime.getDate();
-			// var hour = datetime.getHours();
-			// var minute = datetime.getMinutes();
-			// var second = datetime.getSeconds();
-			// return year + "-" + month + "-" + date+" "+hour+":"+minute+":"+second;
-  	// },
   	weiToEth(value){
   		return localWeb3.fromWei(value,'ether');
   		 
   	},
-  	// initTransactions(){
-  	// 	// ethApi.getTransactionsList(this.myAddress).then(res => {
-  	// 	// 	console.log(res);
-  	// 	// })
-  	// 	let that = this,axiosArr;
-  	// 	if(this.loverAddress){
-			// 	axiosArr = [ethApi.getTransactionsList(this.myAddress),ethApi.getTransactionsList(this.myAddress)]
-
-  	// 	}else{
-  	// 		axiosArr = [ethApi.getTransactionsList(this.myAddress)];
-  	// 	}
-			// axios.all(axiosArr).then(res => {
-				
-			// 	let myData = res[0];
-			// 	let loverData = res[1] || {data:{result:[]}};
-			// 	let arr2 = []
-			// 	if(myData.status == 200){
-					
-			// 		let arr = myData.data.result.concat(loverData.data.result);
-
-			// 		arr = _.sortBy(arr, function(item) {
-			// 		  return -item.timeStamp;
-			// 		});
-			// 		_.forEach(arr,function(item){
-
-			// 			item.timeStamp = that.formatTime(item.timeStamp);
-			// 			item.value = that.weiToEth(item.value);
-			// 			// if(that.myAddress == item.from){
-			// 				item.name = that.userInfo.nickname
-			// 				arr2.push(item);
-			// 			// }else if(that.loverAddress &&that.loverAddress == item.from ){
-			// 			// 	item.name = that.loverInfo.nickname
-			// 			// 	arr2.push(item);
-			// 			// }
-			// 		})
-
-			// 		console.log(arr2); // 应该是个数组包含两次的数据
-			// 		that.totalTransactionsList = _.slice(arr2,0,99);
-			// 	}
-		
-			// })
-  	// },
-  	// initCoupleAccount(){
-  	// 	var that = this;
-  	// 	contractInstance.checkBalance(function(error,result){
-  	// 		if(!error){
-					
-			// 		that.coupleAccount = result.coupleAccount
-			// 		that.seltDonated = result.account
-			// 		that.selfAmount = result.selfAmount
-			// 	}else{
-			// 		console.log(that);
-			// 		that.$message({
-   //    			message:'获取保证金出错',
-   //    			type:'warning'
-   //    		})
-			// 	}
-  	// 	})
-  	// },
-  	// byebyeByExpires(){
-			// contractInstance.inLoveExpire( this.loverAddress,function(error,result){
-			// 	if(!error){
-			// 		// 分手成功
-			// 		this.inviteLoverStatus=0;
-			// 	}else{
-			// 		// 分手出错
-			// 	}
-			// })
-  	// },
-   //  biggerThanMonth(n) {
-   //  	n = n || 1;
-   //    let time = new Date().getTime();
-   //    let during = time-this.userInfo.lastTogetherTime;
-   //    let monthTime = n*30*24*60*60*1000;
-
-   //    return during > monthTime ? true : false
-   //  },
-   //  searchLover(){
-   //  	this.$refs['ruleForm2'].validate((valid) => {
-   //      if (valid) {
-   //      	// email查寻个人信息 这个方法没有
-
-   //        contractInstance.getMemberInfoByEmail(this.ruleForm2.email,(error,result) => {
-   //          console.log(error, result);
-   //        	if(!error){
-   //        		this.loverInfo = {
-   //              nickname:result[0],
-   //              eamil:result[1],
-   //              address:result[2],
-   //            };
-   //        		this.loverAddress = result[2];
-   //        		this.$store.dispatch('loverAddress',this.loverAddress);
-   //        	}else{
-   //        		this.showError=true;
-   //        	}
-   //        })
-   //      } else {
-   //        console.log('error submit!!');
-   //        return false;
-   //      }
-   //    });
-   //  },
-    // buyEth(){
-    // 	this.$refs['form'].validate((valid) => {
-
-    //     if (valid) {
-    //     	// email查寻个人信息 这个方法没有
-
-    //       contractInstance.chargeForLove(this.form.eth,function(error,result){
-    //       	if(!error){
-    //       		// result 包含【自己账户的保证金，自己和恋人账户保证金之和】 
-    //       		this.$message({
-    //       			message:'购买成功',
-    //       			type:'success'
-    //       		})
-    //       		this.coupleAccount = result.coupleAccount;
-    //       		this.selfAccount = result.selfAccount;
-    //       	}else{
-				// 			this.$message({
-    //       			message:'购买失败，请稍后重试',
-    //       			type:'warning'
-    //       		})
-    //       	}
-    //       })
-    //     } else {
-    //       console.log('error submit!!');
-    //       return false;
-    //     }
-    //   });
-    // },
-    // addLover(){
-
-    // 	contractInstance.requestInLove(this.loverAddress,function(error, result){
-    // 		if(!error){
-    // 			// 邀请恋人成功
-
-    // 			this.$message({
-    // 				message:'邀请成功，等待对方确认',
-    // 				type:'success'
-  		// 		})
-    //     	this.inviteLoverStatus = 1;
-    // 		}else{
-    // 			// 邀请恋人失败
-    // 			this.$message({
-    // 				message:'邀请失败，请稍后再试',
-    // 				type:'warning'
-  		// 		})
-    // 		}
-    // 	})
-    // },
+  	
     onCopy: function (e) {
     	this.$message({
     				message:'You just copied: ' + e.text,
@@ -705,63 +479,7 @@ export default {
     				type:'warning'
   				})
     },
-    // acceptLover(){
-
-    // 	contractInstance.inLoveConfirm(true,function(error,result){
-    // 		if(!error){
-    // 			this.$message({
-    // 				message:"接受成功，你们已经是恋爱关系",
-    // 				type:'success'
-    // 			})
-  		// 		this.inviteLoverStatus = 2;
-  		// 		this.beInvitedLoverStatus = 0;
-    // 		}else{
-    // 			this.$message({
-    // 				message:"接受失败，稍后重新再试",
-    // 				type:'warning'
-    // 			})
-    // 		}
-    // 	})
-    // },
-
-    // breakUpLover(){
-    // 	contractInstance.split(true,function(error,result){
-    // 		if(!error){
-    // 			this.$message({
-    // 				message:"分手成功",
-    // 				type:'success'
-    // 			})
-  		// 		this.inviteLoverStatus = 0;
-  		// 		this.beInvitedLoverStatus = 0;
-    			
-    // 		}else{
-    // 			this.$message({
-    // 				message:"分手失败，稍后重新再试",
-    // 				type:'warning'
-    // 			})
-    // 		}
-    // 	})
-    // },
-
-    // refuseLover(){
-    // 	contractInstance.inLoveConfirm(false,function(error,result){
-				// if(!error){
-    // 			this.$message({
-    // 				message:"拒绝成功",
-    // 				type:'success'
-    // 			})
-  		// 		this.inviteLoverStatus = 2;
-  		// 		this.beInvitedLoverStatus = 0;
-    			
-    // 		}else{
-    // 			this.$message({
-    // 				message:"拒绝失败，稍后重新再试",
-    // 				type:'warning'
-    // 			})
-
-    // 		}
-    // 	})
-    // }
+    
   },
   components:{
     'v-vows':Vows,

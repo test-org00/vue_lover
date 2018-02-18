@@ -60,7 +60,7 @@
 <script>
 import { mapState } from 'vuex'
 import { localWeb3, contractInstance } from '@/web3Contract';
-
+import useCon from '@/assets/js/utils'
 export default {
   name: 'Guide',
   data() {
@@ -83,7 +83,8 @@ export default {
     // this.$store.dispatch('fetchAccount');
     console.log(this.$route.params);
     console.log(this.$store.state.accounts)
-    this.account = this.$store.state.account && this.$store.state.account[0];
+    this.account = this.$store.state.accounts !== null ? this.$store.state.accounts[0] : null;
+    console.log(this.account);
     this.metaMask = !!localWeb3;
     this.queryObj = this.$route.query;
     // this.networkTest = this.$store.state.network;
@@ -98,29 +99,33 @@ export default {
     },
     jumpToDetail(){
       // debugger;
+      var that = this;
       if( this.account){
         // 判断有没有账号
-        contractInstance.getInfo((error, result)=>{
-          console.log(error,result);
+        useCon.getMemberInfo().then(res=>{
+          console.log(res);
           // this.$store.dispatch('setUserInfo',result)
-          if(!error){
-            if(this.queryObj.certId){
-              this.push({
-                path:'/certificate',
-                query:this.queryObj
-              })
-            }
-            if(result.email){
-              this.push({
-                path:'/detail',
-                params:result
-              })
-            }else{
-              this.push({
-                path:'/register'
-              })
-            }
+          var arr = ['nickName','email','ID','certNumber'];
+          // console.log(res,web3.toAscii(res[1]));
+          var resultObj = useCon.formatRes(arr,res);
+          console.log(resultObj);
+          if(this.queryObj.certId && resultObj.email.indexOf('@')>-1){
+            this.$router.push({
+              path:'/game/certificate',
+              query:this.queryObj
+            })
           }
+          if(resultObj.email.indexOf('@')>-1){
+            this.$router.push({
+              name:'detail',
+              params:resultObj
+            })
+          }else{
+            this.$router.push({
+              path:'/game/register'
+            })
+          }
+          
         })
       }
     }
@@ -133,9 +138,12 @@ export default {
   watch:{
     accounts:{
       handler(val, oldVal) {
-        this.account = val[0];
-        console.log(this.account)
-        this.jumpToDetail()
+        if(val !== null){
+
+          this.account = val[0];
+          console.log(this.account)
+          this.jumpToDetail()
+        }
       },
       deep: true
     },

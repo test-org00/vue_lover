@@ -1,55 +1,55 @@
 <template>
-  <div id="app" >
-    <!-- <v-head :localWeb="localWeb" :account="account" ></v-head> -->
-    <!-- <div class="content-body"><router-view/></div> -->
-    <router-view></router-view>
-    <!-- <v-foot></v-foot> -->
+  <div class="app" >
+    <v-head :localWeb="localWeb" :account="account" ></v-head>
+    <div class="content-body"><router-view></router-view></div>
+    <v-foot></v-foot>
   </div>
 </template>
 
 <script>
-// import { localWeb3,contractInstance } from '@/web3Contract';
-// import { mapState } from 'vuex';
-// import VHead from '@/components/Head' 
-// import VFoot from '@/components/Foot' 
-// import useCon from '@/assets/js/utils'
+import { localWeb3,contractInstance } from '@/web3Contract';
+import { mapState } from 'vuex';
+import VHead from '@/components/Head' 
+import VFoot from '@/components/Foot' 
+import useCon from '@/assets/js/utils'
 export default {
   name: 'App',
   data(){
     return {
-      // localWeb:false,
-      // account:null,
+      localWeb:false,
+      account:null,
     }
   },
 
-  // components:{
-  //   'v-head':VHead,
-  //   'v-foot':VFoot
-  // },
+  components:{
+    'v-head':VHead,
+    'v-foot':VFoot
+  },
 
-  // computed:{
-  //   ...mapState([
-  //     "accounts"
-  //   ])
-  // },
+  computed:{
+    ...mapState([
+      "accounts"
+    ])
+  },
   
-  // created(){
-  //   if(localWeb3){
-  //     this.localWeb = true;
-  //     console.log(this.localWeb,localWeb3);
-  //     this.$store.dispatch('fetchAccount');
-  //     this.$store.dispatch('fetchNetwork');
-  //   }
-  // },
-  // watch:{
-  //   accounts:{
-  //     handler(curVal, oldVal){
-  //       // console.log(curVal[0], oldVal[0]);
-  //       if(typeof curVal =="object"){
+  created(){
+    if(localWeb3){
+      this.localWeb = true;
+      console.log(this.localWeb,localWeb3);
+      this.$store.dispatch('fetchAccount');
+      this.$store.dispatch('fetchNetwork');
+    }
+  },
+  watch:{
+    accounts:{
+      handler(curVal, oldVal){
+        // console.log(curVal[0], oldVal[0]);
+        console.log(111)
+        if(typeof curVal !== null){
 
-  //         this.account = curVal[0]
-  //       }
-  //       console.log(this);
+          this.account = curVal[0]
+        }
+        console.log(this);
         // if(typeof curVal[0] !=='undefined'){
           // console.log(contractInstance.getMemberInfo())
           // useCon.getMemberInfo().then(res=>{
@@ -83,18 +83,18 @@ export default {
           //   }
           // })
         // }
-    //   },
-    //   deep:true
-    // },
+      },
+      deep:true
+    },
     
-  // }
+  }
 }
 </script>
 
 <style lang="scss">
-@import url(./assets/scss/base.scss);
-@import url(./assets/scss/icons.scss);
-#app {
+// @import url(./assets/scss/base.scss);
+// @import url(./assets/scss/icons.scss);
+.app {
   font-family: 'Avenir', Helvetica, Arial, sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;

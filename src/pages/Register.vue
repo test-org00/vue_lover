@@ -23,13 +23,12 @@
 </template>
 
 <script>
-import { contractInstance,decoder } from '@/web3Contract'
+import { contractInstance } from '@/web3Contract'
+// import decoder from '@/web3Contract'
 import { mapState } from 'vuex'
-// import decoder from 'ethereumjs-abi';
-// import decoder from '@/assets/js/abiDecoder';
+import useCon from '@/assets/js/utils'
 
 
-// import abiDecoder from 'abi-decoder'
 export default {
   name: 'Register',
   data() {
@@ -76,10 +75,13 @@ export default {
   },
   created(){
     console.log(contractInstance)
-  	this.form.add = this.$store.state.accounts[0];
+  	this.form.add = this.$store.state.accounts!==null ? this.$store.state.accounts[0] : null;
   	if(this.form.add){
 	  	this.$store.dispatch('fetchAccounts');
   	}
+    // console.log(decoder);
+    // var result = decoder.decodeLogs('0x27d1c745adf188fadccb969499b521a7d2054351389551987c55b69624757e52');
+    // console.log(result);
   },
 	methods: {
 	  // onSubmit() {
@@ -91,52 +93,59 @@ export default {
         if (valid) {
 	   			contractInstance.regist(this.form.nickname,this.form.email,function(error, result){
             console.log(error,result);
-            console.log('decoder');
+            // console.log('decoder');
             // decoder.rawDecode('regist',result);
 						if (!error) {
             // console.log("Good way - the returned value after set method :");
            		// that.$store.dispatch('setPid',result);
-              switch(result){
-                case 0:
+              // switch(result){
+              //   case 0:
                   that.$message({
                     message:'Regist success',
                     type:'success'
                   })
-                  break
-                case 1:
-                  that.$message({
-                    message:'Address had been registed',
-                    type:'warning'
-                  })
-                  break
-                case 2:
-                  that.$message({
-                    message:'Email had been registed',
-                    type:'warning'
-                  })
-                  break
-              }
-              // contractInstance.getInfo(function(error, result){
-              //   console.log(error,result);
-              //   // debugger;
-              //   if(!error){
+              //     break
+              //   case 1:
+              //     that.$message({
+              //       message:'Address had been registed',
+              //       type:'warning'
+              //     })
+              //     break
+              //   case 2:
+              //     that.$message({
+              //       message:'Email had been registed',
+              //       type:'warning'
+              //     })
+              //     break
+              // }
+              useCon.getMemberInfo().then(res=>{
+                console.log(error,res);
+                // debugger;
+                if(!error){
 
-              //     if(!result.email){
-              //       that.$router.push({
-              //         path:'/register',
-              //       })
-              //     }else{
-              //       that.$router.push({
-              //         path:'/detail',
-              //         params:result
-              //       })
-              //     }
-              //   }
-              // })
-              this.$route.push({
-                path:'/createCert',
-                
+                  // if(!result.email){
+                    // that.$router.push({
+                    //   path:'/register',
+                    // })
+                    // that.$message({
+                    //   message:'Regist error',
+                    //   type:'warning'
+                    // })
+                  // }else{
+                    var arr = ['nickName','email','ID','certNumber'];
+                    // console.log(res,web3.toAscii(res[1]));
+                    var resultObj = useCon.formatRes(arr,res);
+                    that.$router.push({
+                      path:'/game/detail',
+                      params:resultObj
+                    })
+                  // }
+                }
               })
+              // this.$router.push({
+              //   path:'/createCert',
+                
+              // })
             } else {
               // console.log(error);// 根据error的值提示用户错误信息
               // that.showAlert = true;

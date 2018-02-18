@@ -1,6 +1,6 @@
 <template>
 		
-	  <div class="ask-prompt" :class="evenClass" >
+	  <div class="ask-prompt" v-if='item.email' :class="evenClass" >
 	  	<el-main class="detail-box prompt-bg">
 	  		<div class="ask-box">
 	  			<h3>{{item.nickName}} to {{item.loverNickName}}</h3>

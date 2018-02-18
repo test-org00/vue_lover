@@ -27,7 +27,7 @@
 </template>
 
 <script>
-
+import {mapState} from 'vuex'
 export default {
   name: 'pageHead',
   props:{
@@ -43,8 +43,13 @@ export default {
   },
   created(){
     this.curWeb = this.localWeb;
-    this.curAccount = this.account;
+    this.curAccount = this.$store.state.accounts!==null ? this.$store.state.accounts[0]:null;
     console.log(this.curWeb,this.curAccount);
+  },
+  computed:{
+    ...mapState([
+      "accounts"
+    ])
   },
   watch:{
     // localWeb(){
@@ -56,10 +61,11 @@ export default {
     //   console.log(222)
 
     // },
-    account:{
+    accounts:{
       handler(val, oldVal) {
-        console.log(222)
-        this.curAccount = this.account;
+        console.log(2222,val)
+        if(val !==null)
+        this.curAccount = val[0];
       },
       deep: true
     }
@@ -74,6 +80,7 @@ export default {
 .header-wrap{
   height:114px;
   border-bottom:1px solid #ccc;
+  flex:0 0 auto;
 }
 .el-header-inner{
   max-width:1200px;

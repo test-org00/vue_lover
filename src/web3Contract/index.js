@@ -1,8 +1,9 @@
 // import Web3 from 'web3'
 import config from './config'
 // import abiDecoder from 'ethereumjs-abi';
-import decoder from '@/assets/js/abiDecoder';
+// import decoder from '../assets/js/abi_decoder';
 
+// const SolidityCoder = require("web3/lib/solidity/coder.js");
 window.addEventListener('load', function() {
   // Checking if Web3 has been injected by the browser (Mist/MetaMask)
   if (typeof web3 !== 'undefined') {
@@ -10,6 +11,7 @@ window.addEventListener('load', function() {
     var provider = web3.currentProvider
   } else {
     console.log('No web3? You should consider trying MetaMask!')
+    window.location.href=location.origin+'/#/guide'
   }
 })
 
@@ -28,6 +30,9 @@ window.addEventListener('load', function() {
 // }
 
 // 通过ABI和地址获取已部署的合约对象
+// console.log(decoder);
+// decoder.addABI(config.ABI);
+// export default decoder
 export let localWeb3 = typeof web3 == 'undefined' ? null : web3; 
 export let contractInstance = typeof web3 == 'undefined' ? null : web3.eth.contract(config.ABI).at(config.address);
 

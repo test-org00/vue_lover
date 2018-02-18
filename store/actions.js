@@ -5,10 +5,15 @@ export default {
 	fetchAccount ({ state }) {
     var accountInterval = setInterval(function() {
     	const res = Services.getAccount()
-		  if (res[0] !== state.accounts[0]) {
-		    state.accounts = res;
-		    // updateInterface();
-		  }
+      if(state.accounts == null){
+        state.accounts = res;
+      }else{
+
+  		  if (res[0] !== state.accounts[0]) {
+  		    state.accounts = res;
+  		  }
+      }
+      
 		}, 100);
   },
   fetchNetwork({state}){

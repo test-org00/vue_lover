@@ -12,7 +12,7 @@
         <el-input v-model="form.ID" placeholder="Enter you ID"></el-input>You can only modify ID once
       </el-form-item>
 		  <el-form-item label="Wallet">
-		    <el-input v-model="form.add" disabled="true"></el-input>
+		    <el-input v-model="form.add" :disabled="true"></el-input>
 		  </el-form-item>
 		  <el-form-item>
 		    <el-button class="register-btn" type="primary" @click="onSubmit">Update</el-button>
@@ -46,7 +46,6 @@ export default {
     return {
     	showAlert:false,
     	msg:'',
-    	form:null,
       form: {
         nickname: '',
         email: '',
@@ -76,6 +75,7 @@ export default {
   	])
   },
   created(){
+    console.log(this.$route.params);
     _.assign(this.form,this.$route.params);
   	// this.userInfo = this.$store.state.userInfo;
   	// if(this.userInfo){
@@ -105,7 +105,7 @@ export default {
                 type:'success'
               })
               that.$router.push({
-                path:'/detail',
+                path:'/game/detail',
                 params:result
               })
             } else {

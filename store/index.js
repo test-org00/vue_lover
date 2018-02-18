@@ -6,7 +6,8 @@ import getters from './getters'
 const createStore = () => {
   return new Vuex.Store({
     state: {
-    	accounts:[],
+    	accounts:null,
+      noAccounts:false,
     	balance:null,
       network:1,
       userInfo:null,

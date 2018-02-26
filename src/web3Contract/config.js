@@ -3,125 +3,10 @@ export default  {
 	ABI:
 [
  {
-  "constant": true,
+  "constant": false,
   "inputs": [
-   {
-    "name": "emailOrNick",
-    "type": "bytes32"
-   }
-  ],
-  "name": "getCertsIdsByQuery",
-  "outputs": [
-   {
-    "name": "",
-    "type": "uint256[]"
-   }
-  ],
-  "payable": false,
-  "stateMutability": "view",
-  "type": "function"
- },
- {
-  "constant": true,
-  "inputs": [],
-  "name": "_totalCertsNumber",
-  "outputs": [
-   {
-    "name": "",
-    "type": "uint256"
-   }
-  ],
-  "payable": false,
-  "stateMutability": "view",
-  "type": "function"
- },
- {
-  "constant": true,
-  "inputs": [],
-  "name": "getAllMembersAddress",
-  "outputs": [
-   {
-    "name": "members",
-    "type": "address[]"
-   }
-  ],
-  "payable": false,
-  "stateMutability": "view",
-  "type": "function"
- },
- {
-  "constant": true,
-  "inputs": [
-   {
-    "name": "addr",
-    "type": "address"
-   }
-  ],
-  "name": "getMemberInfoByAddress",
-  "outputs": [
-   {
-    "name": "nickName",
-    "type": "bytes32"
-   },
-   {
-    "name": "email",
-    "type": "bytes32"
-   },
    {
     "name": "ID",
-    "type": "bytes32"
-   },
-   {
-    "name": "certNumber",
-    "type": "uint256"
-   }
-  ],
-  "payable": false,
-  "stateMutability": "view",
-  "type": "function"
- },
- {
-  "constant": true,
-  "inputs": [],
-  "name": "getMemberInfo",
-  "outputs": [
-   {
-    "name": "nickName",
-    "type": "bytes32"
-   },
-   {
-    "name": "email",
-    "type": "bytes32"
-   },
-   {
-    "name": "ID",
-    "type": "bytes32"
-   },
-   {
-    "name": "certNumber",
-    "type": "uint256"
-   }
-  ],
-  "payable": false,
-  "stateMutability": "view",
-  "type": "function"
- },
- {
-  "constant": true,
-  "inputs": [
-   {
-    "name": "certId",
-    "type": "uint256"
-   }
-  ],
-  "name": "getCertsByCertId",
-  "outputs": [
-   {
-    "name": "nickName",
-    "type": "bytes32"
-   },
-   {
-    "name": "email",
     "type": "bytes32"
    },
    {
@@ -133,12 +18,37 @@ export default  {
     "type": "bytes32"
    },
    {
-    "name": "certTime",
+    "name": "loveMsg",
+    "type": "string"
+   }
+  ],
+  "name": "createCert",
+  "outputs": [
+   {
+    "name": "result",
     "type": "uint256"
    },
    {
-    "name": "loveMsg",
-    "type": "string"
+    "name": "certId",
+    "type": "uint256"
+   },
+   {
+    "name": "passKey",
+    "type": "bytes32"
+   }
+  ],
+  "payable": true,
+  "stateMutability": "payable",
+  "type": "function"
+ },
+ {
+  "constant": true,
+  "inputs": [],
+  "name": "getAllMembersAddress",
+  "outputs": [
+   {
+    "name": "members",
+    "type": "address[]"
    }
   ],
   "payable": false,
@@ -191,6 +101,32 @@ export default  {
  {
   "constant": true,
   "inputs": [],
+  "name": "getMemberInfo",
+  "outputs": [
+   {
+    "name": "nickName",
+    "type": "bytes32"
+   },
+   {
+    "name": "email",
+    "type": "bytes32"
+   },
+   {
+    "name": "ID",
+    "type": "bytes32"
+   },
+   {
+    "name": "certNumber",
+    "type": "uint256"
+   }
+  ],
+  "payable": false,
+  "stateMutability": "view",
+  "type": "function"
+ },
+ {
+  "constant": true,
+  "inputs": [],
   "name": "_numMembers",
   "outputs": [
    {
@@ -204,11 +140,83 @@ export default  {
  },
  {
   "constant": true,
+  "inputs": [
+   {
+    "name": "certId",
+    "type": "uint256"
+   }
+  ],
+  "name": "getCertsByCertId",
+  "outputs": [
+   {
+    "name": "nickName",
+    "type": "bytes32"
+   },
+   {
+    "name": "email",
+    "type": "bytes32"
+   },
+   {
+    "name": "loverNickName",
+    "type": "bytes32"
+   },
+   {
+    "name": "loverEmail",
+    "type": "bytes32"
+   },
+   {
+    "name": "certTime",
+    "type": "uint256"
+   },
+   {
+    "name": "loveMsg",
+    "type": "string"
+   }
+  ],
+  "payable": false,
+  "stateMutability": "view",
+  "type": "function"
+ },
+ {
+  "constant": true,
+  "inputs": [
+   {
+    "name": "emailOrNick",
+    "type": "bytes32"
+   }
+  ],
+  "name": "getCertsIdsByQuery",
+  "outputs": [
+   {
+    "name": "",
+    "type": "uint256[]"
+   }
+  ],
+  "payable": false,
+  "stateMutability": "view",
+  "type": "function"
+ },
+ {
+  "constant": true,
   "inputs": [],
   "name": "getCertsNumber",
   "outputs": [
    {
     "name": "certNumber",
+    "type": "uint256"
+   }
+  ],
+  "payable": false,
+  "stateMutability": "view",
+  "type": "function"
+ },
+ {
+  "constant": true,
+  "inputs": [],
+  "name": "_totalCertsNumber",
+  "outputs": [
+   {
+    "name": "",
     "type": "uint256"
    }
   ],
@@ -236,42 +244,34 @@ export default  {
   "type": "function"
  },
  {
-  "constant": false,
+  "constant": true,
   "inputs": [
+   {
+    "name": "addr",
+    "type": "address"
+   }
+  ],
+  "name": "getMemberInfoByAddress",
+  "outputs": [
+   {
+    "name": "nickName",
+    "type": "bytes32"
+   },
+   {
+    "name": "email",
+    "type": "bytes32"
+   },
    {
     "name": "ID",
     "type": "bytes32"
    },
    {
-    "name": "loverNickName",
-    "type": "bytes32"
-   },
-   {
-    "name": "loverEmail",
-    "type": "bytes32"
-   },
-   {
-    "name": "loveMsg",
-    "type": "string"
+    "name": "certNumber",
+    "type": "uint256"
    }
   ],
-  "name": "createCert",
-  "outputs": [
-   {
-    "name": "result",
-    "type": "uint256"
-   },
-   {
-    "name": "certId",
-    "type": "uint256"
-   },
-   {
-    "name": "passKey",
-    "type": "bytes32"
-   }
-  ],
-  "payable": true,
-  "stateMutability": "payable",
+  "payable": false,
+  "stateMutability": "view",
   "type": "function"
  },
  {

@@ -6,7 +6,7 @@
 	    		<img src="../assets/cryptolove_07.png" alt="avatar">
 	    	</div>
 				<div class="user-info">
-					<h3 class="name" v-if="userInfo">{{userInfo.nickname}}</h3>
+					<h3 class="name" v-if="info">{{info.nickName}}</h3>
 
 					<!-- <p v-if="inviteLoverStatus==0" class="lover invite" @click="dialogVisible = true" >Invite you lover</a></p> -->
 					<!-- <p v-if="inviteLoverStatus==1" class="lover inviting">{{iInviteSomeone.nickname}} <span>waiting... </span></p> -->
@@ -15,7 +15,7 @@
 					<!-- <p v-if="beInvitedLoverStatus" class="lover beInvited">{{whoInviteMeObj.nickname}}<a @click="acceptDialog = true">To be accepted</a></p> -->
 					<p class="fn">
 						<a class='address' 
-							v-clipboard:copy="myAddress"
+							v-clipboard:copy="account"
 				      v-clipboard:success="onCopy"
 				      v-clipboard:error="onError"
 						>Copy address</a><span></span><a class='address'  @click='settings'>Settings</a>
@@ -27,8 +27,8 @@
       <el-row type="flex" class="row-bg" justify="space-between">
         <el-col :span="8"><h3 class="vows">My Indestructible Vows</h3></el-col>
         <el-col :span="3" class="create-btnwrap">
-          <el-button type="primary" >
-            <span class="create" @click="createTo">Create</span>
+          <el-button type="primary" @click="openCreatePop">
+            <span class="create" >Create</span>
           </el-button>
           
         </el-col>
@@ -43,12 +43,13 @@
 	  		</div>
 	  	</el-main>
 	  </div> -->
-    <v-vows v-for="(item,index) in curPageDetailList" :item="item" :index="index"></v-vows> 
-    <v-create></v-create> 
-    <el-pagination
+    <v-listvows v-if="info" :email="info.email"></v-listvows> 
+    <!-- <v-create v-if="curPageDetailList.length"></v-create>  -->
+   <!--  <el-pagination v-if="curPageDetailList.length"
     layout="prev, pager, next"
     @current-change="handleCurrentChange"
-    :total="totalPage">
+    :page-size="purPage"
+    :total="totalPage"> -->
   </el-pagination>
     <!-- 流水 -->
 	  <!-- <el-main class="detail-box stream-wrap">
@@ -164,6 +165,19 @@
 		  </span>
 		</el-dialog>
  -->
+  <!-- create pop -->
+    <el-dialog
+      title=""
+      :visible="createPop"
+      width="700px"
+      @close="cancleCreatePop"
+      >
+      <v-createpop></v-createpop>
+      <!-- <span slot="footer" class="dialog-footer" v-if="loverInfo"> -->
+        <!-- <el-button @click="cancleCreatePop">Cancle</el-button> -->
+        <!-- <el-button type="primary" @click="openCreatePop">Add</el-button> -->
+      <!-- </span> -->
+    </el-dialog>
 
   </div>
 
@@ -171,16 +185,18 @@
 
 <script>
 import _ from 'lodash'
-import Vows from '@/components/Vows'
-import VCreate from '@/components/Create'
+import ListVows from '@/components/ListVows'
+import CreatePop from '@/components/CreatePop'
+// import VCreate from '@/components/Create'
 // import ethApi from '@/ethApi'
-import axios from 'axios'
+// import axios from 'axios'
 import { mapState } from "vuex"
-import { contractInstance,localWeb3 } from '@/web3Contract'
-import useCon from '@/assets/js/utils'
+// import { contractInstance,localWeb3 } from '@/web3Contract'
+import utils from '@/assets/js/utils'
 
 export default {
   name: 'Detail',
+  props:['account'],
   data() {
   	var validatePass = (rule, value, callback) => {
         if (value === '') {
@@ -189,283 +205,79 @@ export default {
         	if(!/^[a-zA-Z0-9_-]+@[a-zA-Z0-9_-]+(\.[a-zA-Z0-9_-]+)+$/.test(value)){
         		callback(new Error('Incorrect email format'));
         	}
-          // if (this.ruleForm2.checkPass !== '') {
-          //   this.$refs.ruleForm2.validateField('checkPass');
-          // }
+          
           callback();
         }
       };
       
-    // var validateEth = (rule, value, callback) => {
-    //   if (value === '') {
-    //     callback(new Error('请输入购买金额'));
-    //   } else {
-    //   	if(!/^\d+(\.\d+)?$/.test(value)){
-    //   		callback(new Error('请输入数字'));
-      	// }
-        // if (this.ruleForm2.checkPass !== '') {
-        //   this.$refs.ruleForm2.validateField('checkPass');
-        // }
-      //   callback();
-      // }
-    // };
     return {
 
-    	// inviteLoverStatus:0, // 0 no lover 允许邀请, 1 邀请aaa中，2 已恋爱 
-    	// beInvitedLoverStatus:0, // 0 没人邀请我，1 要请我 to be accepted.
-
-      // iInviteSomeone:null,
-      // whoInviteMeObj:null,
-
-      // selfAmount:0,
-      // coupleAccount:0,// couple保证金
-      // seltDonated:0,//分红
-
-      // myStream:null,
-      // loverStream:null,
-
-      // domain:'https://etherscan.io/address/',
-
-      // totalTransactionsList:null,
-
-      // breakUpDialog:false,
-			// cashInDialog:false,
-      // acceptDialog:false,
-      // buyDialog:false,
-      // dialogVisible:false,
-      // showError:false,
-
-      // wornTogther:false,
-      // askTogether:false,
-      
-			myAddress:"0x2626D77df65989C90D85a88d03Bd46A11Dc7321E",
-      userInfo:{},
-      // userInfo:{
-      	// email:'aaa@qq.com',
-      	// nickname:'aaa',
-       //  address:'0x2626D77df65989C90D85a88d03Bd46A11Dc7321E',
-
-        /*account;     // 分红金额
-        deposit;     // 保证金
-        bind_status; // 成员状态
-
-        contractFrom; // 向自己发起起恋爱请求的成员的地址，当有人向自己发起请求时，此域有值，一旦接受或者拒绝，此域清空
-        contractTo;   // 自己发起恋爱请求的对方的地址，
-
-        // 恋爱请求状态，在自己发起请求对方还没有接受或者拒绝时，自己此域的状态为WAIT_FOR_RESPONSE,对方为RECEIVED，
-        // 如果对方接受了请求，自己和对方此域都为ACCEPTED，如果对方拒绝，自己和对方此域都为REJECTED。
-        inLoveRequestStatus;
-
-        loverAddr;         // 恋人钱包地址
-
-        // 恋爱对编号，
-        coupleId;
-
-        registTime;  // 成员注册时间
-        depositTime; // 成员的最后一次充值保证金时间
-        inLoveTime;  // 成员恋爱正式开始的时间
-        splitTime;   // 成员分手时间*/
-      // },
 
       loverInfo:null,
       loverAddress:null,
 
 
       certsList:[],
-      curPageList:[],
-      page:null,
-      purPage:5,
-      totalPage:0,
+      page:1,
+      purPage:4,
+      totalPage:5,
 
-      curPageDetailList:{},
-      // errorMsg:'Not found,please make sure you input the right email address or nickname.',
-      
-      // formCash:{
-      // 	eth:''
-      // },
-
-      // form:{
-      // 	eth:''
-      // },
-      // rules:{
-      // 	eth:[
-      // 		{ required:true, validator: validateEth, trigger: 'change' }
-      // 	]
-      // },
-
-      // ruleForm2:{
-      // 	email:'',
-      // },
-      // rules2:{
-      // 	email: [
-      //     { required:true, validator: validatePass, trigger: 'change' }
-      //   ]
-      // }
+      curPageDetailList:[],
+   
     };
   },
 
   computed:{
   	...mapState([
-  		'accounts'
+  		'info','createPop'
   	]),
-    // myStream(){
-    //   return this.domain + this.myAddress
-    // },
-    // loverStream(){
-    //   return this.domain + this.myAddress
-    // }
-
+   
   },
-
+  // beforeRouteEnter (to, from, next) {
+  //   next(vm=>{
+  //     vm.$store.dispatch('setConfess',false)
+  //   })
+  // },
   created(){
-
-   console.log(this.$route.params);
-    // if(!this.$route.params){
-    //   this.$route.push({
-    //     path:'/'
-    //   })
-    // }  
-    
-    this.userInfo=this.$route.params;
-    this.page = 1;
-    // 获取证书id列表
-
-    if(this.userInfo.email){
-
-      this.getCertsIdList();
-    }else{
-      // this.
-    }
-
-
-    // this.curPageDetailList=[{
-    //   nickName:'aaa',
-    //   email:'aaa@qq.com',
-    //   loverNickName:'bbb',
-    //   loverEmail:'bbb@qq.com',
-    //   certTime:"1518343653",
-    //   loveMsg:'dfsdf sdfsdf  sdfsdf sdfsdf '
-    // },{
-    //   nickName:'ccc',
-    //   email:'ccc@qq.com',
-    //   loverNickName:'ddd',
-    //   loverEmail:'ddd@qq.com',
-    //   certTime:"1518343653",
-    //   loveMsg:'dfsdf sdfsdf cccc sdfsdf sdfsdf '
-    // }]
-
-    // this.handleCurrentChange()
-  	// this.$store.dispatch('fetchNetwork');
-
-  	// this.askTogether = this.biggerThanMonth(1) // 大于一个月提示要不要继续together；
-  	// this.wornTogther = this.biggerThanMonth(2) // 大于2个月警告要不要继续together；
-
-		// this.inviteLoverStatus = 0 // 0 no lover 允许邀请, 1 邀请aaa中，2 已恋爱 
-  //   this.beInvitedLoverStatus = 1;
-
-    this.myAddress = this.$store.state.accounts[0]
-  	// 大于4个月，分手
-  	// if(this.biggerThanMonth(4)){
-
-  	// 	this.byebyeByExpires()
-  	// }
-
-    // 我邀请的恋人
-    // this.inviteLover();
-
-    // 邀请我的恋人
-    // this.whoInviteMe();
-  	// 初始couple保证金
-  	// this.initCoupleAccount();
-
-  	// 初始流水
-  	// this.initTransactions();
-    
-
-  	
+  	this.$store.dispatch('setConfess',false)
   },
   watch:{
-    accounts:{
-      handler(cur, old){
-        this.account = cur[0];
-        if(!this.account){
-          this.$router.push({
-            path:'/game/guide',
+    account(val){
 
-          })
-        }
-      },
-      deep:true
-    }
+      console.log('account',val)
+    },
+    // info(val){
+    //   console.log('info',val);
+    //   this.getCertsIdList(val);
+    // }
+      
 
      
   },
   methods: {
+    cancleCreatePop(){
+      this.$store.dispatch('setCreatePop',false)
+    },
+    openCreatePop(){
+      this.$store.dispatch('setCreatePop',true)
+
+    },
     settings(){
-      console.log(this.userInfo);
+      console.log(this.info);
       this.$router.push({
         name:'settings',
-        params:this.userInfo
+        params:this.info
       })
     },
-    createTo(){
-      this.$router.push({
-        name:'createCert',
-        params:this.userInfo
-      })
-    },
-    updateList(list){
-      var promiseArr = [];
-      for(var i = 0; i< list.length; i++){
-        promiseArr.push(new Promise((resolve,reject) => {
-          contractInstance.getCertsByCertId( useCon.decode(list[i]),(error, result)=>{
-            if(!error){
-              var arr = ['nickName','email','ID','certNumber'];
-              var resultObj = useCon.formatRes(arr,result);
-              resolve(resultObj)// 如果不是json 处理成json
-            }else{
-              reject(error)
-            }
-          })
-        }))
-      }
-
-      Promise.all(promiseArr).then(res => {
-        this.curPageDetailList = res;
-      })
-    },
-    handleCurrentChange(num){
-      var start = (num-1)*this.purPage-1;
-      var end = start + this.purPage;
-      this.curPageList = this.certsList.slice(start, end);
-
-      this.updateList(this.curPageList);
-    },
-    getCertsIdList(){
-
-      contractInstance.getCertsIdsByQuery(this.userInfo.email, (error, result) => {
-        this.certsList = result;
-
-        this.totalPage = result.length/this.purPage
-        // this.totalPage = 50;
-        this.handleCurrentChange()
-      })
-    },
+ 
   
   	gotoGuide(val){
   		this.$router.push({
         path:'/game/guide',
-        // params:{
-        // 	network:val,
-        // }
+      
       })
   	},
 
-
-  	weiToEth(value){
-  		return localWeb3.fromWei(value,'ether');
-  		 
-  	},
   	
     onCopy: function (e) {
     	this.$message({
@@ -482,8 +294,8 @@ export default {
     
   },
   components:{
-    'v-vows':Vows,
-    'v-create':VCreate
+    'v-listvows':ListVows,
+    'v-createpop':CreatePop
   }
  
   
@@ -635,6 +447,10 @@ export default {
     	}
 		}
 	}	
+}
+.el-pagination{
+  text-align:center;
+  padding:50px 0;
 }
 .grid-content{
 	text-align:left;

@@ -2,19 +2,20 @@
 	<div>
 		
 	  <v-vows  :item='oneInfo'></v-vows> 
-    <v-create></v-create>
+    <v-create :account="account"></v-create>
 	</div>
 </template>
 
 <script>
-import _ from 'lodash'
+// import _ from 'lodash'
 import Vows from "@/components/Vows"
 import { contractInstance } from '@/web3Contract'
 import VCreate from '@/components/Create'
-import useCon from '@/assets/js/utils'
+import utils from '@/assets/js/utils'
 
 export default {
   name: 'Certificate',
+  props:['account'],
   data() {
   	
     return {
@@ -25,9 +26,16 @@ export default {
   },
  
   created(){
-    var certId = this.$route.query.certId;
-    this.email = this.$route.params.email;
-    console.log(this.$route.params.email)
+    // var certId = this.$route.query.certId;
+    this.oneInfo.certId = this.$route.query.certId;
+    this.oneInfo.nickName = this.$route.query.nickName;
+    this.oneInfo.email = this.$route.query.email;
+    this.oneInfo.loverNickName = this.$route.query.loverNickName;
+    this.oneInfo.loverEmail = this.$route.query.loverEmail;
+    this.oneInfo.certTime = this.$route.query.certTime;
+    this.oneInfo.loveMsg = this.$route.query.loveMsg;
+    this.oneInfo.ID = this.$route.query.ID;
+    // console.log(this.$route.params.email)
     // this.oneInfo = {
     //   nickName:'aaa',
     //   email:'aaa@qq.com',
@@ -36,13 +44,13 @@ export default {
     //   certTime:"1518343653",
     //   loveMsg:'dfsdf sdfsdf  sdfsdf sdfsdf '
     // }
-    if(certId){
-      this.getCertsByCertId(certId);
-    }else if(this.email){
-      useCon.getCertsIdsByQuery(this.email).then(res=>{
-        this.getCertsByCertId(useCon.decode(res[0]));
-      })
-    }
+    // if(certId){
+   
+    // }else if(this.email){
+      // utils.getCertsIdsByQuery(this.email).then(res=>{
+        // this.getCertsByCertId(utils.decode(res[0]));
+      // })
+    // }
 
     // contractInstance.getCertsByCertId(certId,(error, result) =>{
     // 	if(!error){
@@ -54,13 +62,13 @@ export default {
 
   },
 	methods: {
-	  getCertsByCertId(certId){
-      useCon.getCertsByCertId(certId).then(res=>{
-        var arr=['nickName','email','loverNickName','loverEmail','certTime','loveMsg'];
-        var obj = this.formatRes(arr,res);
-        this.oneInfo = obj
-      })
-    }
+	  // getCertsByCertId(certId){
+   //    utils.getCertsByCertId(certId).then(res=>{
+   //      var arr=['nickName','email','loverNickName','loverEmail','certTime','loveMsg'];
+   //      var obj = this.formatRes(arr,res);
+   //      this.oneInfo = obj
+   //    })
+   //  }
  	},
 	components:{
 		'v-vows':Vows,

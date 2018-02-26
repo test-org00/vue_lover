@@ -2,7 +2,7 @@
 // (runtime-only or standalone) has been set in webpack.base.conf with an alias.
 import Vue from 'vue'
 import ElementUI from 'element-ui'
-import '@/assets/bitbug_favicon.ico';
+import '@/assets/favicon.ico';
 import '@/assets/scss/theme/index.css'
 import App from './App'
 import router from './router'

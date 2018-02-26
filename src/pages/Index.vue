@@ -4,26 +4,23 @@
       <div class="bannerInner">
         <img src="../assets/heartDiamond.png" alt="">
         <div class="text">
-          <div class="title">一生爱链</div>
+          <div class="title">Love Of Your Life Challenge</div>
           <div class="desc">
-            <p>一生爱链是全球唯一的爱情区块链</p>
-            <p>每一段真爱，你们的名字，你们的誓言，</p>
-            <p>将被区块链上一段不可篡改，不可撤销的区块数据永久记录，</p>
-            <p>向全世界完全公开，</p>
-            <p>一生爱链还会记录加密后的你的身份证信息，</p>
-            <p>在一生中你只能向一个爱人宣誓</p>
+            <p>The <strong>Forever Love Chain</strong> is the world's one and only public <strong>blockchain</strong> featuning you love vow. Your true love, your name and your vow will be recorded into this irrevocable and etemal love chain. And the whole world would will be able to see it.</p>
+            <p>Because your love is <strong>unique</strong>, each vow is uniquely associated with your identifications. Are you ready to confess your love to the ONE and ONLY love of your life? </p>
+            
           </div>
         </div>
       </div>
     </div>
     <div class="content">
       <div class="contentInner">
-        <img src="../assets/previewImg.png" alt="">
+        <img src="../assets/home_vow.jpg" alt="">
         <div class="handleArea">
           <img src="../assets/createHover.png" @click="goToCreate" alt="">
           <div class="text">
-            <p>用一生一次的一生爱链</p>
-            <p>向他/她表白吧</p>
+            <p>Confess to the love of your</p>
+            <p>life now</p>
           </div>
         </div>
       </div>
@@ -32,10 +29,11 @@
 </template>
 <script>
 
+import utils from '@/assets/js/utils'
 
 export default {
   name: '',
-  props: {},
+  props: ['account'],
   data() {
     return {
 
@@ -49,13 +47,21 @@ export default {
   },
   methods: {
     goToCreate(){
-      window.location = location.origin+'/#/game/createCert'
-      // this.$message({
-      //   message:'待修改链接',
-      //   type:'warning'
-      // })
+      utils.createVow(this);
     }
-  }
+
+  },
+  watch:{
+    account(val){
+      console.log('router 绑定传值可否',val); // 可以
+      
+    }
+  },
+  beforeRouteEnter (to, from, next) {
+    next(vm=>{
+      console.log(vm.$store.dispatch('setConfess',true))
+    })
+  },
 
 }
 
@@ -86,8 +92,11 @@ export default {
           margin-bottom: 12px;
         }
         .desc {
-          font-size: 18px;
-          line-height: 36px;
+          font-size: 22px;
+          line-height: 30px;
+          p{
+            margin-bottom:20px;
+          }
         }
       }
     }

@@ -3,28 +3,33 @@
     <div class="searchArea">
       <el-row>
         <div class="desc">
-          <div class="title">一生爱链搜索</div>
-          <div class="subTitle">看看爱链上公开了哪些爱情誓言</div>
+          <div class="title">Love Chain Search</div>
+          <div class="subTitle">witness what love vows been posted</div>
         </div>
         <div class="handleArea">
-          <input class="searchInput" v-model="input" placeholder="请输入内容" />
-          <el-button icon="el-icon-search" @click="search" class="searchBtn">搜索</el-button>
+          <input class="searchInput" v-model="input" @keyup='storeSearch' placeholder="Search love vows using name or email" />
+          <el-button icon="el-icon-search" @click="searching" class="searchBtn">Search</el-button>
         </div>
       </el-row>
     </div>
-    <v-vows v-for="(item,index) in curPageDetailList" :item="item" :index="index"></v-vows> 
+    <v-listvows :email="email"></v-listvows>
+    <!-- <v-vows v-for="(item,index) in curPageDetailList" :item="item" :index="index"></v-vows>  -->
   </div>
 </template>
 <script>
 import Vows from '@/components/Vows'
+import ListVows from '@/components/ListVows'
 import { contractInstance } from '@/web3Contract'
-import useCon from '@/assets/js/utils'
+import {mapState} from 'vuex'
+
+import utils from '@/assets/js/utils'
 export default {
   name: '',
   props: {},
   data() {
     return {
       input:'',
+      email:'',
       curPageDetailList:null,
     }
   },
@@ -44,26 +49,42 @@ export default {
     //   certTime:"1518343653",
     //   loveMsg:'dfsdf sdfsdf cccc sdfsdf sdfsdf '
     // }]
-
-    this.search(this.$route.params.keyword)
+    this.input = this.$store.state.search;
+    this.searching(this.input)
+  },
+  computed:{
+    ...mapState([
+      'search'
+    ])
   },
   components: {
-    'v-vows':Vows
+    'v-vows':Vows,
+    'v-listvows':ListVows,
   },
   methods: {
-    search(key){
-      console.log(111);
-     useCon.getCertsIdsByQuery(key||this.input).then((res)=>{
-      var arr = [];
-      for(var i = 0;i<res.length;i++){
-        this.getCertsByCertId(this.decode(res[i])).then(res=>{
-          var arr=['nickName','email','loverNickName','loverEmail','certTime','loveMsg'];
-          arr.push(this.formatRes(arr,res));
-        })
+    storeSearch(){
+      this.$store.dispatch('setSearch',this.input);
+    },
+    searching(key){
+      // console.log(111);
+      this.email = this.input;
+     // utils.getCertsIdsByQuery(key||this.input).then((res)=>{
+     //  var arr = [];
+     //  for(var i = 0;i<res.length;i++){
+     //    this.getCertsByCertId(this.decode(res[i])).then(res=>{
+     //      var arr=['nickName','email','loverNickName','loverEmail','certTime','loveMsg'];
+     //      arr.push(this.formatRes(arr,res));
+     //    })
         
-      }
-      this.curPageDetailList = arr;
-     })
+     //  }
+     //  this.curPageDetailList = arr;
+     // })
+    }
+  },
+  watch:{
+    search(val){
+      console.log('111');
+      this.input = val
     }
   }
 
@@ -89,6 +110,7 @@ export default {
         font-size: 22px;
       }
       .subTitle {
+        padding-left:15px;
         font-size: 12px;
       }
     }

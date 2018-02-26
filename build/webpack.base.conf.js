@@ -18,6 +18,7 @@ module.exports = {
   output: {
     path: config.build.assetsRoot,
     filename: '[name].js',
+    chunkFilename: 'chunk[id].js',
     publicPath: process.env.NODE_ENV === 'production'
       ? config.build.assetsPublicPath
       : config.dev.assetsPublicPath
@@ -53,6 +54,7 @@ module.exports = {
         test: /\.(ico)(\?.*)?$/,
         loader: 'url-loader',
         options: {
+          limit: 100,
           name: utils.assetsPath('img/[name].[ext]')
         }
       },

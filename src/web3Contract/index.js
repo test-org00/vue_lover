@@ -11,13 +11,15 @@ window.addEventListener('load', function() {
     var provider = web3.currentProvider
   } else {
     console.log('No web3? You should consider trying MetaMask!')
-    window.location.href=location.origin+'/#/guide'
+    // var web3 = require('web3');
+    console.log(web3);
+		// web3.setProvider(new web3.providers.HttpProvider("http://localhost:8545"))
+    // window.location.href=location.origin+'/#/guide'
   }
 })
 
 // export let localWeb3 = web3 ? new Web3(web3.currentProvider) : null
 // let localWeb3 = new Web3()
-// localWeb3.setProvider(new Web3.providers.HttpProvider("http://localhost:8545"))
 
 // 合约ABI
 // 合约地址

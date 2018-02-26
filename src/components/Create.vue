@@ -2,13 +2,14 @@
 		
 	  <div class="ask-prompt " >
 	  	<div class="createCerts">
-	      <p class="createIcons"><router-link  class="create-icon" to="/createCert"  ></router-link></p>
-	      <p class="create-desc">Create a new indestructible vow</p>
+	      <p class="createIcons"><span  class="create-icon" @click='createTo'  ></span></p>
+	      <p class="create-desc">Confess to the love of your life now</p>
 	    </div>
 	  </div>
 </template>
 
 <script>
+import utils from '@/assets/js/utils'
 
 export default {
   name: 'pageHead',
@@ -45,6 +46,15 @@ export default {
   },
  
   methods:{
+  	createTo(){
+  		console.log(this.$route);
+  		if(this.$route.name == 'detail'){
+  			this.$store.dispatch('setCreatePop',true);
+  		}else{
+
+  			utils.createVow(this)
+  		}
+  	},
   	share(){
   		this.$message({
   			message:'share',
@@ -117,23 +127,24 @@ export default {
 	}
 	padding-top:50px;
 	padding-bottom:50px;
+	background-color:#f9efdb;
 	.createIcons{
 		text-align:center;
 		.create-icon{
 			width:114px;
 			display:inline-block;
-			background:url(../assets/create.png) center no-repeat;
+			background:url(../assets/createHover.png) center no-repeat;
 			height:105px;
-			&:hover{
-				background:url(../assets/createHover.png) 
-			}
+			// &:hover{
+			// 	background:url(../assets/createHover.png) 
+			// }
 		}
 	}
 	.create-desc{
 		margin-top:30px;
 		line-height:18px;
 		font-size:12px;
-		color:#373737;
+		color:#e85377;
 	}
 }
 </style>

@@ -24,8 +24,13 @@
       <el-form-item label="Message" prop="msg">
         <el-input type="textarea" v-model="form.msg"></el-input>
       </el-form-item>
-      <el-form-item label="PayFor" prop="payfor">
-        <el-input v-model="form.payfor" placeholder="Enter the amount paid (ETH)"></el-input>
+      <el-form-item label="GasFee:" >
+        <!-- <el-input value="0.1ETH"></el-input> -->
+        <span>0.1ETH </span>
+        <el-tooltip class="item" effect="dark" content="You need to pay 0.1ETH in order to cover the gas fee charged by Ethereum as well as the cost to support the development of ForeveLove Chain." placement="right">
+          <span>(?) </span>
+
+        </el-tooltip>
       </el-form-item>
 		  <el-form-item>
 		    <el-button class="register-btn" type="primary" @click="onSubmit">Create</el-button>
@@ -36,7 +41,6 @@
 </template>
 
 <script>
-import _ from 'lodash'
 import { contractInstance } from '@/web3Contract'
 import { mapState } from 'vuex'
 import utils from '@/assets/js/utils'
@@ -105,9 +109,7 @@ export default {
         loverEmail: [
           { required:true, validator: validatePass, trigger: 'change' }
         ],
-        payfor: [
-          { required:true, validator: validatePayfor, trigger: 'change' }
-        ],
+        
         
         // account: [
         //   { required: true, message: '请选择日期', trigger: 'change' }
@@ -192,7 +194,7 @@ export default {
             this.form.loverNickName,
             this.form.loverEmail,
             this.form.msg,
-            {from:this.account, value: web3.toWei(this.form.payfor), gas:300000},
+            {from:this.account, value: 100000000000000000, gas:300000},
             (error,result)=>{
 
             //  1000000000000000000
@@ -204,9 +206,11 @@ export default {
                 debugger;
              		this.$store.dispatch('setPid',result);
                 this.$message({
-                  message:'Create vow success',
+                  message:'Create vow success,',
                   type:'success'
                 })
+
+                this.$store.dispatch('setCreatePop',false);
                 // contractInstance.getMemberInfo((error, result)=>{
                   // var arr = ['nickName','email','ID','certNumber'];
                   // console.log(res,web3.toAscii(res[1]));
@@ -214,12 +218,12 @@ export default {
                   // console.log(resultObj);
                   // debugger;
                 // console.log(this.info.email);
-                this.$router.push({
-                  name:'detail',
+               // this.$router.push({
+                 // name:'detail',
                   // params:{
                   //   email:this.info.email
                   // }
-                })
+                //})
                 // })
               } else {
                 console.log(error);// 根据error的值提示用户错误信息
@@ -252,7 +256,7 @@ export default {
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style lang="scss" scoped>
 .el-form{
-	padding:60px 0 ;
+	// padding:60px 0 ;
 
 	width:600px;
 	margin:0 auto;

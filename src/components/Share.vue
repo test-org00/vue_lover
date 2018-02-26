@@ -44,7 +44,7 @@
 import axios from 'axios'
 export default {
   name: 'Share',
-  props:['receiverEmail','certId'],
+  props:['receiverEmail','serialize'],
   data () {
     return {
       curWeb:null,
@@ -58,11 +58,16 @@ export default {
   methods:{
   	shareEmail(){
   		axios({
-  			url:'/v1/foreverlovechain/email',
+  			url:'/v1/foreverlovechain/cert',
   			method: 'post',
 			  data: {
-			    "receiver": this.receiverEmail || 'bulabula@qq.com',
-			    "url": location.origin + "/#/certificate?cerId="+ this.certId
+			  	"senderNick": "Alex",
+			  	"receiverNick": "HAHA",
+			  	 // "receiverEmail": "alexgreenbar@qq.com",
+			  	 // "certUrl": "http://www.163.com/1234"
+
+			    "receiverEmail": this.receiverEmail || 'bulabula@qq.com',
+			    "certUrl": location.origin + "/#/game/certificate?"+this.serialize
 			  },
   		}).then(res =>{
   			this.$message({

@@ -3,10 +3,9 @@
     <div class="inner-foot">
       
       <el-row type="flex" class="foot-link" justify="space-between">
-        <el-col :span="4">
+        <el-col :span="12">
           <div class="grid-content bg-purple-light">
-            <a href="">Support</a>
-            <a href="">About</a>
+            <a href="mailto:info@foreverlovechain.com">Contact Us: info@foreverlovechain.com</a>
             <a href="">FAQs</a>
           </div>
         </el-col>
@@ -17,22 +16,17 @@
         </el-col>
         
       </el-row>
-      <el-row type="flex" class="foot-link foot-link-bottom" justify="center">
-        <el-col :span="4">
-          <div class="grid-content bg-purple-light">
-            <a href="">Terms of use</a>
-            <a href="">privacy policy</a>
-          </div>
-        </el-col>
-      </el-row>
 
+    </div>
+    <div class="grid-content footer-bottom">
+      <a href="">Terms of use</a>
+      <a href="">privacy policy</a>
     </div>
 
   </div>
 </template>
 
 <script>
-
 import VShare from '@/components/Share'
 export default {
   name: 'foot',
@@ -51,15 +45,17 @@ export default {
 <style lang="scss" scoped>
 
 .foot{
-  padding: 25px 0 40px 0;
+  padding: 25px 0 0 0;
   border-top:1px solid #ccc;
-  flex:0 0 auto;
+  flex: 0 0 auto;
 }
 
 .inner-foot{
   width:1200px;
   margin:0 auto;
+  padding-bottom:25px;
   .foot-link{
+
     a{
       text-decoration: none;
       color:#7f7f7f;
@@ -74,11 +70,26 @@ export default {
         font-size:20px;
       }
     }
-  }
-  .foot-link-bottom{
-    margin-top:20px;
+    .share{
+      color:#6f7c91;
+    }
   }
  
   
+}
+.footer-bottom{
+  line-height:30px;
+  text-align:center;
+  height:30px;
+  background-color:#cbcbcb;
+  a{
+    color:#8a8a8a;
+    padding:0 20px;
+    text-decoration:none;
+    &:hover{
+      text-decoration:underline;
+
+    }
+  }
 }
 </style>

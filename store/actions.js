@@ -35,6 +35,20 @@ export default {
   setPid ({ commit }, pid) {
     commit('SET_PID', pid)
   },
+  setSearch ({ commit }, search) {
+    commit('SET_SEARCH', search)
+  },
+
+  setInfo({commit}, info) {
+    commit('SET_INFO', info)
+  },
+  setCreatePop({commit}, bool){
+    commit('SET_CREATEPOP',bool);
+  },
+  setConfess({commit}, bool){
+    commit('SET_CONFESS',bool);
+  }
+  
   // setUserInfo ({ commit }, data) {
   //   commit('SET_USER_INFO', data)
   // },

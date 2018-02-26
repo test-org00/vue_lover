@@ -2,14 +2,14 @@
 	<div>
 		
 	  <el-form ref="form" :rules="rules" status-icon :model="form" label-width="80px">
-		  <el-form-item label="Nickname" prop="nickname">
-		    <el-input v-model="form.nickname" placeholder="Enter you nickname"></el-input>
+		  <el-form-item label="Nickname" >
+		    <el-input v-model="form.nickName" :disabled="true"></el-input>
 		  </el-form-item>
-		  <el-form-item label="Email" prop="email">
-		    <el-input v-model="form.email" placeholder="forexample@email.com"></el-input>
+		  <el-form-item label="Email" >
+		    <el-input v-model="form.email" :disabled="true"></el-input>
 		  </el-form-item>
       <el-form-item label="ID" prop='ID'>
-        <el-input v-model="form.ID" placeholder="Enter you ID"></el-input>You can only modify ID once
+        <el-input v-model="form.ID" :disabled="true"></el-input>
       </el-form-item>
 		  <el-form-item label="Wallet">
 		    <el-input v-model="form.add" :disabled="true"></el-input>
@@ -29,6 +29,7 @@ import { mapState } from 'vuex'
 
 export default {
   name: 'Settings',
+  props:['account'],
   data() {
   	var validatePass = (rule, value, callback) => {
         if (value === '') {
@@ -47,19 +48,18 @@ export default {
     	showAlert:false,
     	msg:'',
       form: {
-        nickname: '',
+        nickName: '',
         email: '',
         add: '',
       
       },
       rules: {
-        nickname: [
-          { required: true, message: 'Enter your nickname', trigger: 'blur' },
-          // { min: 1, max: 20, message: '长度在 1 到 20 个字符', trigger: 'blur' }
-        ],
-        email: [
-          { required:true, validator: validatePass, trigger: 'change' }
-        ],
+        // nickName: [
+        //   { required: true, message: 'Enter your nickname', trigger: 'blur' },
+        // ],
+        // email: [
+        //   { required:true, validator: validatePass, trigger: 'change' }
+        // ],
         ID: [
           { required:true, message: 'Enter your ID' , trigger: 'change' }
         ],
@@ -71,12 +71,12 @@ export default {
   },
   computed:{
   	...mapState([
-  		'accounts'
+  		'info'
   	])
   },
   created(){
-    console.log(this.$route.params);
-    _.assign(this.form,this.$route.params);
+    // console.log(this.$route.params);
+    // _.assign(this.form,this.$route.params);
   	// this.userInfo = this.$store.state.userInfo;
   	// if(this.userInfo){
   		// this.$store.dispatch('fetchAccounts');
@@ -85,10 +85,20 @@ export default {
   	// if(this.form.add){
 	  // 	this.$store.dispatch('fetchAccounts');
   	// }
+    var infoObj = this.$store.state.info;
+    // console.log(infoObj);
+    if(infoObj){
+      this.initForm(infoObj);
+    }
+    
   },
 	methods: {
-	  // onSubmit() {
-	  // },
+	  initForm(infoObj) {
+      console.log(infoObj)
+      this.form.nickName = infoObj.nickName;
+      this.form.email = infoObj.email;
+      this.form.ID = infoObj.ID;
+	  },
     onSubmit() {
 
       this.$refs.form.validate((valid) => {
@@ -105,7 +115,7 @@ export default {
                 type:'success'
               })
               that.$router.push({
-                path:'/game/detail',
+                name:'detail',
                 params:result
               })
             } else {
@@ -125,12 +135,13 @@ export default {
   	}
 	},
 	watch:{
-		accounts:{
-			handler(cur, old){
-				this.form = cur[0];
-			},
-			deep:true
-		}
+		account(val){
+			console.log(val);
+      this.form.add = val;
+		},
+    info(val){
+      this.initForm(val)
+    }
 	},
 	
   

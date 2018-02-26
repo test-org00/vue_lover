@@ -26,11 +26,12 @@
 import { contractInstance } from '@/web3Contract'
 // import decoder from '@/web3Contract'
 import { mapState } from 'vuex'
-import useCon from '@/assets/js/utils'
+import utils from '@/assets/js/utils'
 
 
 export default {
   name: 'Register',
+  props:['account'],
   data() {
   	var validatePass = (rule, value, callback) => {
         if (value === '') {
@@ -68,17 +69,13 @@ export default {
       }
     };
   },
-  computed:{
-  	...mapState([
-  		'accounts'
-  	])
-  },
+ 
   created(){
     console.log(contractInstance)
-  	this.form.add = this.$store.state.accounts!==null ? this.$store.state.accounts[0] : null;
-  	if(this.form.add){
-	  	this.$store.dispatch('fetchAccounts');
-  	}
+  	// this.form.add = this.$store.state.accounts!==null ? this.$store.state.accounts[0] : null;
+  	// if(this.form.add){
+	  	// this.$store.dispatch('fetchAccounts');
+  	// }
     // console.log(decoder);
     // var result = decoder.decodeLogs('0x27d1c745adf188fadccb969499b521a7d2054351389551987c55b69624757e52');
     // console.log(result);
@@ -93,8 +90,8 @@ export default {
         if (valid) {
 	   			contractInstance.regist(this.form.nickname,this.form.email,function(error, result){
             console.log(error,result);
-            // console.log('decoder');
-            // decoder.rawDecode('regist',result);
+            // 注册如何判断失败
+
 						if (!error) {
             // console.log("Good way - the returned value after set method :");
            		// that.$store.dispatch('setPid',result);
@@ -118,7 +115,7 @@ export default {
               //     })
               //     break
               // }
-              useCon.getMemberInfo().then(res=>{
+              utils.getMemberInfo().then(res=>{
                 console.log(error,res);
                 // debugger;
                 if(!error){
@@ -132,13 +129,14 @@ export default {
                     //   type:'warning'
                     // })
                   // }else{
-                    var arr = ['nickName','email','ID','certNumber'];
+                    // var arr = ['nickName','email','ID','certNumber'];
                     // console.log(res,web3.toAscii(res[1]));
-                    var resultObj = useCon.formatRes(arr,res);
+                    // var resultObj = utils.formatRes(arr,res);
                     that.$router.push({
-                      path:'/game/detail',
-                      params:resultObj
+                      name:'detail',
+                      params:res
                     })
+                    that.$store.dispatch('setInfo',res);
                   // }
                 }
               })
@@ -163,11 +161,9 @@ export default {
   	}
 	},
 	watch:{
-		accounts:{
-			handler(cur, old){
-				this.form.add = cur[0];
-			},
-			deep:true
+		account(val){
+			console.log('regist',val)
+      this.form.add = val;
 		}
 	},
 	

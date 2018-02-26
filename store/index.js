@@ -11,6 +11,10 @@ const createStore = () => {
     	balance:null,
       network:1,
       userInfo:null,
+      search:null,
+      info:null,
+      createPop:false,
+      confess:true
       // imageCDN: '你的七牛 CDN',
       // homePageScroll: {
       //   'home': 0,

@@ -1,23 +1,24 @@
 <template>
 		
 	  <div class="ask-prompt" v-if='item.email' :class="evenClass" >
-	  	<el-main class="detail-box prompt-bg">
+	  	<el-main class="detail-box prompt-bg" :data-certId="item.certId" >
 	  		<div class="ask-box">
 	  			<h3>{{item.nickName}} to {{item.loverNickName}}</h3>
 	  			<p class="arrow"></p>
 	  				<p class="time">{{timeFormat}}</p>
-	  			<div class="msg-box">
-	  				<p class="msg">{{item.loveMsg}}</p>
+	  				<!-- <p class="time">{{item.certTime}}</p> -->
+	  			<div class="msg-box" >
+	  				<p class="msg" :class="item.loveMsg.length < 113 ? 'msgCenter' : ''">{{item.loveMsg}}</p>
 	  			</div>
 					<div class="emails">
 						
 						<p class="emailbox">
-							{{item.nickName}} email:{{item.email}} ID:{{item.ID}}
+							{{item.nickName}} email:{{item.email}} ID: <span class="star"></span>
 						</p>
 						<p class="emailbox">{{item.loverNickName}} email:{{item.loverEmail}}</p>
 					</div>
 	  			<el-row type="flex" class="row-bg" justify="center">
- 						<el-col :span="2"><v-share></v-share></el-col>
+ 						<el-col :span="2" ><v-share :receiverEmail="item.loverEmail" :serialize="itemSerialize"></v-share></el-col>
 	  			</el-row>
 	  		</div>
 	  	</el-main>
@@ -51,19 +52,23 @@ export default {
       loverEmail:'lover@email.com',
 
       timeStamp:'1518316630',
-      timeFormat:'',
+      // timeFormat:'',
       msg:'i love you i love you i love you i love you i love you i love you i love you i love you i love you i love you i love you i love you i love you i love you i love you i love you i love you i love you i love you i love you i love you',
 
-
+      itemSerialize:null,
     }
   },
   created(){
+  	console.log(this.formatTime('1519438891'),this.formatTime("1519479722"))
+
+  	this.itemSerialize = this.serialize(this.item);
+  	console.log(this.itemSerialize);
     this.curWeb = this.localWeb;
     this.curAccount = this.account;
     this.email = this.item.email;
     // this.evenClass = this.index%2 ? '' : 'ask-prompt1';
-    console.log(this.curWeb,this.curAccount);
-    this.timeFormat = this.formatTime(this.item.certTime);
+    // console.log(this.curWeb,this.curAccount);
+    // this.timeFormat = this.formatTime(this.item.certTime);
   },
   mounted(){
     this.evenClass = this.index%2 ? 'ask-prompt1' : '';
@@ -73,16 +78,25 @@ export default {
   	mailTo(){
   		console.log(this);
   		return "mailto:" + this.email
+  	},
+  	timeFormat(){
+  		return this.formatTime(this.item.certTime);
   	}
   },
   methods:{
-  	
   	// share(){
   	// 	this.$message({
   	// 		message:'share',
   	// 		type:'success'
   	// 	})
   	// },
+  	serialize(obj){
+  		var str = '';
+  		for(var i in obj){
+  			str += i + "=" + obj[i] + '&';
+  		}
+  		return str.substring(0,str.length-2);
+  	},
   	formatTime(seconds){
   		var datetime = new Date();
   		var monthArr = [
@@ -107,10 +121,23 @@ export default {
 			var amPm;
 			var minute = datetime.getMinutes();
 
-			if(hour <= 12){
+			if(minute<10){
+				minute = '0'+minute;
+			}
+
+			if(date<10){
+				date = '0'+date;
+			}
+			if(hour < 12){
+				if(hour<10){
+					hour = '0'+hour;
+				}
 				amPm = 'am'
 			}else{
-				hour = hour -12;
+				if(hour !== 12){
+
+					hour = hour -12;
+				}
 				amPm = 'pm'
 
 			}
@@ -191,6 +218,21 @@ export default {
 			}
 			&.emailbox{
 				color:#969898;
+				.star{
+					position:relative;
+					display:inline-block;
+					vertical-align:middle;
+					width:84px;
+					&:after{
+						content: "\2736\2736\2736\2736\2736\2736\2736\2736\2736\2736";//特殊字符或形状
+				    // color: #a2b6c5;
+				    font-size: 12px;
+				    position: absolute;
+				    left: 4px;
+				    top: -9px;
+				    // cursor: pointer;
+					}
+				}
 			}
 			&.info-share{
 				text-align:center;
@@ -218,6 +260,9 @@ export default {
 			text-align:left;	
 			.msg{
 				text-align:left;
+				&.msgCenter{
+					text-align:center;
+				}
 			}
 		}
 		.emails{

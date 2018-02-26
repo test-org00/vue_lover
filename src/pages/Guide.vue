@@ -60,7 +60,7 @@
 <script>
 import { mapState } from 'vuex'
 import { localWeb3, contractInstance } from '@/web3Contract';
-import useCon from '@/assets/js/utils'
+import utils from '@/assets/js/utils'
 export default {
   name: 'Guide',
   data() {
@@ -102,12 +102,12 @@ export default {
       var that = this;
       if( this.account){
         // 判断有没有账号
-        useCon.getMemberInfo().then(res=>{
+        utils.getMemberInfo().then(res=>{
           console.log(res);
           // this.$store.dispatch('setUserInfo',result)
           var arr = ['nickName','email','ID','certNumber'];
           // console.log(res,web3.toAscii(res[1]));
-          var resultObj = useCon.formatRes(arr,res);
+          var resultObj = utils.formatRes(arr,res);
           console.log(resultObj);
           if(this.queryObj.certId && resultObj.email.indexOf('@')>-1){
             this.$router.push({

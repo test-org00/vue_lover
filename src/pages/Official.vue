@@ -2,7 +2,7 @@
   <div class="app" >
     <v-head :localWeb="localWeb" :account="account" ></v-head>
     <div class="content-body"><router-view :account="account"></router-view></div>
-    <v-foot></v-foot>
+    <v-foot :account="account" ></v-foot>
   </div>
 </template>
 

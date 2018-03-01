@@ -74,14 +74,14 @@ module.exports = {
           name: utils.assetsPath('fonts/[name].[hash:7].[ext]')
         }
       },
-      {  //从这一段上面是默认的！不用改！下面是没有的需要你手动添加，相当于是编译识别sass!
-        test: /\.scss$/,
-        use: [
-          { loader: 'style-loader'},
-          { loader: 'css-loader'},
-          { loader: 'sass-loader'}
-        ]
-      }
+      // {  //从这一段上面是默认的！不用改！下面是没有的需要你手动添加，相当于是编译识别sass!
+      //   test: /\.scss$/,
+      //   use: [
+      //     { loader: 'style-loader'},
+      //     { loader: 'css-loader'},
+      //     { loader: 'sass-loader'}
+      //   ]
+      // }
     ]
   },
   node: {

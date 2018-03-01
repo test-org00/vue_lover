@@ -5,13 +5,16 @@
       <el-row type="flex" class="foot-link" justify="space-between">
         <el-col :span="12">
           <div class="grid-content bg-purple-light">
-            <a href="mailto:info@foreverlovechain.com">Contact Us: info@foreverlovechain.com</a>
-            <a href="">FAQs</a>
+            <!-- <a href="mailto:info@foreverlovechain.com">Contact Us: info@foreverlovechain.com</a> -->
+            <router-link to="/invite">Invite</router-link>
+            <router-link to="/about">About</router-link>
+            <router-link to="/faqs">FAQs</router-link>
+            <a @click='confess' style="cursor:pointer">Confess now</a>
           </div>
         </el-col>
         <el-col v-if="" :span="2">
           <div class="grid-content bg-purple share">
-            <v-share></v-share>
+            <v-share :hideEmail="true"></v-share>
           </div>
         </el-col>
         
@@ -19,8 +22,8 @@
 
     </div>
     <div class="grid-content footer-bottom">
-      <a href="">Terms of use</a>
-      <a href="">privacy policy</a>
+      <router-link to="/terms">Terms of use</router-link>
+      <router-link to="/privacy">Privacy policy</router-link>
     </div>
 
   </div>
@@ -28,16 +31,23 @@
 
 <script>
 import VShare from '@/components/Share'
+import utils from '@/assets/js/utils'
 export default {
   name: 'foot',
+  props:['acoount'],
   data () {
     return {
       msg: 'Welcome to Your Vue.js App'
     }
   },
+  methods:{
+    confess(){
+      utils.createVow(this);
+    }
+  },
   components:{
     'v-share':VShare
-  }
+  },
 }
 </script>
 
@@ -58,9 +68,9 @@ export default {
 
     a{
       text-decoration: none;
-      color:#7f7f7f;
+      color:#808080;
       font-size:14px;
-      padding: 0 5px;
+      padding: 0 10px;
       &:hover{
         text-decoration: underline;
       }
@@ -72,6 +82,9 @@ export default {
     }
     .share{
       color:#6f7c91;
+      .share-relative .icon-email{
+        display:none;
+      }
     }
   }
  

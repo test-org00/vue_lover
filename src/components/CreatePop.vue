@@ -1,33 +1,42 @@
 <template>
 	<div>
-		
-	  <el-form ref="form" :rules="rules" status-icon :model="form" label-width="80px">
-		  <el-form-item label="Nickname" v-if='info'>
-		    <el-input v-model="info.nickName" :disabled="true" ></el-input>
+    <div class="header-create">
+      
+  		<h3>Confess to the love of your life vow</h3>
+
+      <p>Please think about this twice if you are not 100% sure this is the true love vow you want to make now. Because once you make the vow on the block chain,your name,your ID,your vow will be made public to everyone,and most importantly,it is irrevocable,unchangeable.This is due to the nature of block chain.c</p>
+    </div>
+	  <el-form :label-position="labelPosition" ref="form" :rules="rules"  status-icon :model="form" label-width="150px">
+		  <el-form-item label="Your Name:" prop='nickName'>
+		    <el-input v-model="form.nickName" placeholder="Enter your name"></el-input>
 		  </el-form-item>
-		  <el-form-item label="Email" v-if='info'>
-		    <el-input v-model="info.email" :disabled="true" ></el-input>
+		  <el-form-item label="Your Email:" prop='email'>
+		    <el-input v-model="form.email" placeholder="Enter your email"></el-input>
 		  </el-form-item>
-		  
-      <el-form-item v-if="!form.IDDisable" label="ID">
+
+		  <el-form-item label="Wallet Address:">
+        <el-input  :disabled="true" :value="account"></el-input>
+      </el-form-item>
+
+      <el-form-item v-if="!form.IDDisable" label="Your ID:">
         <el-input  :disabled="true" :value="form.ID"></el-input>
       </el-form-item>
-      <el-form-item v-else label="ID" prop="ID">
+      <el-form-item v-else label="Your ID:" prop="ID">
         <el-input v-model="form.ID" placeholder="Enter your ID"></el-input>
       </el-form-item>
-      <el-form-item label="LoverNick" prop="loverNickName">
-        <el-input v-model="form.loverNickName" placeholder="Enter your nickname"></el-input>
+      <el-form-item label="Your Lover's Name:" prop="loverNickName">
+        <el-input v-model="form.loverNickName" placeholder="Enter your lover's name"></el-input>
       </el-form-item>
-      <el-form-item label="LoverEmail" prop="loverEmail">
+      <el-form-item label="Your Lovers's Email:" prop="loverEmail">
         <el-input v-model="form.loverEmail" placeholder="forexample@email.com"></el-input>
       </el-form-item>
-      <el-form-item label="Message" prop="msg">
+      <el-form-item label="Vow Message:" prop="msg">
         <el-input type="textarea" v-model="form.msg"></el-input>
       </el-form-item>
       <el-form-item label="GasFee:" >
         <!-- <el-input value="0.1ETH"></el-input> -->
         <span>0.1ETH </span>
-        <el-tooltip class="item" effect="dark" content="You need to pay 0.1ETH in order to cover the gas fee charged by Ethereum as well as the cost to support the development of ForeveLove Chain." placement="right">
+        <el-tooltip class="item" effect="dark" content="You need to pay 0.1ETH in order to cover the gas fee charged by Ethereum as well as the cost to support the development of ForeveLove Chain." placement="bottom-start">
           <span>(?) </span>
 
         </el-tooltip>
@@ -44,42 +53,21 @@
 import { contractInstance } from '@/web3Contract'
 import { mapState } from 'vuex'
 import utils from '@/assets/js/utils'
+import req from '@/assets/js/req'
+import sha1 from 'sha1'
 
 export default {
   name: 'Register',
   props:['account'],
   data() {
-  	var validatePass = (rule, value, callback) => {
-        if (value === '') {
-          callback(new Error('Enter your email'));
-        } else {
-        	if(!/^[a-zA-Z0-9_-]+@[a-zA-Z0-9_-]+(\.[a-zA-Z0-9_-]+)+$/.test(value)){
-        		callback(new Error('Incorrect email format'));
-        	}
-          // if (this.ruleForm2.checkPass !== '') {
-          //   this.$refs.ruleForm2.validateField('checkPass');
-          // }
-          callback();
-        }
-      };
-    var validatePayfor = (rule, value, callback) =>{
-      if(value === ''){
-          callback(new Error('Enter the amount paid (ETH)'));
-      }else if(/^(-?\d+)(\.\d+)?$/.test(value)){
-        if(value < 0.1){
-          callback(new Error('No less than 0.1 ETH'));
-        }else{
-          callback();
-        }
-      }else{
-        callback(new Error('Enter a number no less than 0.1 ETH'));
-      }
-    }
+  	
+  
     return {
     	// userInfo:{},
-
+      labelPosition:'left',
       form: {
-      
+        nickName:'',
+        email:'',
         ID:'',
         IDDisable:'',
         loverNickName:'',
@@ -89,25 +77,26 @@ export default {
       
       },
       rules: {
-        // nickname: [
-        //   { required: true, message: 'Enter you nickname', trigger: 'blur' },
-        //   // { min: 1, max: 20, message: '长度在 1 到 20 个字符', trigger: 'blur' }
-        // ],
-        // email: [
-        //   { required:true, validator: validatePass, trigger: 'change' }
-        // ],
+        nickName: [
+          { required: true, message: 'Enter you nickname', trigger: 'change,blur' },
+        ],
+        email: [
+          { required: true, message: 'Enter your email', trigger: 'blur' },
+          { type: 'email', message: 'Incorrect email format', trigger: 'blur,change' }
+        ],
         ID:[
           { required: true, message: 'Enter your ID', trigger: 'blur' },
         ],
         msg:[
-          { required: true, message: 'Enter your message', trigger: 'blur' },
+          { required: true, message: 'Enter your message', trigger: 'change,blur' },
         ],
         loverNickName: [
-          { required: true, message: 'Enter you nickname', trigger: 'blur' },
+          { required: true, message: 'Enter you nickname', trigger: 'change,blur' },
           // { min: 1, max: 20, message: '长度在 1 到 20 个字符', trigger: 'blur' }
         ],
         loverEmail: [
-          { required:true, validator: validatePass, trigger: 'change' }
+          { required: true, message: 'Enter your email', trigger: 'blur' },
+          { type: 'email', message: 'Incorrect email format', trigger: 'blur,change' }
         ],
         
         
@@ -123,62 +112,46 @@ export default {
   	])
   },
   created(){
-    // this.userInfo = this.$route.params;
-    // console.log(this.$route.params)
-    // if(this.$store.state.accounts !== null){
 
-    	// this.form.account = this.$store.state.accounts[0];
-    // }
   	if(this.$store.state.info){ 
-	  	// this.$store.state.info;
+      this.initInfo(this.$store.state.info)
       this.getUserInfo(this.$store.state.info)
   	}
-    // 获取用户Email nickname
+
+    // req.checkTransactionStatus('0x859e3201dce749269ec00a6c48ad930dd31222a9cf3ccdfa0fc59eb0199069b7').then(res => {
+    //   if(res.status == 200){
+    //     var data = res.data;
+
+    //     if(status == 1 ){
+    //       // success
+    //       alert(1)
+    //       // alert(res);
+    //     }else if(status == 0){
+    //       // fail
+    //       alert(2)
+    //     }else{
+    //       alert(res)
+    //       // setTimeout(()=>{
+    //       //   req.getTransStatus(transaction)
+    //       // },1000)
+    //     }
+    //   }
+    //   console.log(res,res.status,status == 0)
+    // })
 
   },
   
 	methods: {
+    initInfo(val){
+      // this.form.nickName = val.nickName;
+      // this.form.email = val.email;
+    },
+
 	  getUserInfo(val){
-	  	// if(this.userInfo.email && this.userInfo.email.indexOf('@')>-1 ){
-
-      // }else{
-        // utils.getMemberInfo().then((res)=>{
-     //      // if(resultObj.ID.length == 32){
-     //        // 空
-     //      if(res.email.indexOf('@')>-1){
-
+	  
             this.form.IDDisable = utils.isNothing(val.ID)
             this.form.ID = val.ID
-            // }
-        //     console.log(res);
-        //     console.log(result);
-            // if(!error){
-            //  _.assign(this.form,res);
-            // }
-          // }else{
-          //   if(typeof web3 == 'undefined'){
-          //     console.log('no web3')
-
-          //     this.$router.push({
-          //       path:'/game/guide'
-          //     })
-          //   }else{
-          //     console.log('no account')
-
-          //     if(!this.form.account){
-          //       this.$router.push({
-          //         path:'/game/guide'
-          //       })
-          //     }else{
-          //       this.$router.push({
-          //         path:'/game/register'
-          //       })
-          //     }
-
-          //   }
-          // }
-        // })
-      // }
+       
         console.log(this.form);
       console.log(this.form.IDDisable.length)
 	  },
@@ -190,7 +163,7 @@ export default {
 
 
           contractInstance.createCert(
-            this.form.ID, 
+            sha1(this.form.ID), 
             this.form.loverNickName,
             this.form.loverEmail,
             this.form.msg,
@@ -201,14 +174,23 @@ export default {
 
               console.log(error,result);
   						if (!error) {
-              // console.log("Good way - the returned value after set method :");
              		console.log(result);
-                debugger;
-             		this.$store.dispatch('setPid',result);
-                this.$message({
-                  message:'Create vow success,',
-                  type:'success'
+                req.getTransStatus(result).then(res=>{
+                  this.$message({
+                    message:'Create vow success',
+                    type:'success'
+                  })
+                  setTimeout(function(){
+                    window.location.reload();
+                  },1000)
+                }).catch(res=>{
+                  this.$message({
+                    message:'Create vow failed',
+                    type:'warning'
+                  })
                 })
+
+                // this.$store.dispatch('setPid',result);
 
                 this.$store.dispatch('setCreatePop',false);
                 // contractInstance.getMemberInfo((error, result)=>{
@@ -226,7 +208,10 @@ export default {
                 //})
                 // })
               } else {
-                console.log(error);// 根据error的值提示用户错误信息
+                this.$message({
+                  message:error,
+                  type:'warning'
+                })// 根据error的值提示用户错误信息
               }
 
 	   			});
@@ -245,6 +230,7 @@ export default {
     },
     info(val){
       console.log('info',val)
+      this.initInfo(val);
       this.getUserInfo(val)
     }
 	},
@@ -255,6 +241,16 @@ export default {
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style lang="scss" scoped>
+.header-create{
+  padding: 0 42px;
+  h3{
+    margin-bottom:25px;
+  }
+  p{
+    margin-bottom:40px;
+
+  }
+}
 .el-form{
 	// padding:60px 0 ;
 

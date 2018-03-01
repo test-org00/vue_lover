@@ -11,9 +11,11 @@
         </el-col>
         <el-col :span="8" class="btnArea">
           <el-row>
-            <el-col class="btn" :span="8"><span  @click="inviteHandle">Invite</span></el-col>
-            <el-col class="btn" :span="8"><span @click="questionsHandle" >FAQs</span></el-col>
-            <el-col v-if="confess"  class="btn" :span="8"><span @click="confessNow">Confess Now</span></el-col>
+            <el-col class="btn" :class="curName == 'invite' ? 'on' : ''" :span="6"><span  @click="inviteHandle">Invite</span></el-col>
+            <el-col class="btn" :class="curName == 'about' ? 'on' : ''" :span="6"><span  @click="aboutHandle">About</span></el-col>
+            <el-col class="btn" :class="curName == 'faqs' ? 'on' : ''" :span="6"><span @click="questionsHandle" >FAQs</span></el-col>
+            <el-col v-if="confess" :class="curName == 'locked' || curName =='installedMetaMask' || curName =='getMetaMask' || curName =='unsupport' || curName =='confess'? 'on' : ''"  class="btn" :span="6"><span @click="confessNow">Confess Now</span></el-col>
+            <el-col v-else :class="curName == 'detail' ? 'on' : ''"  class="btn" :span="6"><span @click="confessNow">My Nows</span></el-col>
           </el-row>
         </el-col>
       </el-row>
@@ -26,18 +28,21 @@ import {mapState} from 'vuex'
 
 export default {
   name: 'pageHead',
-  props: ['account'],
+  props: ['account','cur'],
   data() {
     return {
       searchInput: '',
+      // curName:''
     }
   },
   created() {
+    // this.curOpt = this.$route.name;
+    // console.log('name',this.curOpt)
     // this.$store.dispatch('fetchAccounts');
   },
   computed:{
     ...mapState([
-      'search','confess'
+      'search','confess','curName'
     ])
   },
   methods: {
@@ -45,20 +50,34 @@ export default {
       this.$store.dispatch('setSearch',this.searchInput);
     },
     searching(){
+      // this.curOpt = null;
+      this.$store.dispatch('setListSearch');
       this.$router.push({
         path:'/list',
         params:{keyword:this.searchInput}
       })
     },
     confessNow() {
+      // this.curOpt = 'confess';
       utils.createVow(this);
     },
     inviteHandle(){
-      console.log('2')
+      // this.curOpt = 'invite';
+      this.$router.push({
+        path:'/invite'
+      })
+    },
+    aboutHandle(){
+      // this.curOpt = 'about';
+      this.$router.push({
+        path:'/about'
+      })
     },
     questionsHandle() {
-      console.log('21')
-
+      // this.curOpt = 'faqs';
+      this.$router.push({
+        path:'/faqs'
+      })
     }
   },
   watch:{
@@ -127,6 +146,12 @@ export default {
   .btnArea {
     line-height: 60px;
     .btn {
+      &.on{
+        color:#c5403e;
+        text-decoration:underline;
+      }
+      font-weight: 500;
+      color: #4d4d4d;
       cursor:pointer;
       text-align: center;
       span{

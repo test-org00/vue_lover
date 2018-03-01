@@ -12,12 +12,14 @@
         </div>
       </el-row>
     </div>
-    <v-listvows :email="email"></v-listvows>
+    <v-listvows :routeName='routeName' v-if='!novow' @novows='onvowsHandler' :email="email"></v-listvows>
     <!-- <v-vows v-for="(item,index) in curPageDetailList" :item="item" :index="index"></v-vows>  -->
+    <v-novow v-else></v-novow>
   </div>
 </template>
 <script>
 import Vows from '@/components/Vows'
+import NoVow from '@/components/NoVow'
 import ListVows from '@/components/ListVows'
 import { contractInstance } from '@/web3Contract'
 import {mapState} from 'vuex'
@@ -31,6 +33,8 @@ export default {
       input:'',
       email:'',
       curPageDetailList:null,
+      novow:false,
+      routeName:'',
     }
   },
   created() {
@@ -50,24 +54,27 @@ export default {
     //   loveMsg:'dfsdf sdfsdf cccc sdfsdf sdfsdf '
     // }]
     this.input = this.$store.state.search;
-    this.searching(this.input)
+    this.searching()
+    this.routeName = this.$route.name;
   },
   computed:{
     ...mapState([
-      'search'
+      'search','listSearch'
     ])
   },
   components: {
     'v-vows':Vows,
     'v-listvows':ListVows,
+    'v-novow':NoVow,
   },
   methods: {
     storeSearch(){
       this.$store.dispatch('setSearch',this.input);
     },
-    searching(key){
+    searching(){
       // console.log(111);
       this.email = this.input;
+      this.novow = false;
      // utils.getCertsIdsByQuery(key||this.input).then((res)=>{
      //  var arr = [];
      //  for(var i = 0;i<res.length;i++){
@@ -79,12 +86,18 @@ export default {
      //  }
      //  this.curPageDetailList = arr;
      // })
+    },
+    onvowsHandler(){
+      this.novow = true;
     }
   },
   watch:{
     search(val){
       console.log('111');
       this.input = val
+    },
+    listSearch(val){
+      this.searching();
     }
   }
 

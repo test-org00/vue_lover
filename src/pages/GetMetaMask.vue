@@ -57,7 +57,8 @@ export default {
 </script>
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style lang="scss" scoped>
-.content{
+@import '../assets/scss/singlePage.scss';
+/* .content{
   padding:90px 0 168px; 
   text-align:center;
   h3{
@@ -105,5 +106,5 @@ export default {
   img{
     margin-top:62px;
   }
-}
+} */
 </style>

@@ -92,7 +92,7 @@ export default {
 </script>
 
 <style lang="scss">
-@import url(./assets/scss/base.scss);
+@import './assets/scss/base.scss';
 @import url(./assets/scss/icons.scss);
 #app {
   font-family: 'Avenir', Helvetica, Arial, sans-serif;

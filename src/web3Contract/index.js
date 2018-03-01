@@ -1,5 +1,5 @@
 // import Web3 from 'web3'
-import config from './config'
+import { contract } from '@/assets/js/config'
 // import abiDecoder from 'ethereumjs-abi';
 // import decoder from '../assets/js/abi_decoder';
 
@@ -12,7 +12,7 @@ window.addEventListener('load', function() {
   } else {
     console.log('No web3? You should consider trying MetaMask!')
     // var web3 = require('web3');
-    console.log(web3);
+    // console.log(web3);
 		// web3.setProvider(new web3.providers.HttpProvider("http://localhost:8545"))
     // window.location.href=location.origin+'/#/guide'
   }
@@ -36,7 +36,7 @@ window.addEventListener('load', function() {
 // decoder.addABI(config.ABI);
 // export default decoder
 export let localWeb3 = typeof web3 == 'undefined' ? null : web3; 
-export let contractInstance = typeof web3 == 'undefined' ? null : web3.eth.contract(config.ABI).at(config.address);
+export let contractInstance = typeof web3 == 'undefined' ? null : web3.eth.contract(contract.ABI).at(contract.address);
 
 console.log("The current web3 is:")
 // console.log(localWeb3)

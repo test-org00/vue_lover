@@ -13,12 +13,12 @@
 					<div class="emails">
 						
 						<p class="emailbox">
-							{{item.nickName}} email:{{item.email}} ID: <span class="star"></span>
+							{{item.nickName}} email:{{item.email}} ID: <span @click="checkID" class="star"></span>
 						</p>
 						<p class="emailbox">{{item.loverNickName}} email:{{item.loverEmail}}</p>
 					</div>
 	  			<el-row type="flex" class="row-bg" justify="center">
- 						<el-col :span="2" ><v-share :receiverEmail="item.loverEmail" :serialize="itemSerialize"></v-share></el-col>
+ 						<el-col :span="3" ><v-share :receiverEmail="item.loverEmail" :serialize="itemSerialize"></v-share></el-col>
 	  			</el-row>
 	  		</div>
 	  	</el-main>
@@ -27,6 +27,7 @@
 
 <script>
 import VShare from '@/components/Share'
+import sha1 from 'sha1'
 
 import axios from 'axios'
 import qs from 'qs';
@@ -52,6 +53,7 @@ export default {
       loverEmail:'lover@email.com',
 
       timeStamp:'1518316630',
+      ID:'',
       // timeFormat:'',
       msg:'i love you i love you i love you i love you i love you i love you i love you i love you i love you i love you i love you i love you i love you i love you i love you i love you i love you i love you i love you i love you i love you',
 
@@ -81,9 +83,39 @@ export default {
   	},
   	timeFormat(){
   		return this.formatTime(this.item.certTime);
-  	}
+  	},
+  	// ID(){
+  	// 	return this.item
+  	// }
   },
   methods:{
+  	checkID(){
+  		this.$prompt('Enter your ID', 'Prompt', {
+        confirmButtonText: 'Check',
+        cancelButtonText: 'Cancle',
+        // inputPattern: /[\w!#$%&'*+/=?^_`{|}~-]+(?:\.[\w!#$%&'*+/=?^_`{|}~-]+)*@(?:[\w](?:[\w-]*[\w])?\.)+[\w](?:[\w-]*[\w])?/,
+        // inputErrorMessage: '邮箱格式不正确'
+      }).then(({ value }) => {
+      	value = sha1(value);
+      	if(value == this.item.ID){
+
+	        this.$message({
+	          type: 'success',
+	          message: 'Your ID is right'
+	        });
+      	}else{
+      		this.$message({
+	          type: 'warning',
+	          message: 'Your ID is wrong '+value
+	        });
+      	}
+      }).catch(() => {
+        // this.$message({
+        //   type: 'info',
+        //   message: '取消输入'
+        // });       
+      });
+  	},
   	// share(){
   	// 	this.$message({
   	// 		message:'share',
@@ -208,6 +240,7 @@ export default {
 			text-align:center;
 			&.arrow{
 				height:18px;
+				padding:10px;
 				background:url(../assets/heart.png) center no-repeat;
 			}
 			&.time{
@@ -223,6 +256,7 @@ export default {
 					display:inline-block;
 					vertical-align:middle;
 					width:84px;
+					cursor:pointer;
 					&:after{
 						content: "\2736\2736\2736\2736\2736\2736\2736\2736\2736\2736";//特殊字符或形状
 				    // color: #a2b6c5;
@@ -231,6 +265,11 @@ export default {
 				    left: 4px;
 				    top: -9px;
 				    // cursor: pointer;
+					}
+					&:hover{
+						&:after{
+							text-decoration:underline;
+						}
 					}
 				}
 			}

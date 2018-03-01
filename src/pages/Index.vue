@@ -13,7 +13,7 @@
         </div>
       </div>
     </div>
-    <div class="content">
+    <div class="contentIndex">
       <div class="contentInner">
         <img src="../assets/home_vow.jpg" alt="">
         <div class="handleArea">
@@ -101,7 +101,7 @@ export default {
       }
     }
   }
-  .content {
+  .contentIndex {
     background-color: #faf0dc;
     .contentInner {
       width: 1200px;
@@ -116,10 +116,12 @@ export default {
           cursor:pointer;
         }
         .text {
-          color: #e85377;
+          color: #e85d7e;
           font-size: 16px;
           p {
+            color: #e85d7e;
             text-align: center;
+            margin-bottom:0px;
           }
         }
       }

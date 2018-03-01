@@ -3,10 +3,10 @@
 	  <el-main class="detail-box user-wrap">
 	    <div class="user-detail">
 	    	<div class="avatar">
-	    		<img src="../assets/cryptolove_07.png" alt="avatar">
+	    		<img src="../assets/avatar.png" alt="avatar">
 	    	</div>
 				<div class="user-info">
-					<h3 class="name" v-if="info">{{info.nickName}}</h3>
+					<!-- <h3 class="name" v-if="info">{{info.nickName}}</h3> -->
 
 					<!-- <p v-if="inviteLoverStatus==0" class="lover invite" @click="dialogVisible = true" >Invite you lover</a></p> -->
 					<!-- <p v-if="inviteLoverStatus==1" class="lover inviting">{{iInviteSomeone.nickname}} <span>waiting... </span></p> -->
@@ -18,14 +18,16 @@
 							v-clipboard:copy="account"
 				      v-clipboard:success="onCopy"
 				      v-clipboard:error="onError"
-						>Copy address</a><span></span><a class='address'  @click='settings'>Settings</a>
+						>Copy address</a>
+						<!-- <span></span><a class='address'  @click='settings'>Settings</a> -->
+
 					</p>
 				</div>
 	    </div>
 	  </el-main>
     <el-main class="detail-box create-box">
-      <el-row type="flex" class="row-bg" justify="space-between">
-        <el-col :span="8"><h3 class="vows">My Indestructible Vows</h3></el-col>
+      <el-row type="flex" class="row-bg" justify="left">
+        <el-col :span="6"><h3 class="vows">My Irrevocable Vows</h3></el-col>
         <el-col :span="3" class="create-btnwrap">
           <el-button type="primary" @click="openCreatePop">
             <span class="create" >Create</span>
@@ -43,7 +45,7 @@
 	  		</div>
 	  	</el-main>
 	  </div> -->
-    <v-listvows v-if="info" :email="info.email"></v-listvows> 
+    <v-listvows v-if="info" :email="info.email" :routeName="''"></v-listvows> 
     <!-- <v-create v-if="curPageDetailList.length"></v-create>  -->
    <!--  <el-pagination v-if="curPageDetailList.length"
     layout="prev, pager, next"
@@ -169,10 +171,10 @@
     <el-dialog
       title=""
       :visible="createPop"
-      width="700px"
+      width="725px"
       @close="cancleCreatePop"
       >
-      <v-createpop></v-createpop>
+      <v-createpop :account='account'></v-createpop>
       <!-- <span slot="footer" class="dialog-footer" v-if="loverInfo"> -->
         <!-- <el-button @click="cancleCreatePop">Cancle</el-button> -->
         <!-- <el-button type="primary" @click="openCreatePop">Add</el-button> -->
@@ -379,6 +381,7 @@ export default {
 	}
 	.user-info{
 		padding-left:10px;
+		padding-top:17px;
 		text-align:left;
 		h3{
 			font-size:16px;

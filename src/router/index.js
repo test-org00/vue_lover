@@ -7,6 +7,7 @@ import Router from 'vue-router'
 // import Settings from '@/pages/Settings'
 // import Certificate from '@/pages/Certificate'
 import Index from '@/pages/Index'
+import store from '../../store'
 
 // import Official from '@/pages/Official'
 // import List from '@/pages/List'
@@ -30,6 +31,26 @@ let router = new Router({
           path: '/index',
           name: 'index',
           component: Index,
+        },
+        {
+          path: '/invite',
+          name: 'invite',
+          component:  resolve => require(['@/pages/Invite.vue'], resolve),
+        },
+        {
+          path: '/inviteSuccess',
+          name: 'inviteSuccess',
+          component:  resolve => require(['@/pages/InviteSuccess.vue'], resolve),
+        },
+        {
+          path: '/faqs',
+          name: 'faqs',
+          component:  resolve => require(['@/pages/FAQs.vue'], resolve),
+        },
+        {
+          path: '/about',
+          name: 'about',
+          component:  resolve => require(['@/pages/About.vue'], resolve),
         },
         {
           path: '/list',
@@ -56,38 +77,39 @@ let router = new Router({
           name: 'locked',
           component:  resolve => require(['@/pages/Locked.vue'], resolve),
         },
- 
-        // {
-        //   path: '/game/guide' ,
-        //   name: 'guide',
-        //   component:  resolve => require(['@/pages/Guide.vue'], resolve),
-        // },
 
-        {
-          path: '/game/register',
-          name: 'register',
-          component:  resolve => require(['@/pages/Register.vue'], resolve),
-        },
+        // {
+        //   path: '/game/register',
+        //   name: 'register',
+        //   component:  resolve => require(['@/pages/Register.vue'], resolve),
+        // },
 
         {
           path: '/game/detail',
           name: 'detail',
           component:  resolve => require(['@/pages/Detail.vue'], resolve)
         },
-        {
-          path:'/game/createCert',
-          name:'createCert',
-          component:  resolve => require(['@/pages/CreateCert.vue'], resolve)
-        },
-        {
-          path:'/game/settings',
-          name:'settings',
-          component:  resolve => require(['@/pages/Settings.vue'], resolve)
-        },
+     
+        // {
+        //   path:'/game/settings',
+        //   name:'settings',
+        //   component:  resolve => require(['@/pages/Settings.vue'], resolve)
+        // },
         {
           path:'/game/certificate',
           name:'certificate',
           component:  resolve => require(['@/pages/Certificate.vue'], resolve),
+        },
+
+        {
+          path:'/terms',
+          name:'terms',
+          component:  resolve => require(['@/pages/Terms.vue'], resolve),
+        },
+        {
+          path:'/privacy',
+          name:'privacy',
+          component:  resolve => require(['@/pages/Privacy.vue'], resolve),
         }
       ]
     },
@@ -95,7 +117,11 @@ let router = new Router({
   ],
   // linkActiveClass:'active'
 })
-
+router.afterEach((to,from,next) => {
+  console.log('toname',to);
+  store.dispatch('setCurName',to.name);
+  window.scrollTo(0,0);
+});
 // router.beforeEach((to, from, next) => {
   /* 路由发生变化修改页面title */
   // if (to.meta.title) {

@@ -47,8 +47,13 @@ export default {
   },
   setConfess({commit}, bool){
     commit('SET_CONFESS',bool);
+  },
+  setListSearch({commit}){
+    commit('SET_LIST_SEARCH');
+  },
+  setCurName({commit},name){
+    commit('SET_CUR_NAME',name);
   }
-  
   // setUserInfo ({ commit }, data) {
   //   commit('SET_USER_INFO', data)
   // },

@@ -1,11 +1,12 @@
 <template>
   <div v-loading.fullscreen.lock="loading">
     <v-vows v-for="(item,index) in curPageDetailList" :item="item" :index="index"></v-vows> 
-    <v-create ></v-create> 
+    <v-create v-if="!(routeName =='list')"></v-create> 
     <el-pagination v-if="totalPage > purPage"
 	    layout="prev, pager, next"
 	    @current-change="handleCurrentChange"
 	    :page-size="purPage"
+	    :current-page="curpage"
 	    :total="totalPage">
 	  </el-pagination>
   </div>
@@ -22,7 +23,7 @@ import utils from '@/assets/js/utils'
 
 export default {
   name: 'Detail',
-  props:['email'],
+  props:['email','routeName'],
   data() {
     return {
     	loading:false,
@@ -35,7 +36,7 @@ export default {
       page:null,
       purPage:10,
       totalPage:5,
-
+      curpage:1,
       curPageDetailList:[],
     };
   },
@@ -47,7 +48,7 @@ export default {
   },
 
   created(){
-
+  	console.log(!(this.routeName =='list'))
     
     // this.info=this.$store.state.info;
     this.page = 1;
@@ -92,6 +93,7 @@ export default {
       })
     },
     handleCurrentChange(num){
+    	this.curpage = num;
       var start = num > 1 ? (num-1)*this.purPage : 0;
       var end = start + this.purPage;
       console.log(this.certsList,start,end);
@@ -102,15 +104,17 @@ export default {
     },
     getCertsIdList(email){
       // debugger;
+      this.curpage = 1;
       if(email && !utils.isNothing(email)){
 	      this.loading = true;
 	      contractInstance.getCertsIdsByQuery(email, (error, result) => {
 	        console.log('result:',result[0]==0);
 	        // console.log(web3.eth.getBlock(result))
 	        if(result[0]==0){
-	        	this.$message({
-	        		message:'There is no vow posted by '+email
-	        	})
+	        	// this.$message({
+	        	// 	message:'There is no vow posted by '+email
+	        	// })
+	        	this.$emit('novows');
 	        	this.loading = false;
 	        	return;
 	        }

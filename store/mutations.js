@@ -13,5 +13,11 @@ export default{
   },
   SET_CONFESS:(state, bool)=>{
     state.confess = bool
+  },
+  SET_LIST_SEARCH:(state)=>{
+    state.listSearch++
+  },
+  SET_CUR_NAME:( state,name)=>{
+    state.curName = name
   }
 }

@@ -112,23 +112,35 @@ class useCon{
 						console.log(res);
 						if(res.email.indexOf('@')>-1){
 
-							window.open(location.origin + '/#/game/detail','_blank');
+							this.goto('/game/detail',context);
 						}else{
-							window.open(location.origin + '/#/game/register','_blank');
+							this.goto('/game/register',context);
 						}
 					})
 
 				}else{
-					window.open(location.origin + '/#/locked','_blank');
+					this.goto('/locked',context);
 
 				}
 
 			}else{
-				window.open(location.origin + '/#/getMetaMask','_blank');
+				this.goto('/getMetaMask',context);
 			}
 		}else{
-			window.open(location.origin + '/#/unsupport','_blank');
+			this.goto('/unsupport',context);
 		}
+	}
+
+	goto(path,context){
+		if(context){
+			context.$router.push({
+				path:path
+			})
+		}else{
+
+			window.open(location.origin + '/#'+path,'_blank');
+		}
+
 	}
 
 }

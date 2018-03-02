@@ -43,7 +43,7 @@ export default {
 
   computed:{
   	...mapState([
-  		'info'
+  		'info','reloadVows'
   	]),
   },
 
@@ -71,6 +71,9 @@ export default {
 
     //   console.log('account',val)
     // },
+    reloadVows(val){
+    	this.getCertsIdList(val);
+    },
     email(val){
       console.log('email',val);
       this.getCertsIdList(val);

@@ -34,7 +34,7 @@ import VShare from '@/components/Share'
 import utils from '@/assets/js/utils'
 export default {
   name: 'foot',
-  props:['acoount'],
+  props:['account'],
   data () {
     return {
       msg: 'Welcome to Your Vue.js App'

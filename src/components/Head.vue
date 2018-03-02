@@ -14,8 +14,8 @@
             <el-col class="btn" :class="curName == 'invite' ? 'on' : ''" :span="6"><span  @click="inviteHandle">Invite</span></el-col>
             <el-col class="btn" :class="curName == 'about' ? 'on' : ''" :span="6"><span  @click="aboutHandle">About</span></el-col>
             <el-col class="btn" :class="curName == 'faqs' ? 'on' : ''" :span="6"><span @click="questionsHandle" >FAQs</span></el-col>
-            <el-col v-if="confess" :class="curName == 'locked' || curName =='installedMetaMask' || curName =='getMetaMask' || curName =='unsupport' || curName =='confess'? 'on' : ''"  class="btn" :span="6"><span @click="confessNow">Confess Now</span></el-col>
-            <el-col v-else :class="curName == 'detail' ? 'on' : ''"  class="btn" :span="6"><span @click="confessNow">My Nows</span></el-col>
+            <el-col v-if="confess" :class="curName == 'locked' || curName =='installedMetaMask' || curName =='getMetaMask' || curName =='unsupport' || curName =='confess'? 'on' : ''"  class="btn" :span="6"><span @click="confessNow">Confess now</span></el-col>
+            <el-col v-else :class="curName == 'detail' ? 'on' : ''"  class="btn" :span="6"><span @click="myVows">My vows</span></el-col>
           </el-row>
         </el-col>
       </el-row>
@@ -60,6 +60,11 @@ export default {
     confessNow() {
       // this.curOpt = 'confess';
       utils.createVow(this);
+    },
+    myVows() {
+      this.$router.push({
+        path:'/game/detail',
+      })
     },
     inviteHandle(){
       // this.curOpt = 'invite';

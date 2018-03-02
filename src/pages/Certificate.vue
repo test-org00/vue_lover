@@ -2,7 +2,7 @@
 	<div>
 		
 	  <v-vows  :item='oneInfo'></v-vows> 
-    <v-create :account="account"></v-create>
+    <!-- <v-create :account="account"></v-create> -->
 	</div>
 </template>
 

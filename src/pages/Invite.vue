@@ -3,18 +3,29 @@
   	<h3>Invite your friends to ForeverLove Chain</h3>
   
 		<div style="margin: 20px;"></div>
-			<el-form :model="dynamicValidateForm" :label-position="labelPosition" ref="dynamicValidateForm" label-width="60px" class="demo-dynamic">
+			<el-form :model="dynamicValidateForm" :label-position="labelPosition" :rules="rules" ref="dynamicValidateForm" label-width="60px" class="demo-dynamic">
 			  <el-form-item
-			    prop="email"
+			    prop="email1"
 			    label="Email"
-			    :rules="[
-			      { required: true, message: 'Enter your email', trigger: 'blur' },
-			      { type: 'email', message: 'Incorrect email format', trigger: 'blur,change' }
-			    ]"
+			  
 			  >
-			    <el-input v-model="dynamicValidateForm.email"></el-input>
+			    <el-input v-model="dynamicValidateForm.email1"></el-input>
 			  </el-form-item>
-			  <el-form-item
+        <el-form-item
+          prop="email2"
+          label="Email"
+          
+        >
+          <el-input v-model="dynamicValidateForm.email2"></el-input>
+        </el-form-item>
+        <el-form-item
+          prop="email3"
+          label="Email"
+          
+        >
+          <el-input v-model="dynamicValidateForm.email3"></el-input>
+        </el-form-item>
+			  <!-- <el-form-item
 			    v-for="(email, index) in dynamicValidateForm.emails"
 			    :label="'Email'"
 			    :key="email.key"
@@ -25,10 +36,10 @@
 			    ]"
 			  >
 			    <el-input v-model="email.value"></el-input><el-button @click.prevent="removeEmail(email)">Delete</el-button>
-			  </el-form-item>
+			  </el-form-item> -->
 			  <el-form-item>
 			    <el-button type="primary" @click="submitForm('dynamicValidateForm')">Send</el-button>
-			    <el-button @click="addEmail">Add Email</el-button>
+			    <!-- <el-button @click="addEmail">Add Email</el-button> -->
 			    <!-- <el-button @click="resetForm('dynamicValidateForm')">重置</el-button> -->
 			  </el-form-item>
 			</el-form>
@@ -53,10 +64,9 @@ export default {
     return {
     	labelPosition:'left',
       dynamicValidateForm: {
-        emails: [{
-          value: ''
-        }],
-        email: ''
+        email1: '',
+        email2: '',
+        email3: '',
       },
       rules: {
         // nickname: [
@@ -64,7 +74,8 @@ export default {
         //   // { min: 1, max: 20, message: '长度在 1 到 20 个字符', trigger: 'blur' }
         // ],
         email1: [
-          {  validator: validate.emailNotRequired, trigger: 'change' }
+          { required: true, message: 'Enter your email', trigger: 'blur' },
+          { type: 'email', message: 'Incorrect email format', trigger: 'blur,change' }
         ],
         email2: [
           {  validator: validate.emailNotRequired, trigger: 'change' }
@@ -86,16 +97,15 @@ export default {
         if (valid) {
         	console.log('form',this.dynamicValidateForm)
         	let arr = [];
-        	arr.push({value:this.dynamicValidateForm.email})
-        	let arr2 = arr.concat(this.dynamicValidateForm.emails);
+        	// arr.push({value:this.dynamicValidateForm.email})
+        	let arr2 = this.dynamicValidateForm
         	let str='';
-        	for(let i =0; i< arr2.length; i++){
-            str+=arr2[i].value;
-            if(i<(arr2.length-1)){
-              str+=';'
-            }
+        	for(let item in arr2 ){
+            str+=arr2[item] + ";";
+            
 
           }
+          str = str.substring(0,str.length-1);
 	        req.invite({
 					    "receiverEmails": str,
 				  }).then(res =>{
@@ -130,12 +140,12 @@ export default {
         this.dynamicValidateForm.emails.splice(index, 1)
       }
     },
-    addEmail() {
-      this.dynamicValidateForm.emails.push({
-        value: '',
-        key: Date.now()
-      });
-    }
+    // addEmail() {
+    //   this.dynamicValidateForm.emails.push({
+    //     value: '',
+    //     key: Date.now()
+    //   });
+    // }
   },
 
   watch:{

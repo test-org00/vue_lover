@@ -18,11 +18,19 @@
         <el-input  :disabled="true" :value="account"></el-input>
       </el-form-item>
 
-      <el-form-item v-if="!form.IDDisable" label="Your ID:">
+      <el-form-item class="IDLable" v-if="!form.IDDisable" label="Your ID:">
         <el-input  :disabled="true" :value="form.ID"></el-input>
+        <el-tooltip class="item" effect="dark" content="You need to pay 0.1ETH in order to cover the gas fee charged by Ethereum as well as the cost to support the development of ForeveLove Chain." placement="bottom-start">
+          <span class="tipID">(?) </span>
+
+        </el-tooltip>
       </el-form-item>
-      <el-form-item v-else label="Your ID:" prop="ID">
+      <el-form-item v-else class="IDLable" label="Your ID:" prop="ID">
         <el-input v-model="form.ID" placeholder="Enter your ID"></el-input>
+        <el-tooltip class="item" effect="dark" content="You need to pay 0.1ETH in order to cover the gas fee charged by Ethereum as well as the cost to support the development of ForeveLove Chain." placement="bottom-start">
+          <span class="tipID">(?) </span>
+
+        </el-tooltip>
       </el-form-item>
       <el-form-item label="Your Lover's Name:" prop="loverNickName">
         <el-input v-model="form.loverNickName" placeholder="Enter your lover's name"></el-input>
@@ -33,11 +41,11 @@
       <el-form-item label="Vow Message:" prop="msg">
         <el-input type="textarea" v-model="form.msg"></el-input>
       </el-form-item>
-      <el-form-item label="GasFee:" >
+      <el-form-item class="gasLable" label="GasFee:" >
         <!-- <el-input value="0.1ETH"></el-input> -->
         <span>0.1ETH </span>
         <el-tooltip class="item" effect="dark" content="You need to pay 0.1ETH in order to cover the gas fee charged by Ethereum as well as the cost to support the development of ForeveLove Chain." placement="bottom-start">
-          <span>(?) </span>
+          <span class="tipGas">(?) </span>
 
         </el-tooltip>
       </el-form-item>
@@ -112,33 +120,10 @@ export default {
   	])
   },
   created(){
-
   	if(this.$store.state.info){ 
       this.initInfo(this.$store.state.info)
       this.getUserInfo(this.$store.state.info)
   	}
-
-    // req.checkTransactionStatus('0x859e3201dce749269ec00a6c48ad930dd31222a9cf3ccdfa0fc59eb0199069b7').then(res => {
-    //   if(res.status == 200){
-    //     var data = res.data;
-
-    //     if(status == 1 ){
-    //       // success
-    //       alert(1)
-    //       // alert(res);
-    //     }else if(status == 0){
-    //       // fail
-    //       alert(2)
-    //     }else{
-    //       alert(res)
-    //       // setTimeout(()=>{
-    //       //   req.getTransStatus(transaction)
-    //       // },1000)
-    //     }
-    //   }
-    //   console.log(res,res.status,status == 0)
-    // })
-
   },
   
 	methods: {
@@ -174,15 +159,20 @@ export default {
 
               console.log(error,result);
   						if (!error) {
+                this.$message({
+                  message:'Your request of creating a love vow on blockchain has been submitted successfully. It will take a while for the chain to fully proceed your request. Please refresh "My vows" page late to check.',
+                  type:'success'
+                })
              		console.log(result);
                 req.getTransStatus(result).then(res=>{
                   this.$message({
                     message:'Create vow success',
                     type:'success'
                   })
-                  setTimeout(function(){
-                    window.location.reload();
-                  },1000)
+                  // setTimeout(function(){
+                  //   window.location.reload();
+                  // },1000)
+                  this.$store.dispatch('setReloadVows');
                 }).catch(res=>{
                   this.$message({
                     message:'Create vow failed',
@@ -256,6 +246,16 @@ export default {
 
 	width:600px;
 	margin:0 auto;
+  .tipID{
+    position:absolute;
+    left:-94px;
+    top:0;
+  }
+  .tipGas{
+    position:absolute;
+    left:-92px;
+    top:0;
+  }
 }
 .register-btn{
 	background-color:#eb4c8b;

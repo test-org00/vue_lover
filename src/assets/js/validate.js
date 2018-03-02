@@ -1,7 +1,7 @@
 class Validate {
-	email (rule, value, callback){
+	emailNotRequired (rule, value, callback){
     if (typeof value == 'undefined' || value == '') {
-      callback(new Error('Enter your email'));
+      callback();
     } else {
     	if(!/^[a-zA-Z0-9_-]+@[a-zA-Z0-9_-]+(\.[a-zA-Z0-9_-]+)+$/.test(value)){
     		callback(new Error('Incorrect email format'));

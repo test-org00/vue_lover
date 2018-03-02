@@ -19,5 +19,8 @@ export default{
   },
   SET_CUR_NAME:( state,name)=>{
     state.curName = name
+  },
+  SET_RELOADVOWS:(state)=>{
+    state.reloadVows ++;
   }
 }

@@ -17,6 +17,7 @@ const createStore =  new Vuex.Store({
       confess:true,
       listSearch:0,
       curName:'index',
+      reloadVows:0,
       // imageCDN: '你的七牛 CDN',
       // homePageScroll: {
       //   'home': 0,

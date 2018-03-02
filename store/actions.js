@@ -53,6 +53,9 @@ export default {
   },
   setCurName({commit},name){
     commit('SET_CUR_NAME',name);
+  },
+  setReloadVows({commit}){
+    commit('SET_RELOADVOWS');
   }
   // setUserInfo ({ commit }, data) {
   //   commit('SET_USER_INFO', data)

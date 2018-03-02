@@ -8,7 +8,6 @@
   font-weight: normal;
   font-style: normal;
 }
-
 [class^="icon-"], [class*=" icon-"] {
   /* use !important to prevent issues with browser extensions that change fonts */
   font-family: 'icomoon' !important;
@@ -24,6 +23,9 @@
   -moz-osx-font-smoothing: grayscale;
 }
 
+.icon-help_outline:before {
+  content: "\e902";
+}
 .icon-envelope:before {
   content: "\e900";
 }

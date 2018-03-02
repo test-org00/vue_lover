@@ -21,14 +21,14 @@
       <el-form-item class="IDLable" v-if="!form.IDDisable" label="Your ID:">
         <el-input  :disabled="true" :value="form.ID"></el-input>
         <el-tooltip class="item" effect="dark" content="You need to pay 0.1ETH in order to cover the gas fee charged by Ethereum as well as the cost to support the development of ForeveLove Chain." placement="bottom-start">
-          <span class="tipID">(?) </span>
+          <span class="icon-help_outline tipID "></span>
 
         </el-tooltip>
       </el-form-item>
       <el-form-item v-else class="IDLable" label="Your ID:" prop="ID">
         <el-input v-model="form.ID" placeholder="Enter your ID"></el-input>
         <el-tooltip class="item" effect="dark" content="You need to pay 0.1ETH in order to cover the gas fee charged by Ethereum as well as the cost to support the development of ForeveLove Chain." placement="bottom-start">
-          <span class="tipID">(?) </span>
+          <span class="icon-help_outline tipID "></span>
 
         </el-tooltip>
       </el-form-item>
@@ -45,7 +45,7 @@
         <!-- <el-input value="0.1ETH"></el-input> -->
         <span>0.1ETH </span>
         <el-tooltip class="item" effect="dark" content="You need to pay 0.1ETH in order to cover the gas fee charged by Ethereum as well as the cost to support the development of ForeveLove Chain." placement="bottom-start">
-          <span class="tipGas">(?) </span>
+          <span class="icon-help_outline tipGas "></span>
 
         </el-tooltip>
       </el-form-item>
@@ -124,6 +124,8 @@ export default {
       this.initInfo(this.$store.state.info)
       this.getUserInfo(this.$store.state.info)
   	}
+    
+
   },
   
 	methods: {
@@ -159,10 +161,19 @@ export default {
 
               console.log(error,result);
   						if (!error) {
-                this.$message({
-                  message:'Your request of creating a love vow on blockchain has been submitted successfully. It will take a while for the chain to fully proceed your request. Please refresh "My vows" page late to check.',
-                  type:'success'
-                })
+                // this.$message({
+                //   message:'',
+                //   type:'success'
+                // })
+                this.$alert('Your request of creating a love vow on blockchain has been submitted successfully. It will take a while for the chain to fully proceed your request. Please refresh "My vows" page late to check.', 'Your vow has been submitted to the chain successfully', {
+                  confirmButtonText: 'OK',
+                  callback: action => {
+                    // this.$message({
+                    //   type: 'info',
+                    //   message: `action: ${ action }`
+                    // });
+                  }
+                });
              		console.log(result);
                 req.getTransStatus(result).then(res=>{
                   this.$message({
@@ -246,15 +257,18 @@ export default {
 
 	width:600px;
 	margin:0 auto;
+  .icon-help_outline{
+   
+  }
   .tipID{
     position:absolute;
     left:-94px;
-    top:0;
+    top:12px;
   }
   .tipGas{
     position:absolute;
     left:-92px;
-    top:0;
+    top:12px;
   }
 }
 .register-btn{

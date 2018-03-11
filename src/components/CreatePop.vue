@@ -1,33 +1,33 @@
 <template>
-	<div>
+  <div>
     <div class="header-create">
       
-  		<h3>Confess to the love of your life vow</h3>
+      <h3>Confess to the love of your life vow</h3>
 
-      <p>Please think about this twice if you are not 100% sure this is the true love vow you want to make now. Because once you make the vow on the block chain,your name,your ID,your vow will be made public to everyone,and most importantly,it is irrevocable,unchangeable.This is due to the nature of block chain.c</p>
+      <p>Please think twice before you commit the vow. Once you make the vow on the blockchain，your name, ID, and love vow will be made public to everyone. And most importantly, it is irrevocable, unchangeable due to the nature of blockchain.</p>
     </div>
-	  <el-form :label-position="labelPosition" ref="form" :rules="rules"  status-icon :model="form" label-width="150px">
-		  <el-form-item label="Your Name:" prop='nickName'>
-		    <el-input v-model="form.nickName" placeholder="Enter your name"></el-input>
-		  </el-form-item>
-		  <el-form-item label="Your Email:" prop='email'>
-		    <el-input v-model="form.email" placeholder="Enter your email"></el-input>
-		  </el-form-item>
+    <el-form :label-position="labelPosition" ref="form" :rules="rules"  status-icon :model="form" label-width="150px">
+      <el-form-item label="Your Name:" prop='nickName'>
+        <el-input v-model="form.nickName" placeholder="Enter your name"></el-input>
+      </el-form-item>
+      <el-form-item label="Your Email:" prop='email'>
+        <el-input v-model="form.email" placeholder="Enter your email"></el-input>
+      </el-form-item>
 
-		  <el-form-item label="Wallet Address:">
+      <el-form-item label="Wallet Address:">
         <el-input  :disabled="true" :value="account"></el-input>
       </el-form-item>
 
       <el-form-item class="IDLable" v-if="!form.IDDisable" label="Your ID:">
         <el-input  :disabled="true" :value="form.ID"></el-input>
-        <el-tooltip class="item" effect="dark" content="You need to pay 0.1ETH in order to cover the gas fee charged by Ethereum as well as the cost to support the development of ForeveLove Chain." placement="bottom-start">
+        <el-tooltip class="item" effect="dark" content="Your ID information is required in order to make sure one ID can make vows to one person only." placement="bottom-start">
           <span class="icon-help_outline tipID "></span>
 
         </el-tooltip>
       </el-form-item>
       <el-form-item v-else class="IDLable" label="Your ID:" prop="ID">
         <el-input v-model="form.ID" placeholder="Enter your ID"></el-input>
-        <el-tooltip class="item" effect="dark" content="You need to pay 0.1ETH in order to cover the gas fee charged by Ethereum as well as the cost to support the development of ForeveLove Chain." placement="bottom-start">
+        <el-tooltip class="item" effect="dark" content="Your ID information is required in order to make sure one ID can make vows to one person only." placement="bottom-start">
           <span class="icon-help_outline tipID "></span>
 
         </el-tooltip>
@@ -41,20 +41,20 @@
       <el-form-item label="Vow Message:" prop="msg">
         <el-input type="textarea" v-model="form.msg"></el-input>
       </el-form-item>
-      <el-form-item class="gasLable" label="GasFee:" >
+      <el-form-item class="gasLable" label="Gas Fee:" >
         <!-- <el-input value="0.1ETH"></el-input> -->
         <span>0.1ETH </span>
-        <el-tooltip class="item" effect="dark" content="You need to pay 0.1ETH in order to cover the gas fee charged by Ethereum as well as the cost to support the development of ForeveLove Chain." placement="bottom-start">
+        <el-tooltip class="item" effect="dark" content="You need to pay 0.1 ETH in order to cover the gas fee charged by Ethereum as well as the cost to support the development of ForeveLove Chain." placement="bottom-start">
           <span class="icon-help_outline tipGas "></span>
 
         </el-tooltip>
       </el-form-item>
-		  <el-form-item>
-		    <el-button class="register-btn" type="primary" @click="onSubmit">Create</el-button>
-		  </el-form-item>
-			
-		</el-form>
-	</div>
+      <el-form-item>
+        <el-button class="register-btn" type="primary" @click="onSubmit">Create</el-button>
+      </el-form-item>
+      
+    </el-form>
+  </div>
 </template>
 
 <script>
@@ -68,10 +68,10 @@ export default {
   name: 'Register',
   props:['account'],
   data() {
-  	
+    
   
     return {
-    	// userInfo:{},
+      // userInfo:{},
       labelPosition:'left',
       form: {
         nickName:'',
@@ -115,33 +115,33 @@ export default {
     };
   },
   computed:{
-  	...mapState([
-  		'info'
-  	])
+    ...mapState([
+      'info'
+    ])
   },
   created(){
-  	if(this.$store.state.info){ 
+    if(this.$store.state.info){ 
       this.initInfo(this.$store.state.info)
       this.getUserInfo(this.$store.state.info)
-  	}
+    }
     
 
   },
   
-	methods: {
+  methods: {
     initInfo(val){
       // this.form.nickName = val.nickName;
       // this.form.email = val.email;
     },
 
-	  getUserInfo(val){
-	  
+    getUserInfo(val){
+    
             this.form.IDDisable = utils.isNothing(val.ID)
             this.form.ID = val.ID
        
         console.log(this.form);
       console.log(this.form.IDDisable.length)
-	  },
+    },
     onSubmit() {
 
       this.$refs.form.validate((valid) => {
@@ -160,7 +160,7 @@ export default {
             //  1000000000000000000
 
               console.log(error,result);
-  						if (!error) {
+              if (!error) {
                 // this.$message({
                 //   message:'',
                 //   type:'success'
@@ -174,7 +174,7 @@ export default {
                     // });
                   }
                 });
-             		console.log(result);
+                console.log(result);
                 req.getTransStatus(result).then(res=>{
                   this.$message({
                     message:'Create vow success',
@@ -215,17 +215,17 @@ export default {
                 })// 根据error的值提示用户错误信息
               }
 
-	   			});
+          });
           // alert('submit!');
         } else {
           console.log('error submit!!');
           return false;
         }
       });
-  	}
-	},
-	watch:{
-		account(val){
+    }
+  },
+  watch:{
+    account(val){
       console.log('account',val);
       // this.getUserInfo(); 
     },
@@ -234,8 +234,8 @@ export default {
       this.initInfo(val);
       this.getUserInfo(val)
     }
-	},
-	
+  },
+  
   
 }
 </script>
@@ -253,10 +253,10 @@ export default {
   }
 }
 .el-form{
-	// padding:60px 0 ;
+  // padding:60px 0 ;
 
-	width:600px;
-	margin:0 auto;
+  width:600px;
+  margin:0 auto;
   .icon-help_outline{
    
   }
@@ -272,7 +272,7 @@ export default {
   }
 }
 .register-btn{
-	background-color:#eb4c8b;
-	border:none;
+  background-color:#eb4c8b;
+  border:none;
 }
 </style>

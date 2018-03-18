@@ -1,18 +1,15 @@
 <template>
+
+
   <div id="indexWrap">
-    <div class="banner">
-      <div class="bannerInner">
-        <img src="../assets/heartDiamond.png" alt="">
-        <div class="text">
-          <div class="title">Love Of Your Life Challenge</div>
-          <div class="desc">
-            <p>The <strong>Forever Love Chain</strong> is the world's one and only public <strong>blockchain</strong> featuning you love vow. Your true love, your name and your vow will be recorded into this irrevocable and etemal love chain. And the whole world would will be able to see it.</p>
-            <p>Because your love is <strong>unique</strong>, each vow is uniquely associated with your identifications. Are you ready to confess your love to the ONE and ONLY love of your life? </p>
-            
-          </div>
-        </div>
-      </div>
-    </div>
+    <v-banner></v-banner>
+    <el-carousel :interval="5000" arrow="never" :autoplay="true" indicator-position="outside">
+      <el-carousel-item v-for="item in 4" :key="item">
+        <h3>{{ item }}</h3>
+        <!-- <v-vows v-for="(item,index) in curPageDetailList" :item="item" :index="index"></v-vows>  -->
+
+      </el-carousel-item>
+    </el-carousel>
     <div class="contentIndex">
       <div class="contentInner">
         <img src="../assets/home_vow.jpg" alt="">
@@ -28,8 +25,10 @@
   </div>
 </template>
 <script>
-
+import Banner from '@/components/banner'
 import utils from '@/assets/js/utils'
+import Vows from '@/components/Vows'
+import contract from '@/web3Contract'
 
 export default {
   name: '',
@@ -40,10 +39,14 @@ export default {
     }
   },
   created() {
+    // contract.contractInstance().then(res=>{
 
+    //   console.log(res);
+    // })
   },
   components: {
-
+    "v-banner":Banner,
+    "v-vows":Vows,
   },
   methods: {
     goToCreate(){
@@ -67,40 +70,36 @@ export default {
 
 </script>
 <!-- Add "scoped" attribute to limit CSS to this component only -->
-<style lang="scss" scoped>
+<style lang="scss">
 @import url(../assets/scss/base.scss);
-#indexWrap {
-  .banner {
-    padding-top: 54px;
-    background: #ea5453;
-    .bannerInner {
-      width: 1200px;
-      height: 400px;
-      margin: 0 auto;
-      display: flex;
-      img {
-        height: 300px;
-        margin-left: 30px;
-        margin-right: 48px;
-      }
-      .text {
-        color: #fff;
-        .title {
-          font-size: 50px;
-          font-weight: 300;
-          line-height: 68px;
-          margin-bottom: 12px;
-        }
-        .desc {
-          font-size: 22px;
-          line-height: 30px;
-          p{
-            margin-bottom:20px;
-          }
-        }
-      }
+.el-carousel {
+  .el-carousel__indicator{
+    padding:12px 10px;
+
+    .el-carousel__button{
+      width:10px;
+      height:10px;
+      border-radius:50%;
     }
   }
+  .el-carousel__item h3 {
+    color: #475669;
+    font-size: 18px;
+    opacity: 0.75;
+    line-height: 300px;
+    margin: 0;
+  }
+
+  .el-carousel__item:nth-child(2n) {
+    background-color: #99a9bf;
+  }
+
+  .el-carousel__item:nth-child(2n+1) {
+    background-color: #d3dce6;
+  }
+}
+#indexWrap {
+  
   .contentIndex {
     background-color: #faf0dc;
     .contentInner {

@@ -7,7 +7,7 @@
 </template>
 
 <script>
-import { localWeb3,contractInstance } from '@/web3Contract';
+import contract from '@/web3Contract';
 import { mapState } from 'vuex';
 import VHead from '@/components/Head' 
 import VFoot from '@/components/Foot' 
@@ -33,9 +33,9 @@ export default {
   },
   
   created(){
-    if(localWeb3){
+    if(contract.localWeb3){
       this.localWeb = true;
-      console.log(this.localWeb,localWeb3);
+      console.log(this.localWeb);
       this.$store.dispatch('fetchAccount');
       // this.$store.dispatch('fetchNetwork');
     }

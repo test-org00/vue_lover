@@ -6,7 +6,7 @@
         <el-col :span="12">
           <div class="grid-content bg-purple-light">
             <!-- <a href="mailto:info@foreverlovechain.com">Contact Us: info@foreverlovechain.com</a> -->
-            <router-link to="/invite">Invite</router-link>
+            <!-- <router-link to="/invite">Invite</router-link> -->
             <router-link to="/about">About</router-link>
             <router-link to="/faqs">FAQs</router-link>
             <a @click='confess' style="cursor:pointer">Confess now</a>

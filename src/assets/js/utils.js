@@ -1,10 +1,10 @@
-import { contractInstance,localWeb3 } from '@/web3Contract'
+import contract from '@/web3Contract'
 import _ from 'lodash'
 class useCon{
 	getMemberInfo(){
 		return new Promise((resolve,reject)=>{
 
-			contractInstance.getMemberInfo((error, result)=>{
+			contract.contractInstance().getMemberInfo((error, result)=>{
 				if(!error){
 					console.log(result);
 					var arr = ['nickName','email','ID','certNumber'];
@@ -19,7 +19,7 @@ class useCon{
 
 	getCertsByCertId(certId){
 		return new Promise((resolve,reject)=>{
-			contractInstance.getCertsByCertId(certId,(error, result)=>{
+			contract.contractInstance().getCertsByCertId(certId,(error, result)=>{
 				if(!error){
           console.log(result)
           var arr = ['nickName','email','loverNickName','loverEmail','certTime'];
@@ -44,7 +44,7 @@ class useCon{
 	getCertsIdsByQuery(nick){
 		return new Promise((resolve,reject)=>{
 
-			contractInstance.getCertsIdsByQuery(nick,(error, result)=>{
+			contract.contractInstance.getCertsIdsByQuery(nick,(error, result)=>{
 				if(!error){
 					resolve(result)
 				}else{
@@ -68,7 +68,7 @@ class useCon{
 	}
 
 	decode(hex){
-		return localWeb3.toAscii(hex)
+		return contract.localWeb3.toAscii(hex)
 	}
 
 	supportBrowser(){

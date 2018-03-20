@@ -21,7 +21,6 @@
 import Vows from '@/components/Vows'
 import NoVow from '@/components/NoVow'
 import ListVows from '@/components/ListVows'
-import { contractInstance } from '@/web3Contract'
 import {mapState} from 'vuex'
 
 import utils from '@/assets/js/utils'

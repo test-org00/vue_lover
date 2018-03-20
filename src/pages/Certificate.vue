@@ -9,7 +9,6 @@
 <script>
 // import _ from 'lodash'
 import Vows from "@/components/Vows"
-import { contractInstance } from '@/web3Contract'
 import VCreate from '@/components/Create'
 import utils from '@/assets/js/utils'
 

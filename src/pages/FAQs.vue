@@ -40,7 +40,6 @@
 
 <script>
 import { mapState } from 'vuex'
-import { localWeb3, contractInstance } from '@/web3Contract';
 import utils from '@/assets/js/utils'
 export default {
   name: 'Guide',

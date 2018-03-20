@@ -6,7 +6,6 @@
 </template>
 <script>
 import Vows from '@/components/Vows'
-import { contractInstance } from '@/web3Contract'
 import utils from '@/assets/js/utils'
 export default {
   name: 'Unsupport',

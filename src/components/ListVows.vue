@@ -18,7 +18,7 @@ import Vows from '@/components/Vows'
 import VCreate from '@/components/Create'
 // import ethApi from '@/ethApi'
 import { mapState } from "vuex"
-import { contractInstance,localWeb3 } from '@/web3Contract'
+import contract from '@/web3Contract'
 import utils from '@/assets/js/utils'
 
 export default {
@@ -84,9 +84,12 @@ export default {
       // debugger;
       var promiseArr = [];
       for(var i = 0; i< list.length; i++){
-        promiseArr.push(
-          utils.getCertsByCertId( list[i])
-        )
+      	if(JSON.parse(list[i]) !== 0){
+
+	        promiseArr.push(
+	          utils.getCertsByCertId( list[i])
+	        )
+      	}
       }
 
       Promise.all(promiseArr).then(res => {
@@ -110,23 +113,26 @@ export default {
       this.curpage = 1;
       if(email && !utils.isNothing(email)){
 	      this.loading = true;
-	      contractInstance.getCertsIdsByQuery(email, (error, result) => {
-	        console.log('result:',result[0]==0);
-	        // console.log(web3.eth.getBlock(result))
-	        if(result[0]==0){
-	        	// this.$message({
-	        	// 	message:'There is no vow posted by '+email
-	        	// })
-	        	this.$emit('novows');
-	        	this.loading = false;
-	        	return;
-	        }
-	        this.certsList = result.reverse();
+	      contract.contractInstance().then(res=>{
 
-	        this.totalPage = result.length
-	        // this.totalPage = 50;
-	        console.log(this.totalPage);
-	        this.handleCurrentChange(1)
+		      res.getCertsIdsByQuery(email, (error, result) => {
+		        console.log('result:',result[0]==0);
+		        // console.log(web3.eth.getBlock(result))
+		        if(result[0]==0){
+		        	// this.$message({
+		        	// 	message:'There is no vow posted by '+email
+		        	// })
+		        	this.$emit('novows');
+		        	this.loading = false;
+		        	return;
+		        }
+		        this.certsList = result.reverse();
+
+		        this.totalPage = result.length
+		        // this.totalPage = 50;
+		        console.log(this.totalPage);
+		        this.handleCurrentChange(1)
+		      })
 	      })
       }
     },

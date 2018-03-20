@@ -51,7 +51,6 @@
 </template>
 <script>
 import Vows from '@/components/Vows'
-import { contractInstance } from '@/web3Contract'
 import utils from '@/assets/js/utils'
 import req from '@/assets/js/req'
 import axios from 'axios';

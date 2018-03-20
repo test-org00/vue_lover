@@ -7,13 +7,13 @@ import { contract } from '@/assets/js/config'
 let localWeb3,contractInstance; 
 function getWeb3(){
     const Web3 = require('web3');
+    console.log(Web3);
     return localWeb3 = new Web3(new Web3.providers.HttpProvider("http://localhost:8545"));
 }
 
 export default{
   contractInstance(){
     return new Promise((resolve,reject)=>{
-      debugger;
       if(!contractInstance){
         window.addEventListener('load', function() {
           // Checking if Web3 has been injected by the browser (Mist/MetaMask)
@@ -43,7 +43,7 @@ export default{
     })
   },
   localWeb3(){
-    console.log(web3);
+    // console.log(web3);
     if(typeof web3 == 'undefined'){
       return localWeb3 = getWeb3();
     }else{

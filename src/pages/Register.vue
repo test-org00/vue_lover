@@ -71,7 +71,6 @@ export default {
   },
  
   created(){
-    console.log(contractInstance)
   	// this.form.add = this.$store.state.accounts!==null ? this.$store.state.accounts[0] : null;
   	// if(this.form.add){
 	  	// this.$store.dispatch('fetchAccounts');
@@ -152,7 +151,6 @@ export default {
 
 	   			});
           // alert('submit!');
-          console.log(contractInstance)
         } else {
           console.log('error submit!!');
           return false;

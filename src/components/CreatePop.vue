@@ -58,7 +58,7 @@
 </template>
 
 <script>
-import { contractInstance } from '@/web3Contract'
+import contract from '@/web3Contract'
 import { mapState } from 'vuex'
 import utils from '@/assets/js/utils'
 import req from '@/assets/js/req'
@@ -149,73 +149,76 @@ export default {
           console.log(this.form.ID,this.form.loverNickName,this.form.loverEmail,this.form.msg,this.account)
 
 
-          contractInstance.createCert(
-            sha1(this.form.ID), 
-            this.form.loverNickName,
-            this.form.loverEmail,
-            this.form.msg,
-            {from:this.account, value: 100000000000000000, gas:300000},
-            (error,result)=>{
+          contract.contractInstance().then(res=>{
+            res.createCert(
+              sha1(this.form.ID), 
+              this.form.loverNickName,
+              this.form.loverEmail,
+              this.form.msg,
+              {from:this.account, value: 100000000000000000, gas:300000},
+              (error,result)=>{
 
-            //  1000000000000000000
+              //  1000000000000000000
 
-              console.log(error,result);
-              if (!error) {
-                // this.$message({
-                //   message:'',
-                //   type:'success'
-                // })
-                this.$alert('Your request of creating a love vow on blockchain has been submitted successfully. It will take a while for the chain to fully proceed your request. Please refresh "My vows" page late to check.', 'Your vow has been submitted to the chain successfully', {
-                  confirmButtonText: 'OK',
-                  callback: action => {
-                    // this.$message({
-                    //   type: 'info',
-                    //   message: `action: ${ action }`
-                    // });
-                  }
-                });
-                console.log(result);
-                req.getTransStatus(result).then(res=>{
-                  this.$message({
-                    message:'Create vow success',
-                    type:'success'
+                console.log(error,result);
+                if (!error) {
+                  // this.$message({
+                  //   message:'',
+                  //   type:'success'
+                  // })
+                  this.$alert('Your request of creating a love vow on blockchain has been submitted successfully. It will take a while for the chain to fully proceed your request. Please refresh "My vows" page late to check.', 'Your vow has been submitted to the chain successfully', {
+                    confirmButtonText: 'OK',
+                    callback: action => {
+                      // this.$message({
+                      //   type: 'info',
+                      //   message: `action: ${ action }`
+                      // });
+                    }
+                  });
+                  console.log(result);
+                  req.getTransStatus(result).then(res=>{
+                    this.$message({
+                      message:'Create vow success',
+                      type:'success'
+                    })
+                    // setTimeout(function(){
+                    //   window.location.reload();
+                    // },1000)
+                    this.$store.dispatch('setReloadVows');
+                  }).catch(res=>{
+                    this.$message({
+                      message:'Create vow failed',
+                      type:'warning'
+                    })
                   })
-                  // setTimeout(function(){
-                  //   window.location.reload();
-                  // },1000)
-                  this.$store.dispatch('setReloadVows');
-                }).catch(res=>{
+
+                  // this.$store.dispatch('setPid',result);
+
+                  this.$store.dispatch('setCreatePop',false);
+                  // contractInstance.getMemberInfo((error, result)=>{
+                    // var arr = ['nickName','email','ID','certNumber'];
+                    // console.log(res,web3.toAscii(res[1]));
+                    // var resultObj = utils.formatRes(arr,result);
+                    // console.log(resultObj);
+                    // debugger;
+                  // console.log(this.info.email);
+                 // this.$router.push({
+                   // name:'detail',
+                    // params:{
+                    //   email:this.info.email
+                    // }
+                  //})
+                  // })
+                } else {
                   this.$message({
-                    message:'Create vow failed',
+                    message:error,
                     type:'warning'
-                  })
-                })
-
-                // this.$store.dispatch('setPid',result);
-
-                this.$store.dispatch('setCreatePop',false);
-                // contractInstance.getMemberInfo((error, result)=>{
-                  // var arr = ['nickName','email','ID','certNumber'];
-                  // console.log(res,web3.toAscii(res[1]));
-                  // var resultObj = utils.formatRes(arr,result);
-                  // console.log(resultObj);
-                  // debugger;
-                // console.log(this.info.email);
-               // this.$router.push({
-                 // name:'detail',
-                  // params:{
-                  //   email:this.info.email
-                  // }
-                //})
-                // })
-              } else {
-                this.$message({
-                  message:error,
-                  type:'warning'
-                })// 根据error的值提示用户错误信息
+                  })// 根据error的值提示用户错误信息
+                }
               }
-
-          });
+            )
+          })
+            
           // alert('submit!');
         } else {
           console.log('error submit!!');

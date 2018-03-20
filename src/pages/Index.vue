@@ -3,14 +3,14 @@
 
   <div id="indexWrap">
     <v-banner></v-banner>
-    <el-carousel :interval="5000" arrow="never" :autoplay="true" indicator-position="outside">
-      <el-carousel-item v-for="item in 4" :key="item">
-        <h3>{{ item }}</h3>
-        <!-- <v-vows v-for="(item,index) in curPageDetailList" :item="item" :index="index"></v-vows>  -->
+    <el-carousel :interval="3000" arrow="never" :autoplay="true" indicator-position="outside">
+      <el-carousel-item v-for="(item,index) in items" >
+        <!-- <h3>{{ item }}</h3> -->
+        <v-vows :item="item" :index="index"></v-vows> 
 
       </el-carousel-item>
     </el-carousel>
-    <div class="contentIndex">
+    <!-- <div class="contentIndex">
       <div class="contentInner">
         <img src="../assets/home_vow.jpg" alt="">
         <div class="handleArea">
@@ -21,7 +21,7 @@
           </div>
         </div>
       </div>
-    </div>
+    </div> -->
   </div>
 </template>
 <script>
@@ -35,7 +35,35 @@ export default {
   props: ['account'],
   data() {
     return {
-
+      items:[
+        {
+          certId:1,
+          certTime:1519381478,
+          email:"Jack@gmail.com",
+          loveMsg:"I love you",
+          loverEmail:"Rose@gmail.com",
+          loverNickName:"Rose",
+          nickName:"Jack",
+        },
+        {
+          certId:1,
+          certTime:1519381478,
+          email:"Jack@gmail.com",
+          loveMsg:"I love you",
+          loverEmail:"Rose@gmail.com",
+          loverNickName:"Rose",
+          nickName:"Jack",
+        },
+        {
+          certId:1,
+          certTime:1519381478,
+          email:"Jack@gmail.com",
+          loveMsg:"I love you",
+          loverEmail:"Rose@gmail.com",
+          loverNickName:"Rose",
+          nickName:"Jack",
+        }
+      ]
     }
   },
   created() {

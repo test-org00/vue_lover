@@ -121,6 +121,10 @@ export default {
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style lang="scss" scoped>
+.ask-prompt{
+  margin-top:20px;
+}
+
 .createCerts{
 	p{
 		text-align:center;

@@ -1,8 +1,12 @@
 <template>
 	<div>
-		
-	  <v-vows  :item='oneInfo'></v-vows> 
-    <!-- <v-create :account="account"></v-create> -->
+		<div class="cert-head">
+      <h2 v-if='oneInfo.vowtype!=="challenged"' class="cert-h">You been challenged by {{oneInfo.nickName}} &amp; {{oneInfo.loverNickName}}</h2>
+      <h2 v-else class="cert-h">This is shared by {{oneInfo.nickName}} &amp; {{oneInfo.loverNickName}}</h2>
+      <p class="cert-h-sub">Here is their vow on Forever Love Chain</p>
+      <v-vows  :item='oneInfo'></v-vows> 
+    </div>
+    <!-- <v-banner></v-banner> -->
 	</div>
 </template>
 
@@ -10,6 +14,7 @@
 // import _ from 'lodash'
 import Vows from "@/components/Vows"
 import VCreate from '@/components/Create'
+// import vBanner from '@/components/banner'
 import utils from '@/assets/js/utils'
 
 export default {
@@ -25,7 +30,8 @@ export default {
   },
  
   created(){
-    // var certId = this.$route.query.certId;
+
+    this.oneInfo.vowtype = this.$route.query.vowtype;
     this.oneInfo.certId = this.$route.query.certId;
     this.oneInfo.nickName = this.$route.query.nickName;
     this.oneInfo.email = this.$route.query.email;
@@ -71,7 +77,9 @@ export default {
  	},
 	components:{
 		'v-vows':Vows,
-    'v-create':VCreate
+    'v-create':VCreate,
+    // 'v-banner':vBanner,
+
 	},
 	
   
@@ -80,5 +88,26 @@ export default {
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style lang="scss" scoped>
+.cert-head{
+  width:1200px;
+  margin:0 auto;
+  padding-bottom:40px;
+  .cert-h{
+    padding-top:40px;
+    line-height:80px;
+    font-size:32px;
+    text-align:center;
+    color:#e84d4c;
+    font-weight:300;
+  }
+  .cert-h-sub{
+    line-height:40px;
+    font-size:14px;
+    color:#e84d4c;
+    text-align:center;
+    padding-bottom:20px;
 
+
+  }
+}
 </style>

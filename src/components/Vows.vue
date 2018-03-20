@@ -1,8 +1,11 @@
 <template>
 		
-	  <div class="ask-prompt" v-if='item.email' :class="evenClass" >
-	  	<el-main class="detail-box prompt-bg" :data-certId="item.certId" >
+	  <div ref='singleVow' class="ask-prompt" v-if='item.email'  >
+	  	<h4 v-if="$route.name=='detail'" class="title">My vow to {{item.nickName}} on {{timeFormat}}</h4>
+	  	<h4 v-else-if="$route.name=='list'" class="title">{{item.nickName}}'s vow to {{item.loverNickName}} on {{timeFormat}}</h4>
+	  	<el-main class="detail-box prompt-bg" :class="evenClass" :data-certId="item.certId" >
 	  		<div class="ask-box">
+	  			<p class="vow-p">Love Vow</p>
 	  			<h3>{{item.nickName}} to {{item.loverNickName}}</h3>
 	  			<p class="arrow"></p>
 	  				<p class="time">{{timeFormat}}</p>
@@ -18,7 +21,7 @@
 						<p class="emailbox">{{item.loverNickName}} email:{{item.loverEmail}}</p>
 					</div>
 	  			<el-row type="flex" class="row-bg" justify="center">
- 						<el-col :span="3" ><v-share :receiverEmail="item.loverEmail" :serialize="itemSerialize"></v-share></el-col>
+ 						<el-col  ><v-share :receiverEmail="item.loverEmail" :ele="$refs.singleVow" :serialize="itemSerialize"></v-share></el-col>
 	  			</el-row>
 	  		</div>
 	  	</el-main>
@@ -61,6 +64,7 @@ export default {
     }
   },
   created(){
+  	console.log(this.$route)
   	console.log(this.formatTime('1519438891'),this.formatTime("1519479722"))
 
   	this.itemSerialize = this.serialize(this.item);
@@ -214,8 +218,13 @@ export default {
 
 .ask-prompt{
 	// height:315px;
-	background-color:#003650;
+	.title{
+		line-height:58px;
+		color:#2d2d2d;
+		font-weight:300;
+	}
 	.prompt-bg{
+		background-color:#003650;
 		// background:url(../assets/cryptolove-conform_03.jpg) 150px top no-repeat;
 		// background-size:340px;
 		height:100%;
@@ -238,6 +247,10 @@ export default {
 			font-size:14px;
 			line-height:24px;
 			text-align:center;
+			&.vow-p{
+				font-size:20px;
+				padding-bottom:20px;
+			}
 			&.arrow{
 				height:18px;
 				padding:10px;
@@ -314,7 +327,7 @@ export default {
 	}
 
 }
-.ask-prompt1{
+.ask-prompt .ask-prompt1{
 	background-color:#a7d8d0;
 	p,h3{
 		color:#003650;

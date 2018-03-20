@@ -14,7 +14,40 @@
         </el-col>
         <el-col v-if="" :span="2">
           <div class="grid-content bg-purple share">
-            <v-share :hideEmail="true"></v-share>
+            <!-- <v-share :hideEmail="true"></v-share> -->
+            <social-sharing url="https://vuejs.org/" inline-template>
+                
+              <div class="icons-wrap" style="text-align:right;">
+                <network network="facebook">
+                  <i style="padding:0 5px;font-size:20px; cursor:pointer;" class="icon-facebook"></i> 
+                </network>
+                
+               <!--  <network network="linkedin">
+                  <i class="fa fa-linkedin"></i> LinkedIn
+                </network>
+                <network network="pinterest">
+                  <i class="fa fa-pinterest"></i> Pinterest
+                </network>
+                <network network="reddit">
+                  <i class="fa fa-reddit"></i> Reddit
+                </network> -->
+                <network network="twitter">
+                  <i style="padding:0 5px;font-size:20px;cursor:pointer;" class="icon-twitter"></i>
+                </network>
+                <!-- <network network="googleplus">
+                  <i style="padding:0 5px;font-size:20px;cursor:pointer;" class="icon-google"></i>
+                </network> -->
+                <!-- <network network="vk">
+                  <i class="fa fa-vk"></i> VKontakte
+                </network>
+                <network network="weibo">
+                  <i class="fa fa-weibo"></i> Weibo
+                </network> 
+                <network network="whatsapp">
+                  <i class="fa fa-whatsapp"></i> Whatsapp
+                </network> -->
+              </div>
+            </social-sharing>  
           </div>
         </el-col>
         
@@ -30,7 +63,7 @@
 </template>
 
 <script>
-import VShare from '@/components/Share'
+// import VShare from '@/components/Share'
 import utils from '@/assets/js/utils'
 export default {
   name: 'foot',
@@ -46,7 +79,7 @@ export default {
     }
   },
   components:{
-    'v-share':VShare
+    // 'v-share':VShare
   },
 }
 </script>

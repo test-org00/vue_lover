@@ -1,46 +1,26 @@
 <template>
-	<div class="share-relative"> 
-		
-	  <social-sharing url="https://vuejs.org/" inline-template>
-	              
-	    <div class="icons-wrap">
-	      <network network="facebook">
-	        <i style="padding:0 5px;font-size:20px; cursor:pointer;" class="icon-facebook"></i> 
-	      </network>
-	      
-	     <!--  <network network="linkedin">
-	        <i class="fa fa-linkedin"></i> LinkedIn
-	      </network>
-	      <network network="pinterest">
-	        <i class="fa fa-pinterest"></i> Pinterest
-	      </network>
-	      <network network="reddit">
-	        <i class="fa fa-reddit"></i> Reddit
-	      </network> -->
-	      <network network="twitter">
-	        <i style="padding:0 5px;font-size:20px;cursor:pointer;" class="icon-twitter"></i>
-	      </network>
-	      <!-- <network network="googleplus">
-	        <i style="padding:0 5px;font-size:20px;cursor:pointer;" class="icon-google"></i>
-	      </network> -->
-	      <!-- <network network="vk">
-	        <i class="fa fa-vk"></i> VKontakte
-	      </network>
-	      <network network="weibo">
-	        <i class="fa fa-weibo"></i> Weibo
-	      </network> 
-	      <network network="whatsapp">
-	        <i class="fa fa-whatsapp"></i> Whatsapp
-	      </network> -->
-			</div>
-	  </social-sharing>  
-    <i  @click="shareEmail" v-if='!hideEmail' class="icon icon-email"></i>
-    <i  v-if='!hideEmail' class="icon icon-link"
-			v-clipboard:copy="links"
-      v-clipboard:success="onCopy"
-      v-clipboard:error="onError"
-    ></i>
-
+	<div class="share-relative" @click> 
+		<div class="share-btns" >
+			<v-share-btns :links="links" @shares="shareHandler" shareType="share"></v-share-btns>
+			<v-share-btns :links="links" @shares="shareHandler" shareType="challenge"></v-share-btns>
+		</div>
+		<div ref='sharing'>
+		  <social-sharing  v-show='false' 
+		  	:url="links + '&shareType=' +shareType"
+				title=""
+				description=""
+				quote="facebook only"
+		  	inline-template>
+		    <div  class="icons-wrap">
+		      <network network="facebook">
+		        <i ref='facebook' style="padding:0 5px;font-size:20px; cursor:pointer;" class="icon-facebook"></i> 
+		      </network>
+		      <network network="twitter">
+		        <i ref='twitter' style="padding:0 5px;font-size:20px;cursor:pointer;" class="icon-twitter"></i>
+		      </network>
+				</div>
+		  </social-sharing>  
+		</div>
     <el-dialog
 		  title=""
 		  :visible.sync="buyDialog"
@@ -58,6 +38,9 @@
 			  </el-form-item>
 			 
 			</el-form>
+			<div ref='canvas'>
+				<img :src="canvasImg" width="100%" alt="">
+			</div>
 		  <span slot="footer" class="dialog-footer">
 		    <!-- <el-button @click="buyDialog = false">Cancle</el-button> -->
 		    <el-button type="primary" @click="submitEmail">Share</el-button>
@@ -70,9 +53,13 @@
 <script>
 import req from '@/assets/js/req'
 import axios from 'axios'
+import VShareBtns from '@/components/ShareBtns'
+
+import html2canvas from 'html2canvas'
+
 export default {
   name: 'Share',
-  props:['receiverEmail','serialize','hideEmail'],
+  props:['receiverEmail','serialize','hideEmail','ele'],
   data () {
     return {
       curWeb:null,
@@ -81,16 +68,32 @@ export default {
       buyDialog:false,
       form:{
       	email:''
-      }
+      },
+      canvasImg:null,
+      shareType:'',
     }
   },
   created(){
   	this.links = location.origin + "/#/game/certificate?"+this.serialize;
   },
   methods:{
+  	shareHandler(arg){
+  		// console.log(shareType, command);
+  		this['share'+arg[1]](arg[1]);
+  		this.shareType = arg[0]
+  	},
+  	shareFacebook(shareType){
+			this.$refs.sharing.querySelector('.icon-facebook').click();
+  	},
+  	shareTwitter(shareType){
+			this.$refs.sharing.querySelector('.icon-twitter').click();
+  	},
   	shareEmail(){
   		this.buyDialog = true;
-  		
+  		html2canvas(this.ele,{
+  		}).then((canvas) => {
+          this.canvasImg = canvas.toDataURL("image/png");
+      });
   	},
   	submitEmail(){
   		this.$refs['form'].validate(valid => {
@@ -98,7 +101,7 @@ export default {
   					this.buyDialog =false;
 			  		req.certTo({
 					    "receiverEmail": this.receiverEmail || 'bulabula@qq.com',
-					    "certUrl": this.links
+					    "certUrl": this.links + '&shareType=' + this.shareType
 					  }).then(res =>{
 			  			this.$message({
 			  				message:'Send email successfully',
@@ -126,6 +129,9 @@ export default {
   				})
     },
   },
+  components:{
+  	'v-share-btns':VShareBtns
+  }
  
 
 }
@@ -135,6 +141,18 @@ export default {
 <style lang="scss" scoped>
 .share-relative{
 	position:relative;
+	.el-dropdown {
+    vertical-align: top;
+  }
+  .el-dropdown + .el-dropdown {
+    margin-left: 15px;
+  }
+  .el-icon-arrow-down {
+    font-size: 12px;
+  }
+  .share-btns{
+  	text-align:center;
+  }
 	.icon{
 		position:absolute;
 		right:0;

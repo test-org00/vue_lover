@@ -1,5 +1,5 @@
 <template>
-  <div v-loading.fullscreen.lock="loading">
+  <div v-loading.fullscreen.lock="loading" class="lists-wrap">
     <v-vows v-for="(item,index) in curPageDetailList" :item="item" :index="index"></v-vows> 
     <v-create v-if="!(routeName =='list')"></v-create> 
     <el-pagination v-if="totalPage > purPage"
@@ -83,6 +83,7 @@ export default {
     updateList(list){
       // debugger;
       var promiseArr = [];
+      
       for(var i = 0; i< list.length; i++){
       	if(JSON.parse(list[i]) !== 0){
 
@@ -149,6 +150,10 @@ export default {
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style lang="scss" scoped>
+.lists-wrap{
+	margin:0 auto;
+	width:1200px;
+}
 .search-box{
 	// display:flex;
 

@@ -1,10 +1,10 @@
 <template>
 	<div class="share-relative" @click> 
 		<div class="share-btns" >
-			<v-share-btns :links="links" @shares="shareHandler" shareType="share"></v-share-btns>
-			<v-share-btns :links="links" @shares="shareHandler" shareType="challenge"></v-share-btns>
+			<v-share-btns :links="links" @shares="shareHandler" :ele="ele" shareType="share"></v-share-btns>
+			<v-share-btns :links="links" @shares="shareHandler" :ele="ele" shareType="challenge"></v-share-btns>
 		</div>
-		<div ref='sharing'>
+		<!-- <div ref='sharing'>
 		  <social-sharing  v-show='false' 
 		  	:url="links + '&shareType=' +shareType"
 				title=""
@@ -20,8 +20,8 @@
 		      </network>
 				</div>
 		  </social-sharing>  
-		</div>
-    <el-dialog
+		</div> -->
+    <!-- <el-dialog
 		  title=""
 		  :visible.sync="buyDialog"
 		  width="800px"
@@ -42,10 +42,10 @@
 				<img :src="canvasImg" width="100%" alt="">
 			</div>
 		  <span slot="footer" class="dialog-footer">
-		    <!-- <el-button @click="buyDialog = false">Cancle</el-button> -->
 		    <el-button type="primary" @click="submitEmail">Share</el-button>
 		  </span>
-		</el-dialog>
+		</el-dialog> -->
+		<!-- <v-mail-dialog v-if="$route.name!=='index'"></v-mail-dialog> -->
 	</div>
 
 </template>
@@ -54,8 +54,8 @@
 import req from '@/assets/js/req'
 import axios from 'axios'
 import VShareBtns from '@/components/ShareBtns'
+// import VMailDialog from '@/components/MailDialog'
 
-import html2canvas from 'html2canvas'
 
 export default {
   name: 'Share',
@@ -77,24 +77,29 @@ export default {
   	this.links = location.origin + "/#/game/certificate?"+this.serialize;
   },
   methods:{
-  	shareHandler(arg){
+  	shareHandler(command){
   		// console.log(shareType, command);
-  		this['share'+arg[1]](arg[1]);
-  		this.shareType = arg[0]
-  	},
-  	shareFacebook(shareType){
-			this.$refs.sharing.querySelector('.icon-facebook').click();
-  	},
-  	shareTwitter(shareType){
-			this.$refs.sharing.querySelector('.icon-twitter').click();
-  	},
-  	shareEmail(){
+  		
+  		// this.shareType = arg[0]
   		this.buyDialog = true;
   		html2canvas(this.ele,{
   		}).then((canvas) => {
           this.canvasImg = canvas.toDataURL("image/png");
       });
   	},
+  	// shareFacebook(shareType){
+			// this.$refs.sharing.querySelector('.icon-facebook').click();
+  	// },
+  	// shareTwitter(shareType){
+			// this.$refs.sharing.querySelector('.icon-twitter').click();
+  	// },
+  	// shareEmail(){
+  	// 	this.buyDialog = true;
+  	// 	html2canvas(this.ele,{
+  	// 	}).then((canvas) => {
+   //        this.canvasImg = canvas.toDataURL("image/png");
+   //    });
+  	// },
   	submitEmail(){
   		this.$refs['form'].validate(valid => {
   			if(valid){
@@ -130,7 +135,8 @@ export default {
     },
   },
   components:{
-  	'v-share-btns':VShareBtns
+  	'v-share-btns':VShareBtns,
+  	// 'v-mail-dialog':VMailDialog,
   }
  
 

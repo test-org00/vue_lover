@@ -22,5 +22,9 @@ export default{
   },
   SET_RELOADVOWS:(state)=>{
     state.reloadVows ++;
+  },
+  SET_MAIL_DIALOG:(state,opt)=>{
+    state.mailDialog.open = opt.open;
+    state.mailDialog.ele = opt.ele;
   }
 }

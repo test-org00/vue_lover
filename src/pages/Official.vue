@@ -1,7 +1,10 @@
 <template>
   <div class="app" >
     <v-head :localWeb="localWeb" :account="account" ></v-head>
-    <div class="content-body"><router-view :account="account"></router-view></div>
+    <div class="content-body">
+      <v-mail-dialog></v-mail-dialog>
+      <router-view :account="account"></router-view>
+    </div>
     <v-foot :account="account" ></v-foot>
   </div>
 </template>
@@ -12,6 +15,8 @@ import { mapState } from 'vuex';
 import VHead from '@/components/Head' 
 import VFoot from '@/components/Foot' 
 import utils from '@/assets/js/utils'
+import VMailDialog from '@/components/MailDialog'
+
 export default {
   name: 'App',
   data(){
@@ -23,7 +28,8 @@ export default {
 
   components:{
     'v-head':VHead,
-    'v-foot':VFoot
+    'v-foot':VFoot,
+    'v-mail-dialog':VMailDialog
   },
 
   computed:{

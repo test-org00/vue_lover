@@ -56,6 +56,9 @@ export default {
   },
   setReloadVows({commit}){
     commit('SET_RELOADVOWS');
+  },
+  setMailDialog({commit},opt){
+    commit('SET_MAIL_DIALOG',opt);
   }
   // setUserInfo ({ commit }, data) {
   //   commit('SET_USER_INFO', data)

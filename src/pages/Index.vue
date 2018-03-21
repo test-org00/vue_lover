@@ -3,13 +3,14 @@
 
   <div id="indexWrap">
     <v-banner></v-banner>
-    <el-carousel :interval="3000" arrow="never" :autoplay="true" indicator-position="outside">
+    <el-carousel :interval="3000" arrow="never" :autoplay="true" height="430px" indicator-position="outside">
       <el-carousel-item v-for="(item,index) in items" >
         <!-- <h3>{{ item }}</h3> -->
         <v-vows :item="item" :index="index"></v-vows> 
 
       </el-carousel-item>
     </el-carousel>
+
     <!-- <div class="contentIndex">
       <div class="contentInner">
         <img src="../assets/home_vow.jpg" alt="">
@@ -110,6 +111,9 @@ export default {
       border-radius:50%;
     }
   }
+  .el-carousel__item{
+    padding-top:20px;
+  }
   .el-carousel__item h3 {
     color: #475669;
     font-size: 18px;
@@ -118,13 +122,7 @@ export default {
     margin: 0;
   }
 
-  .el-carousel__item:nth-child(2n) {
-    background-color: #99a9bf;
-  }
-
-  .el-carousel__item:nth-child(2n+1) {
-    background-color: #d3dce6;
-  }
+ 
 }
 #indexWrap {
   

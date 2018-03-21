@@ -18,6 +18,10 @@ const createStore =  new Vuex.Store({
       listSearch:0,
       curName:'index',
       reloadVows:0,
+      mailDialog:{
+        open:false,
+        ele:null
+      },
       // imageCDN: '你的七牛 CDN',
       // homePageScroll: {
       //   'home': 0,

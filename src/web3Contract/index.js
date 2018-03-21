@@ -8,7 +8,8 @@ let localWeb3,contractInstance;
 function getWeb3(){
     const Web3 = require('web3');
     console.log(Web3);
-    return localWeb3 = new Web3(new Web3.providers.HttpProvider("http://localhost:8545"));
+    return null
+    // return localWeb3 = new Web3(new Web3.providers.HttpProvider("http://localhost:8545"));
 }
 
 export default{

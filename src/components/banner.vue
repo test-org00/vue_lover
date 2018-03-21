@@ -12,11 +12,14 @@
         <ul class="event-box">
           <li>
             <p>Make a vow now</p>
-            <button class="btn">Talk the Challenge</button>
+            <button class="btn" @click="goToCreate">Talk the Challenge</button>
+            <!-- <el-button type="primary" @click="goToCreate">Talk the Challenge</el-button> -->
           </li>
           <li>
             <p>Nah,not applicable to me.But I will make someone else do it.</p>
-            <button class="btn">Create a Challenge</button>
+            <!-- <button class="btn">Create a Challenge</button> -->
+            <v-share-btns :links="links" shareType="challenge" bannerClass='banner' btnWord="Create a Challenge"></v-share-btns>
+
           </li>
         </ul>
       </div>
@@ -25,26 +28,30 @@
 </template>
 <script>
 
-// import utils from '@/assets/js/utils'
+import utils from '@/assets/js/utils'
+import VShareBtns from '@/components/ShareBtns'
+
 
 export default {
   name: '',
   // props: ['account'],
   data() {
     return {
-
+      links:'',
     }
   },
   created() {
     console.log(this.$route)
   },
   components: {
+    'v-share-btns':VShareBtns
+
 
   },
   methods: {
-    // goToCreate(){
-    //   utils.createVow(this);
-    // }
+    goToCreate(){
+      utils.createVow(this);
+    }
 
   },
   watch:{
@@ -65,7 +72,6 @@ export default {
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style lang="scss" scoped>
 @import url(../assets/scss/base.scss);
-#indexWrap {
   .banner {
     padding-top: 54px;
     background: #ea5453;
@@ -119,7 +125,12 @@ export default {
               background-color:#931d26;
               color:#fff;
               border:none;
+              cursor:pointer;
               border-radius:4px;
+              &:hover{
+
+                background-color:rgb(239, 112, 162);
+              }
             }
             p{
               font-size: 14px;
@@ -132,6 +143,5 @@ export default {
     }
   }
   
-}
 
 </style>

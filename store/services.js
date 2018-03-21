@@ -4,7 +4,7 @@ import contract from '../src/web3Contract'
 class Services {
 	getAccount(){
     // console.log(contract.localWeb3);
-		return	contract.localWeb3().eth.accounts;
+		return	contract.localWeb3() && contract.localWeb3().eth.accounts;
 	}
   getNetwork(){
     return  contract.localWeb3().version.network;

@@ -6,7 +6,7 @@
       <p class="cert-h-sub">Here is their vow on Forever Love Chain</p>
       <v-vows  :item='oneInfo'></v-vows> 
     </div>
-    <!-- <v-banner></v-banner> -->
+    <v-banner></v-banner>
 	</div>
 </template>
 
@@ -14,7 +14,7 @@
 // import _ from 'lodash'
 import Vows from "@/components/Vows"
 import VCreate from '@/components/Create'
-// import vBanner from '@/components/banner'
+import vBanner from '@/components/banner'
 import utils from '@/assets/js/utils'
 
 export default {
@@ -78,7 +78,7 @@ export default {
 	components:{
 		'v-vows':Vows,
     'v-create':VCreate,
-    // 'v-banner':vBanner,
+    'v-banner':vBanner,
 
 	},
 	

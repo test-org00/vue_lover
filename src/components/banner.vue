@@ -1,12 +1,12 @@
 <template>
   <div class="banner">
-    <h4 v-if="$route.name == 'index'">Talk is cheap,make your FLC love vow if you truely are!</h4>
+    <h4 v-if="$route.name == 'index'">Talk is cheap, make your FLC love vow if you truely are!</h4>
     <div class="bannerInner">
       <img src="../assets/heartDiamond.png" alt="">
       <div class="text">
         <div class="desc">
-          <p>The <strong>Forever Love Chain</strong> is the world's one and only public <strong>blockchain</strong> featuning you love vow. Your true love, your name and your vow will be recorded into this irrevocable and etemal love chain. And the whole world would will be able to see it.</p>
-          <p>Because your love is <strong>unique</strong>, each vow is uniquely associated with your identifications. Are you ready to confess your love to the ONE and ONLY love of your life? </p>
+          <p>The <strong>Forever Love Chain</strong> is the world's one and only public <strong>blockchain</strong> featuring your love vow. Your true love, your name and your vow will be recorded into this <strong>irrevocable</strong> and <strong>etenal</strong> love chain. And the whole world would will be able to see it.</p>
+          <p>Because your love is <strong>unique</strong>, each vow is uniquely associated with your identifications. Are you ready to confess your love to the <strong>ONE</strong> and <strong>ONLY</strong> love of your life? </p>
           
         </div>
         <ul class="event-box">
@@ -16,7 +16,7 @@
             <!-- <el-button type="primary" @click="goToCreate">Talk the Challenge</el-button> -->
           </li>
           <li>
-            <p>Nah,not applicable to me.But I will make someone else do it.</p>
+            <p>Nah, not applicable to me. But I will make someone else do it</p>
             <!-- <button class="btn">Create a Challenge</button> -->
             <v-share-btns :links="links" shareType="challenge" bannerClass='banner' btnWord="Create a Challenge"></v-share-btns>
 

@@ -5,28 +5,28 @@
     <div class="collapse-box">
       <h3>Getting started</h3>
       <el-collapse v-model="activeNames" @change="handleChange">
-        <el-collapse-item class="el-collapse-item" title="What do I need to play CryptoKitties?" name="1">
+        <el-collapse-item class="el-collapse-item" title="What do I need to play FLC?" name="1">
           <div class="item-div">Here’s what you need to get started:</div>
           <ul>
             <li class="item-li">A computer or laptop running the desktop version of Chrome or Firefox</li>
             <li class="item-li">MetaMask, a digital wallet used specifically with web apps</li>
-            <li class="item-li">Ether, a form of digital payment that powers CryptoKitties</li>
+            <li class="item-li">Ether, a form of digital payment that powers FLC</li>
           </ul>
         </el-collapse-item>
         <el-collapse-item class="el-collapse-item" title="Installing MetaMask, your digital wallet" name="2">
-          <div class="item-div">To use CryptoKitties, you will need to install MetaMask, a digital wallet. You will need to put money in it to make your first purchase.</div>
+          <div class="item-div">To use FLC, you will need to install MetaMask, a digital wallet. You will need to put money in it to make your first purchase.</div>
           <div class="item-div"><strong>Note:</strong> A digital wallet like MetaMask acts like a bank account—treat it with respect and make sure you don’t forget your password or the seed words.</div>
           <img src="" alt="">
         </el-collapse-item>
         <el-collapse-item class="el-collapse-item" title="Why is MetaMask locked?" name="3">
-          <div class="item-div">Occasionally the ‘My Kitties’ page displays a lock screen. This happens because MetaMask locks your account after a certain period of time automatically. To unlock simply click on the MetaMask extension and type in your password.</div>
+          <div class="item-div">Occasionally the ‘My Vows’ page displays a lock screen. This happens because MetaMask locks your account after a certain period of time automatically. To unlock simply click on the MetaMask extension and type in your password.</div>
           <img src="../assets/screenshot-locked.png" width="100%" alt="">
         </el-collapse-item>
         <el-collapse-item class="el-collapse-item" title="Getting Ether, your digital currency" name="4">
           <div class="item-div"><strong>For U.S. citizens only:</strong> you can buy ether (ETH) in MetaMask. ETH is a digital currency that enables our game to run.</div>
           <img src="../assets/screenshot-buy-usa.png" width="100%" alt="">
-          <div class="item-div"><strong>For everyone else:</strong> you will need to purchase ETH from an exchange. The easiest way is using Coinbase and then transferring the ETH from your Coinbase wallet to your MetaMask wallet. Unfortunately, you cannot play CryptoKitties with a Coinbase wallet or any other wallets.</div>
-          <div class="item-div">You cannot use USD/CAD to buy a CryptoKitty—currencies need to be converted into ETH first.</div>
+          <div class="item-div"><strong>For everyone else:</strong> you will need to purchase ETH from an exchange. The easiest way is using Coinbase and then transferring the ETH from your Coinbase wallet to your MetaMask wallet. Unfortunately, you cannot play FLC with a Coinbase wallet or any other wallets.</div>
+          <div class="item-div">You cannot use USD/CAD to pay FLC. Currencies need to be converted into ETH first.</div>
         </el-collapse-item>
         <el-collapse-item class="el-collapse-item" title="How to send ETH to MetaMask" name="5">
           <div class="item-div"><strong>For U.S. citizens only:</strong> you are able to purchase ETH directly from the MetaMask wallet using the Coinbase widget. This is more convenient and doesn’t require you to create two accounts.</div>

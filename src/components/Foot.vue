@@ -9,7 +9,7 @@
             <!-- <router-link to="/invite">Invite</router-link> -->
             <router-link to="/about">About</router-link>
             <router-link to="/faqs">FAQs</router-link>
-            <a @click='confess' style="cursor:pointer">Confess now</a>
+            <a @click='confess' style="cursor:pointer">My Vows</a>
           </div>
         </el-col>
         <el-col v-if="" :span="2">

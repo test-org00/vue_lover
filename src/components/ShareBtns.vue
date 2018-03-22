@@ -8,7 +8,7 @@
 		  <el-dropdown-menu slot="dropdown">
 		    <el-dropdown-item command="Facebook">Facebook</el-dropdown-item>
 		    <el-dropdown-item command="Twitter">Twitter</el-dropdown-item>
-		    <el-dropdown-item command="Email">Mail</el-dropdown-item>
+		    <!-- <el-dropdown-item command="Email">Mail</el-dropdown-item>--> 
 		    <el-dropdown-item	command="Copy"
 					v-clipboard:copy="linksType"
 		      v-clipboard:success="onCopy"

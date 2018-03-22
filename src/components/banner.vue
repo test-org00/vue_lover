@@ -5,7 +5,7 @@
       <img src="../assets/heartDiamond.png" alt="">
       <div class="text">
         <div class="desc">
-          <p>The <strong>Forever Love Chain</strong> is the world's one and only public <strong>blockchain</strong> featuring your love vow. Your true love, your name and your vow will be recorded into this <strong>irrevocable</strong> and <strong>etenal</strong> love chain. And the whole world would will be able to see it.</p>
+          <p>The <strong>Forever Love Chain</strong> is the world's one and only public <strong>blockchain</strong> featuring your love vow. Your true love, your name and your vow will be recorded into this <strong>irrevocable</strong> and <strong>eternal</strong> love chain. And the whole world would will be able to see it.</p>
           <p>Because your love is <strong>unique</strong>, each vow is uniquely associated with your identifications. Are you ready to confess your love to the <strong>ONE</strong> and <strong>ONLY</strong> love of your life? </p>
           
         </div>

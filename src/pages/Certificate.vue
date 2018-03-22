@@ -1,7 +1,7 @@
 <template>
 	<div>
 		<div class="cert-head">
-      <h2 v-if='oneInfo.vowtype!=="challenged"' class="cert-h">You been challenged by {{oneInfo.nickName}} &amp; {{oneInfo.loverNickName}}</h2>
+      <h2 v-if='oneInfo.vowtype=="challenge"' class="cert-h">You been challenged by {{oneInfo.nickName}} &amp; {{oneInfo.loverNickName}}!</h2>
       <h2 v-else class="cert-h">This is shared by {{oneInfo.nickName}} &amp; {{oneInfo.loverNickName}}</h2>
       <p class="cert-h-sub">Here is their vow on Forever Love Chain</p>
       <v-vows  :item='oneInfo'></v-vows> 

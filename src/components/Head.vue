@@ -15,7 +15,7 @@
             <el-col class="btn" :class="curName == 'about' ? 'on' : ''" :span="8"><span  @click="aboutHandle">About</span></el-col>
             <el-col class="btn" :class="curName == 'faqs' ? 'on' : ''" :span="8"><span @click="questionsHandle" >FAQs</span></el-col>
             <el-col v-if="confess" :class="curName == 'locked' || curName =='installedMetaMask' || curName =='getMetaMask' || curName =='unsupport' || curName =='confess'? 'on' : ''"  class="btn" :span="8"><span @click="confessNow">My Vows</span></el-col>
-            <el-col v-else :class="curName == 'detail' ? 'on' : ''"  class="btn" :span="8"><span @click="myVows">My vows</span></el-col>
+            <el-col v-else :class="curName == 'detail' ? 'on' : ''"  class="btn" :span="8"><span @click="myVows">My Vows</span></el-col>
           </el-row>
         </el-col>
       </el-row>

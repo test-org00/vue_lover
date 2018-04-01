@@ -116,17 +116,17 @@ export default {
     ])
   },
   watch:{
-    accounts:{
-      handler(val, oldVal) {
-        if(val !== null){
+    // accounts:{
+    //   handler(val, oldVal) {
+    //     if(val !== null){
 
-          this.account = val[0];
-          console.log(this.account)
-          this.jumpToDetail()
-        }
-      },
-      deep: true
-    },
+    //       this.account = val[0];
+    //       console.log(this.account)
+    //       this.jumpToDetail()
+    //     }
+    //   },
+    //   deep: true
+    // },
     // network:{
     //   handler(val, oldVal) {
     //     console.log(val)

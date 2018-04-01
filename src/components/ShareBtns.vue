@@ -210,6 +210,7 @@ export default {
     .el-button{
     	min-width:130px;
     	margin:0 20px;
+    	padding:12px 26px
     }
   }
   .el-dropdown + .el-dropdown {

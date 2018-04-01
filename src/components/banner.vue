@@ -70,7 +70,7 @@ export default {
 
 </script>
 <!-- Add "scoped" attribute to limit CSS to this component only -->
-<style lang="scss" scoped>
+<style lang="scss">
 @import url(../assets/scss/base.scss);
   .banner {
     padding-top: 54px;
@@ -133,9 +133,13 @@ export default {
               }
             }
             p{
+              text-align:center;
               font-size: 14px;
               line-height: 20px;
               padding-bottom:5px;
+            }
+            .el-button{
+              margin:0;
             }
           }
         }

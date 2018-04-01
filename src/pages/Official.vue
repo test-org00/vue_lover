@@ -60,11 +60,11 @@ export default {
         else
         {
           this.account = curVal[0];
-          utils.getMemberInfo().then(res => {
-            // debugger;
-            console.log('setInfo',res);
-            this.$store.dispatch('setInfo',res);
-          })
+          // utils.getMemberInfo().then(res => {
+          //   // debugger;
+          //   console.log('setInfo',res);
+          //   this.$store.dispatch('setInfo',res);
+          // })
         }
        
       },

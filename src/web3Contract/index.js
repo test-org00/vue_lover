@@ -1,10 +1,10 @@
 // import web3 from 'web3'
-import { contract } from '@/assets/js/config'
+import { contract1,contract2 } from '@/assets/js/config'
 // import abiDecoder from 'ethereumjs-abi';
 // import decoder from '../assets/js/abi_decoder';
 
 // const SolidityCoder = require("web3/lib/solidity/coder.js");
-let localWeb3,contractInstance; 
+let localWeb3,contractMain,contractQuery; 
 function getWeb3(){
     const Web3 = require('web3');
     console.log(Web3);
@@ -13,9 +13,9 @@ function getWeb3(){
 }
 
 export default{
-  contractInstance(){
+  contractMain(){
     return new Promise((resolve,reject)=>{
-      if(!contractInstance){
+      if(!contractMain){
         window.addEventListener('load', function() {
           // Checking if Web3 has been injected by the browser (Mist/MetaMask)
           if (typeof web3 !== 'undefined') {
@@ -28,18 +28,48 @@ export default{
               localWeb3 = getWeb3();
             } 
             // var contractObj = localWeb3.eth.contract(contract.ABI);
-            contractInstance = localWeb3.eth.contract(contract.ABI).at(contract.address);
-            resolve(contractInstance);
+            contractMain = localWeb3.eth.contract(contract1.ABI).at(contract1.address);
+            resolve(contractMain);
           }
         })
         if (typeof web3 !== 'undefined') {
-          contractInstance = web3.eth.contract(contract.ABI).at(contract.address);
-          resolve(contractInstance);
+          contractMain = web3.eth.contract(contract1.ABI).at(contract1.address);
+          resolve(contractMain);
 
         }
 
       }else{
-        resolve(contractInstance);
+        resolve(contractMain);
+      }
+    })
+  },
+  contractQuery(){
+    return new Promise((resolve,reject)=>{
+      if(!contractQuery){
+        window.addEventListener('load', function() {
+          // Checking if Web3 has been injected by the browser (Mist/MetaMask)
+          if (typeof web3 !== 'undefined') {
+            // Use the browser's ethereum provider
+            var provider = web3.currentProvider
+            
+          } else {
+            console.log('No web3? You should consider trying MetaMask!')
+            if(!localWeb3){
+              localWeb3 = getWeb3();
+            } 
+            // var contractObj = localWeb3.eth.contract(contract.ABI);
+            contractQuery = localWeb3.eth.contract(contract2.ABI).at(contract2.address);
+            resolve(contractQuery);
+          }
+        })
+        if (typeof web3 !== 'undefined') {
+          contractQuery = web3.eth.contract(contract2.ABI).at(contract2.address);
+          resolve(contractQuery);
+
+        }
+
+      }else{
+        resolve(contractQuery);
       }
     })
   },

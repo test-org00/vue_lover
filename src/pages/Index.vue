@@ -68,10 +68,6 @@ export default {
     }
   },
   created() {
-    // contract.contractInstance().then(res=>{
-
-    //   console.log(res);
-    // })
   },
   components: {
     "v-banner":Banner,

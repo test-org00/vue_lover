@@ -77,7 +77,7 @@ export default {
         nickName:'',
         email:'',
         ID:'',
-        IDDisable:'',
+        IDDisable:true,
         loverNickName:'',
         loverEmail:'',
         msg:'',
@@ -124,7 +124,7 @@ export default {
       this.initInfo(this.$store.state.info)
       this.getUserInfo(this.$store.state.info)
     }
-    
+    console.log('hash ID',sha1('dongtt2ID'))
 
   },
   
@@ -135,7 +135,7 @@ export default {
     },
 
     getUserInfo(val){
-    
+            console.log(val)
             this.form.IDDisable = utils.isNothing(val.ID)
             this.form.ID = val.ID
        
@@ -148,76 +148,71 @@ export default {
         if (valid) {
           console.log(this.form.ID,this.form.loverNickName,this.form.loverEmail,this.form.msg,this.account)
 
+          // let hashID = sha1(this.form.ID);
+          utils.createVowFn(
+            // hashID,
+            this.form.ID,
+            this.form.nickName,
+            this.form.email,
+            this.form.loverNickName,
+            this.form.loverEmail,
+            this.form.msg,
+            {from:this.account, value: 100000000000000000, gas:300000},
+          ).then( result => {
+              this.$store.dispatch('setInfo',{'nickName':this.form.nickName,
+              'email':this.form.email,
+              'ID':this.form.ID})
+              
 
-          contract.contractInstance().then(res=>{
-            res.createCert(
-              sha1(this.form.ID), 
-              this.form.loverNickName,
-              this.form.loverEmail,
-              this.form.msg,
-              {from:this.account, value: 100000000000000000, gas:300000},
-              (error,result)=>{
-
-              //  1000000000000000000
-
-                console.log(error,result);
-                if (!error) {
+              this.$alert('Your request of creating a love vow on blockchain has been submitted successfully. It will take a while for the chain to fully proceed your request. Please refresh "My vows" page late to check.', 'Your vow has been submitted to the chain successfully', {
+                confirmButtonText: 'OK',
+                callback: action => {
                   // this.$message({
-                  //   message:'',
-                  //   type:'success'
-                  // })
-                  this.$alert('Your request of creating a love vow on blockchain has been submitted successfully. It will take a while for the chain to fully proceed your request. Please refresh "My vows" page late to check.', 'Your vow has been submitted to the chain successfully', {
-                    confirmButtonText: 'OK',
-                    callback: action => {
-                      // this.$message({
-                      //   type: 'info',
-                      //   message: `action: ${ action }`
-                      // });
-                    }
-                  });
-                  console.log(result);
-                  req.getTransStatus(result).then(res=>{
-                    this.$message({
-                      message:'Create vow success',
-                      type:'success'
-                    })
-                    // setTimeout(function(){
-                    //   window.location.reload();
-                    // },1000)
-                    this.$store.dispatch('setReloadVows');
-                  }).catch(res=>{
-                    this.$message({
-                      message:'Create vow failed',
-                      type:'warning'
-                    })
-                  })
-
-                  // this.$store.dispatch('setPid',result);
-
-                  this.$store.dispatch('setCreatePop',false);
-                  // contractInstance.getMemberInfo((error, result)=>{
-                    // var arr = ['nickName','email','ID','certNumber'];
-                    // console.log(res,web3.toAscii(res[1]));
-                    // var resultObj = utils.formatRes(arr,result);
-                    // console.log(resultObj);
-                    // debugger;
-                  // console.log(this.info.email);
-                 // this.$router.push({
-                   // name:'detail',
-                    // params:{
-                    //   email:this.info.email
-                    // }
-                  //})
-                  // })
-                } else {
-                  this.$message({
-                    message:error,
-                    type:'warning'
-                  })// 根据error的值提示用户错误信息
+                  //   type: 'info',
+                  //   message: `action: ${ action }`
+                  // });
                 }
-              }
-            )
+              });
+              req.getTransStatus(result).then(res=>{
+                this.$message({
+                  message:'Create vow success',
+                  type:'success'
+                })
+                // setTimeout(function(){
+                //   window.location.reload();
+                // },1000)
+                this.$store.dispatch('setReloadVows');
+              }).catch(res=>{
+                this.$message({
+                  message:'Create vow failed',
+                  type:'warning'
+                })
+              })
+
+                // this.$store.dispatch('setPid',result);
+
+              this.$store.dispatch('setCreatePop',false);
+                // contractMain.getMemberInfo((error, result)=>{
+                  // var arr = ['nickName','email','ID','certNumber'];
+                  // console.log(res,web3.toAscii(res[1]));
+                  // var resultObj = utils.formatRes(arr,result);
+                  // console.log(resultObj);
+                  // debugger;
+                // console.log(this.info.email);
+               // this.$router.push({
+                 // name:'detail',
+                  // params:{
+                  //   email:this.info.email
+                  // }
+                //})
+                // })
+          }).catch(error=>{
+            this.$message({
+              message:error,
+              type:'warning'
+            })// 根据error的值提示用户错误信息
           })
+            
             
           // alert('submit!');
         } else {

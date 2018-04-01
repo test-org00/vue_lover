@@ -57,7 +57,7 @@ export default {
       // })
     // }
 
-    // contractInstance.getCertsByCertId(certId,(error, result) =>{
+    // contractMain.getCertsByCertId(certId,(error, result) =>{
     // 	if(!error){
     // 		this.oneInfo = result
     

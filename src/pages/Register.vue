@@ -23,7 +23,7 @@
 </template>
 
 <script>
-import { contractInstance } from '@/web3Contract'
+import { contractMain } from '@/web3Contract'
 // import decoder from '@/web3Contract'
 import { mapState } from 'vuex'
 import utils from '@/assets/js/utils'
@@ -87,7 +87,7 @@ export default {
       this.$refs.form.validate((valid) => {
         let that = this;
         if (valid) {
-	   			contractInstance.regist(this.form.nickname,this.form.email,function(error, result){
+	   			contractMain.regist(this.form.nickname,this.form.email,function(error, result){
             console.log(error,result);
             // 注册如何判断失败
 

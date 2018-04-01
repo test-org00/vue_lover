@@ -46,7 +46,7 @@ export default {
   data() {
     return {
       activeNames: ['1'],
-      metaMask:false,
+      // metaMask:false,
       // networkTest:false,
       // unknowNetwork:false,
       account:false,
@@ -65,7 +65,7 @@ export default {
     console.log(this.$store.state.accounts)
     this.account = this.$store.state.accounts !== null ? this.$store.state.accounts[0] : null;
     console.log(this.account);
-    this.metaMask = !!localWeb3;
+    // this.metaMask = !!localWeb3;
     this.queryObj = this.$route.query;
     // this.networkTest = this.$store.state.network;
     // if(this.$route.params){

@@ -16,14 +16,14 @@
 <script>
 import Vows from '@/components/Vows'
 import VCreate from '@/components/Create'
-// import ethApi from '@/ethApi'
+import _ from 'lodash'
 import { mapState } from "vuex"
 import contract from '@/web3Contract'
 import utils from '@/assets/js/utils'
 
 export default {
   name: 'Detail',
-  props:['email','routeName'],
+  props:['email','account','routeName'],
   data() {
     return {
     	loading:false,
@@ -43,7 +43,7 @@ export default {
 
   computed:{
   	...mapState([
-  		'info','reloadVows'
+  		'reloadVows'
   	]),
   },
 
@@ -55,7 +55,10 @@ export default {
     // 获取证书id列表
     // console.log('email',this.email);
     // console.log(/\w/.test(this.email))
-    if (this.email && !utils.isNothing(this.email)) {
+    // console.log(this.email);
+
+    console.log(this.$route.name);
+    if ((this.email && !utils.isNothing(this.email)) || this.account ) {
 
 			this.getCertsIdList(this.email);
     }
@@ -71,8 +74,8 @@ export default {
 
     //   console.log('account',val)
     // },
-    reloadVows(val){
-    	this.getCertsIdList(val);
+    reloadVows(){
+    	this.getCertsIdList();
     },
     email(val){
       console.log('email',val);
@@ -83,7 +86,7 @@ export default {
     updateList(list){
       // debugger;
       var promiseArr = [];
-      
+      console.log(list)
       for(var i = 0; i< list.length; i++){
       	if(JSON.parse(list[i]) !== 0){
 
@@ -110,33 +113,81 @@ export default {
       this.updateList(this.curPageList);
     },
     getCertsIdList(email){
-      // debugger;
-      this.curpage = 1;
-      if(email && !utils.isNothing(email)){
+    	console.log(email)
+    	let nickName;
+			this.curpage = 1;
+      if(!email){
 	      this.loading = true;
-	      contract.contractInstance().then(res=>{
 
-		      res.getCertsIdsByQuery(email, (error, result) => {
-		        console.log('result:',result[0]==0);
-		        // console.log(web3.eth.getBlock(result))
-		        if(result[0]==0){
-		        	// this.$message({
-		        	// 	message:'There is no vow posted by '+email
-		        	// })
-		        	this.$emit('novows');
-		        	this.loading = false;
-		        	return;
-		        }
-		        this.certsList = result.reverse();
-
-		        this.totalPage = result.length
-		        // this.totalPage = 50;
-		        console.log(this.totalPage);
-		        this.handleCurrentChange(1)
-		      })
+	      utils.getVowIdsByAddress(this.account).then((res)=>{
+	      	this.certIdListCb(res)
+	      })
+      }else if(email && !utils.isNothing(email)){
+	      this.loading = true;
+	      if(email.indexOf('@') > -1){
+	      	nickName = 0;
+	      }else{
+	      	nickName = email;
+	      	email = 0;
+	      } 
+      	utils.getVowIdsByNickOrEmail(email,nickName).then((res)=>{
+      		this.certIdListCb(res)
 	      })
       }
     },
+    // getCertsIdListByAddress(account){
+    //   // debugger;
+    //   this.curpage = 1;
+    //   if(account){
+	   //    this.loading = true;
+
+	   //    utils.getVowIdsByAddress(account).then((res)=>{
+	   //    	this.certIdListCb(res)
+	   //    })
+
+	   //    // account, (error, result) => {
+	   //      // console.log('result:',result[0]==0);
+	   //      // console.log(web3.eth.getBlock(result))
+	   //    // })
+    //   }
+    // },
+    // getCertsIdListByEmail(email){
+    //   // debugger;
+    //   this.curpage = 1;
+    //   if(email && utils.isNothing(email)){
+	   //    this.loading = true;
+
+	   //    utils.getVowIdsByNickOrEmail(email).then((res)=>{
+	   //    	this.certIdListCb(res)
+	   //    })
+    //   }
+    // },
+    certIdListCb(res){
+
+    	// if(res.length>0){
+      	// this.$message({
+      	// 	message:'There is no vow posted by '+email
+      	// })
+    	res = _.filter(res,(n)=>{
+    		if(parseInt(n) > 0){
+    			return parseInt(n)
+    		}
+    	})
+
+    	if(res.length == 0){
+      	this.$emit('novows');
+      	this.loading = false;
+      	return;
+    	}
+      // }
+      console.log(res);
+      this.certsList = res.reverse();
+
+      this.totalPage = res.length
+      // this.totalPage = 50;
+      console.log(this.totalPage);
+      this.handleCurrentChange(1)
+    }
     
   },
   components:{

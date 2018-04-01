@@ -50,8 +50,6 @@ export default {
 
       evenClass:0,
 
-      ID:'123243546578987654',
-
       email:'user@email.com',
       loverEmail:'lover@email.com',
 
@@ -64,7 +62,7 @@ export default {
     }
   },
   created(){
-  	console.log(this.$route)
+  	console.log(this.item)
   	console.log(this.formatTime('1519438891'),this.formatTime("1519479722"))
 
   	this.itemSerialize = this.serialize(this.item);

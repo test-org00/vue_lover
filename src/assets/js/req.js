@@ -46,7 +46,6 @@ class Req {
 	}
 
 	getTransStatus(transaction){
-		debugger;
 		return new Promise((resolve,reject)=>{
 			this.loopTransStatus(transaction,resolve,reject)
 		})

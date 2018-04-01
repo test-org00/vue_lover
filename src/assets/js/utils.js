@@ -1,13 +1,16 @@
 import contract from '@/web3Contract'
 import _ from 'lodash'
 
-
+const contractMain = contract.contractMain();
+const contractQuery = contract.contractQuery();
 class useCon{
 	getMemberInfo(){
 		return new Promise((resolve,reject)=>{
-
-			contract.contractInstance().then(res=>{
-
+			contractQuery.then(res => { 
+				console.log("contractQuery:",res);
+			})
+			contractMain.then(res=>{
+				console.log("contractMain:",res);
 				res.getMemberInfo((error, result)=>{
 					if(!error){
 						console.log(result);
@@ -21,18 +24,91 @@ class useCon{
 			})
 		})
 	}
+	getVowIdsByAddress(account){
+		return new Promise((resolve,reject)=>{
+			contractQuery.then(res=>{
+				res.getVowIdsByAddress(account,(error, result)=>{
+					if(!error){
+						console.log('address',result)
+						resolve(result)
+					}else{
+						reject(error);
+					}
+				})
+			})
+		})
+	}
+	getVowIdsByNickOrEmail(email,nickName){
+		return new Promise((resolve,reject)=>{
+			contractQuery.then(res=>{
+				console.log(email,nickName);
+				res.getVowIdsByNickOrEmail(email,nickName,(error, result)=>{
+					if(!error){
+						console.log(result);
+						resolve(result)
+					}else{
+						reject(error);
+					}
+				})
+			})
+		})
+	}
+
+
+	createVowFn(ID,nickName,email,loverNickName,loverEmail,loveMsg,obj){
+		// let arg =	arguments;
+		// let len = arguments.length;
+		console.log(arguments);
+		return new Promise((resolve,reject)=>{
+			contractMain.then(res=>{
+				res.validateVowPolicy(ID,loverNickName,(error, result)=>{
+					if(!error){
+						console.log(result);
+						if(result){
+
+							res.createVow(
+							 ID,
+							 nickName,
+							 email,
+							 loverNickName,
+							 loverEmail,
+							 loveMsg,
+							 obj,
+							 (error, result)=>{
+								if(!error){
+									
+									resolve(result)
+								}else{
+									reject('Create error');
+								}
+							})
+						}else{
+							// 验证失败
+							reject('Sorry,同一个id, 只能给同一个lover昵称发')
+						}
+					}else{
+						reject("Validate error")
+					}
+				})
+			})
+		})
+	}
 
 	getCertsByCertId(certId){
 		return new Promise((resolve,reject)=>{
-			contract.contractInstance().then(res=>{
-				res.getCertsByCertId(certId,(error, result)=>{
+			contractQuery.then(res => { 
+				console.log("contractQuery:",res);
+			})
+			contractQuery.then(res=>{
+				console.log("contractMain:",res);
+				res.getVowById(certId,(error, result)=>{
 					if(!error){
 	          console.log(result)
-	          var arr = ['nickName','email','loverNickName','loverEmail','certTime'];
+	          var arr = ['account','ID','nickName','email','loverNickName','loverEmail','certTime'];
 	          var resultObj = this.formatRes(arr,result);
-	          console.log(certId);
-	          resultObj.loveMsg = result[5];
-	          resultObj.certId =  certId
+	          // console.log(certId);
+	          resultObj.loveMsg = result[7];
+	          // resultObj.certId =  certId
 
 	          console.log(resultObj)
 	    
@@ -51,7 +127,7 @@ class useCon{
 	getCertsIdsByQuery(nick){
 		return new Promise((resolve,reject)=>{
 
-			contract.contractInstance().then(res=>{
+			contractMain.then(res=>{
 				res.getCertsIdsByQuery(nick,(error, result)=>{
 					if(!error){
 						resolve(result)
@@ -69,6 +145,7 @@ class useCon{
 			console.log(typeof res[i])
 			if(typeof res[i] == 'string'){
 				obj[arr[i]] = _.trim(this.decode(res[i]))
+				console.log(arr[i],_.trim(this.decode(res[i])));
 				continue;
 			}
 			obj[arr[i]] = res[i]
@@ -117,15 +194,15 @@ class useCon{
 				if(!this.metaMaskLocked(context)){
 					// 已登录metamask
 					// 获取用户名
-					this.getMemberInfo().then(res => {
-						console.log(res);
-						if(res.email.indexOf('@')>-1){
+					// this.getMemberInfo().then(res => {
+						// console.log(res);
+						// if(res.email.indexOf('@')>-1){
 
 							this.goto('/game/detail',context);
-						}else{
-							this.goto('/game/register',context);
-						}
-					})
+						// }else{
+						// 	this.goto('/game/register',context);
+						// }
+					// })
 
 				}else{
 					this.goto('/locked',context);

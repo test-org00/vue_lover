@@ -45,7 +45,7 @@
 	  		</div>
 	  	</el-main>
 	  </div> -->
-    <v-listvows v-if="info" :email="info.email" :routeName="''"></v-listvows> 
+    <v-listvows v-if="account" :account='account' :routeName="''"></v-listvows> 
     <!-- <v-create v-if="curPageDetailList.length"></v-create>  -->
    <!--  <el-pagination v-if="curPageDetailList.length"
     layout="prev, pager, next"
@@ -193,7 +193,7 @@ import CreatePop from '@/components/CreatePop'
 // import ethApi from '@/ethApi'
 // import axios from 'axios'
 import { mapState } from "vuex"
-// import { contractInstance,localWeb3 } from '@/web3Contract'
+// import { contractMain,localWeb3 } from '@/web3Contract'
 import utils from '@/assets/js/utils'
 
 export default {

@@ -24,7 +24,7 @@
 
 <script>
 import _ from 'lodash'
-import { contractInstance } from '@/web3Contract'
+import { contractMain } from '@/web3Contract'
 import { mapState } from 'vuex'
 
 export default {
@@ -104,7 +104,7 @@ export default {
       this.$refs.form.validate((valid) => {
         let that = this;
         if (valid) {
-	   			contractInstance.updateProfile(this.form.nickname,this.form.email,this.form.ID,function(error, result){
+	   			contractMain.updateProfile(this.form.nickname,this.form.email,this.form.ID,function(error, result){
             console.log(error,result);
 						if (!error) {
             // console.log("Good way - the returned value after set method :");
@@ -126,7 +126,7 @@ export default {
 
 	   			});
           // alert('submit!');
-          console.log(contractInstance)
+          console.log(contractMain)
         } else {
           console.log('error submit!!');
           return false;

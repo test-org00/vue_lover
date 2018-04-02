@@ -145,7 +145,7 @@ class useCon{
 			console.log(typeof res[i])
 			if(typeof res[i] == 'string'){
 				obj[arr[i]] = _.trim(this.decode(res[i]))
-				console.log(arr[i],_.trim(this.decode(res[i])));
+				console.log(arr[i],_.trim(this.decode(res[i])).length);
 				continue;
 			}
 			obj[arr[i]] = res[i]
@@ -154,7 +154,7 @@ class useCon{
 	}
 
 	decode(hex){
-		return contract.localWeb3().toAscii(hex)
+		return contract.localWeb3().toAscii(hex.replace(/0+$/,''));
 	}
 
 	supportBrowser(){

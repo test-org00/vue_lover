@@ -125,7 +125,7 @@ export default {
       this.initInfo(this.$store.state.info)
       this.getUserInfo(this.$store.state.info)
     }
-    console.log('hash ID',sha3('dongtt2ID'))
+    console.log('hash ID',sha1('dongtt2ID'))
 
   },
   
@@ -149,10 +149,10 @@ export default {
         if (valid) {
           console.log(this.form.ID,this.form.loverNickName,this.form.loverEmail,this.form.msg,this.account)
 
-          let hashID = sha3(this.form.ID);
+          // let hashID = sha1(this.form.ID);
           utils.createVowFn(
-            hashID,
-            // this.form.ID,
+            // hashID,
+            this.form.ID,
             this.form.nickName,
             this.form.email,
             this.form.loverNickName,

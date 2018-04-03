@@ -149,7 +149,7 @@ export default {
         if (valid) {
           console.log(this.form.ID,this.form.loverNickName,this.form.loverEmail,this.form.msg,this.account)
 
-          // let hashID = sha1(this.form.ID);
+          let hashID = sha1(this.form.ID);
           utils.createVowFn(
             // hashID,
             this.form.ID,

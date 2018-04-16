@@ -98,8 +98,8 @@ export default {
         // inputPattern: /[\w!#$%&'*+/=?^_`{|}~-]+(?:\.[\w!#$%&'*+/=?^_`{|}~-]+)*@(?:[\w](?:[\w-]*[\w])?\.)+[\w](?:[\w-]*[\w])?/,
         // inputErrorMessage: '邮箱格式不正确'
       }).then(({ value }) => {
-      	value = sha1(value);
-      	if(value == this.item.ID){
+      	let valueHash = sha1(value);
+      	if(this.similar(valueHash,this.item.ID)){
 
 	        this.$message({
 	          type: 'success',
@@ -108,7 +108,7 @@ export default {
       	}else{
       		this.$message({
 	          type: 'warning',
-	          message: 'Your ID is wrong '+value
+	          message: 'Your ID is wrong: '+value
 	        });
       	}
       }).catch(() => {
@@ -131,6 +131,13 @@ export default {
   		}
   		return str.substring(0,str.length-2);
   	},
+	similar(valueHash, ID) {
+		console.log('valueHash: ' + valueHash);
+		console.log('ID: ' + ID);
+		let str1 = valueHash.substring(0, 10);
+		let str2 = ID.substring(2, 12);
+		return str1 == str2;
+	},
   	formatTime(seconds){
   		var datetime = new Date();
   		var monthArr = [

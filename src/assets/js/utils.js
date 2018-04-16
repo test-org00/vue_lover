@@ -143,7 +143,7 @@ class useCon{
 		var obj= {};
 		for(var i=0;i<arr.length;i++){
 			console.log(typeof res[i])
-			if(typeof res[i] == 'string'){
+			if((typeof res[i] == 'string') && (arr[i] != 'ID')){
 				obj[arr[i]] = _.trim(this.decode(res[i]))
 				console.log(arr[i],_.trim(this.decode(res[i])).length);
 				continue;

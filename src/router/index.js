@@ -1,30 +1,140 @@
 import Vue from 'vue'
 import Router from 'vue-router'
-import Register from '@/pages/Register'
-import Guide from '@/pages/Guide'
-import Detail from '@/pages/Detail'
-// import Head from '@/components/Head'
+// import Register from '@/pages/Register'
+// import Guide from '@/pages/Guide'
+// import Detail from '@/pages/Detail'
+// import CreateCert from '@/pages/CreateCert'
+// import Settings from '@/pages/Settings'
+// import Certificate from '@/pages/Certificate'
+import Index from '@/pages/Index'
+import store from '../../store'
+
+// import Official from '@/pages/Official'
+// import List from '@/pages/List'
+// import Unsupport from '@/pages/Unsupport'
+// import GetMetaMask from '@/pages/GetMetaMask'
+// import InstalledMetaMask from '@/pages/InstalledMetaMask'
+// import Locked from '@/pages/Locked'
+// import store from '../../store'
 
 Vue.use(Router)
 
-export default new Router({
+let router = new Router({
   routes: [
     {
       path: '/',
-      name: 'guide',
-      component: Guide,
-    },
-    {
-      path: '/register',
-      name: 'register',
-      component: Register,
-    },
+      name: 'official',
+      component:  resolve => require(['@/pages/Official.vue'], resolve),
+      redirect:'/index',
+      children:[
+        {
+          path: '/index',
+          name: 'index',
+          component: Index,
+        },
+        {
+          path: '/invite',
+          name: 'invite',
+          component:  resolve => require(['@/pages/Invite.vue'], resolve),
+        },
+        {
+          path: '/inviteSuccess',
+          name: 'inviteSuccess',
+          component:  resolve => require(['@/pages/InviteSuccess.vue'], resolve),
+        },
+        {
+          path: '/faqs',
+          name: 'faqs',
+          component:  resolve => require(['@/pages/FAQs.vue'], resolve),
+        },
+        {
+          path: '/about',
+          name: 'about',
+          component:  resolve => require(['@/pages/About.vue'], resolve),
+        },
+        {
+          path: '/list',
+          name: 'list',
+          component:  resolve => require(['@/pages/List.vue'], resolve),
+        },
+        {
+          path: '/unsupport',
+          name: 'unsupport',
+          component:  resolve => require(['@/pages/Unsupport.vue'], resolve),
+        },
+        {
+          path: '/getMetaMask',
+          name: 'getMetaMask',
+          component:  resolve => require(['@/pages/GetMetaMask.vue'], resolve),
+        },
+        {
+          path: '/installedMetaMask',
+          name: 'installedMetaMask',
+          component:  resolve => require(['@/pages/InstalledMetaMask.vue'], resolve),
+        },
+        {
+          path: '/locked',
+          name: 'locked',
+          component:  resolve => require(['@/pages/Locked.vue'], resolve),
+        },
 
-    {
-      path: '/detail',
-      name: 'detail',
-      component: Detail
-    }
+        // {
+        //   path: '/game/register',
+        //   name: 'register',
+        //   component:  resolve => require(['@/pages/Register.vue'], resolve),
+        // },
+
+        {
+          path: '/game/detail',
+          name: 'detail',
+          component:  resolve => require(['@/pages/Detail.vue'], resolve)
+        },
+     
+        // {
+        //   path:'/game/settings',
+        //   name:'settings',
+        //   component:  resolve => require(['@/pages/Settings.vue'], resolve)
+        // },
+        {
+          path:'/game/certificate',
+          name:'certificate',
+          component:  resolve => require(['@/pages/Certificate.vue'], resolve),
+        },
+
+        {
+          path:'/terms',
+          name:'terms',
+          component:  resolve => require(['@/pages/Terms.vue'], resolve),
+        },
+        {
+          path:'/privacy',
+          name:'privacy',
+          component:  resolve => require(['@/pages/Privacy.vue'], resolve),
+        }
+      ]
+    },
+    
   ],
   // linkActiveClass:'active'
 })
+router.afterEach((to,from,next) => {
+  console.log('toname',to);
+  store.dispatch('setCurName',to.name);
+  window.scrollTo(0,0);
+});
+// router.beforeEach((to, from, next) => {
+  /* 路由发生变化修改页面title */
+  // if (to.meta.title) {
+  //   document.title = to.meta.title
+  // }
+  // router.app.$store.dispatch('setCreatePop',true);
+  // console.log('router',router.app.$options.store().dispatch('setCreatePop',true));
+  // console.log('router',store);
+  // console.log('router2',this.$router);
+        
+  // next(vm => {
+  //   console.log('router',vm)
+  // })
+// })
+
+export default router

@@ -1,0 +1,74 @@
+.content{
+  padding:90px 0 168px; 
+  text-align:center;
+  h3{
+    text-align:center;
+    line-height:56px;
+    font-size:36px;
+    margin-bottom:28px;
+    color:#4d4d4d;
+    &.head-nobottom{
+      text-align:left;
+      font-size: 30px;
+      margin-bottom: 0px;
+    }
+    &.head-left{
+      font-size: 30px;
+      text-align:left;
+    }
+  }
+  div{
+    &.update{
+      text-align: left;
+      padding-bottom:30px;
+    }
+  }
+  h4.sub-head{
+    text-align:left;
+    line-height:32px;
+    font-size:20px;
+    margin-bottom:28px;
+    color:#4d4d4d;
+  }
+  .install{
+    margin-top:50px;
+    margin-bottom:10px;
+    background-color:#c5403f;
+    padding:2px;
+    display:inline-block;
+    border-radius:4px;
+    box-shadow:2px 2px 5px #333;
+    button{
+      cursor:pointer;
+      padding:15px 40px;
+      border-radius:4px;
+      background-color:#c5403f;
+      border:1px dashed #fff; 
+      font-size:18px;
+      color:#fff;
+    }
+  }
+  p{
+    font-size:16px;
+    line-height:28px;
+    color:#989898;
+    margin-bottom:28px;
+    &.desc{
+      text-align: left;
+    }
+    &.faqs{
+      text-align:center;
+    }
+    a{
+      color:#666;
+      text-decoration:none;
+      &:hover{
+        text-decoration:underline;
+
+      }
+    }
+  }
+  img{
+    margin-top:62px;
+  }
+}

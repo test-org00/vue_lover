@@ -2,18 +2,20 @@
 	<div>
 		
 	  <el-form ref="form" :rules="rules" status-icon :model="form" label-width="80px">
-		  <el-form-item label="昵称" prop="nickname">
-		    <el-input v-model="form.nickname" placeholder="请输入您的昵称"></el-input>
+		  <el-form-item label="Nickname" prop="nickname">
+		    <el-input v-model="form.nickname" placeholder="Enter you nickname"></el-input>
 		  </el-form-item>
-		  <el-form-item label="邮箱" prop="email">
+		  <el-form-item label="Email" prop="email">
 		    <el-input v-model="form.email" placeholder="forexample@email.com"></el-input>
 		  </el-form-item>
+     <!--  <el-form-item label="ID" prop='ID'>
+        <el-input v-model="form.ID" placeholder="Enter you ID"></el-input>
+      </el-form-item> -->
 		  <el-form-item label="Wallet">
 		    <el-input v-model="form.add" :disabled="true"></el-input>
 		  </el-form-item>
 		  <el-form-item>
-		    <el-button class="register-btn" type="primary" @click="onSubmit">注册</el-button>
-		    <el-button>取消</el-button>
+		    <el-button class="register-btn" type="primary" @click="onSubmit">Regist</el-button>
 		  </el-form-item>
 			
 		</el-form>
@@ -21,11 +23,15 @@
 </template>
 
 <script>
-import { contractInstance } from '@/web3Contract'
+import { contractMain } from '@/web3Contract'
+// import decoder from '@/web3Contract'
 import { mapState } from 'vuex'
+import utils from '@/assets/js/utils'
+
 
 export default {
   name: 'Register',
+  props:['account'],
   data() {
   	var validatePass = (rule, value, callback) => {
         if (value === '') {
@@ -63,17 +69,15 @@ export default {
       }
     };
   },
-  computed:{
-  	...mapState([
-  		'accounts'
-  	])
-  },
+ 
   created(){
-    console.log(contractInstance)
-  	this.form.add = this.$store.state.accounts[0];
-  	if(this.form.add){
-	  	this.$store.dispatch('fetchAccounts');
-  	}
+  	// this.form.add = this.$store.state.accounts!==null ? this.$store.state.accounts[0] : null;
+  	// if(this.form.add){
+	  	// this.$store.dispatch('fetchAccounts');
+  	// }
+    // console.log(decoder);
+    // var result = decoder.decodeLogs('0x27d1c745adf188fadccb969499b521a7d2054351389551987c55b69624757e52');
+    // console.log(result);
   },
 	methods: {
 	  // onSubmit() {
@@ -83,42 +87,70 @@ export default {
       this.$refs.form.validate((valid) => {
         let that = this;
         if (valid) {
-	   			contractInstance.regist.sendTransaction(this.form.nickname,this.form.email,function(error, result){
+	   			contractMain.regist(this.form.nickname,this.form.email,function(error, result){
             console.log(error,result);
+            // 注册如何判断失败
+
 						if (!error) {
             // console.log("Good way - the returned value after set method :");
-           		console.log(result);
-           		that.$store.dispatch('setPid',result);
-              that.$message({
-                message:'注册成功',
-                type:'success'
-              })
-              contractInstance.getInfo(function(error, result){
-                console.log(error,result);
+           		// that.$store.dispatch('setPid',result);
+              // switch(result){
+              //   case 0:
+                  that.$message({
+                    message:'Regist success',
+                    type:'success'
+                  })
+              //     break
+              //   case 1:
+              //     that.$message({
+              //       message:'Address had been registed',
+              //       type:'warning'
+              //     })
+              //     break
+              //   case 2:
+              //     that.$message({
+              //       message:'Email had been registed',
+              //       type:'warning'
+              //     })
+              //     break
+              // }
+              utils.getMemberInfo().then(res=>{
+                console.log(error,res);
                 // debugger;
                 if(!error){
 
-                  if(!result.email){
+                  // if(!result.email){
+                    // that.$router.push({
+                    //   path:'/register',
+                    // })
+                    // that.$message({
+                    //   message:'Regist error',
+                    //   type:'warning'
+                    // })
+                  // }else{
+                    // var arr = ['nickName','email','ID','certNumber'];
+                    // console.log(res,web3.toAscii(res[1]));
+                    // var resultObj = utils.formatRes(arr,res);
                     that.$router.push({
-                      path:'/register',
+                      name:'detail',
+                      params:res
                     })
-                  }else{
-                    that.$router.push({
-                      path:'/detail',
-                      params:result
-                    })
-                  }
+                    that.$store.dispatch('setInfo',res);
+                  // }
                 }
               })
+              // this.$router.push({
+              //   path:'/createCert',
+                
+              // })
             } else {
-              console.log(error);// 根据error的值提示用户错误信息
-              that.showAlert = true;
-              that.msg = 'error'
+              // console.log(error);// 根据error的值提示用户错误信息
+              // that.showAlert = true;
+              // that.msg = 'error'
             }
 
 	   			});
           // alert('submit!');
-          console.log(contractInstance)
         } else {
           console.log('error submit!!');
           return false;
@@ -127,11 +159,9 @@ export default {
   	}
 	},
 	watch:{
-		accounts:{
-			handler(cur, old){
-				this.form.add = cur[0];
-			},
-			deep:true
+		account(val){
+			console.log('regist',val)
+      this.form.add = val;
 		}
 	},
 	

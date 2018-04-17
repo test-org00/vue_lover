@@ -5,10 +5,15 @@ export default {
 	fetchAccount ({ state }) {
     var accountInterval = setInterval(function() {
     	const res = Services.getAccount()
-		  if (res[0] !== state.accounts[0]) {
-		    state.accounts = res;
-		    // updateInterface();
-		  }
+      if(state.accounts == null){
+        state.accounts = res;
+      }else{
+
+  		  if (res[0] !== state.accounts[0]) {
+  		    state.accounts = res;
+  		  }
+      }
+      
 		}, 100);
   },
   fetchNetwork({state}){
@@ -30,4 +35,32 @@ export default {
   setPid ({ commit }, pid) {
     commit('SET_PID', pid)
   },
+  setSearch ({ commit }, search) {
+    commit('SET_SEARCH', search)
+  },
+
+  setInfo({commit}, info) {
+    commit('SET_INFO', info)
+  },
+  setCreatePop({commit}, bool){
+    commit('SET_CREATEPOP',bool);
+  },
+  setConfess({commit}, bool){
+    commit('SET_CONFESS',bool);
+  },
+  setListSearch({commit}){
+    commit('SET_LIST_SEARCH');
+  },
+  setCurName({commit},name){
+    commit('SET_CUR_NAME',name);
+  },
+  setReloadVows({commit}){
+    commit('SET_RELOADVOWS');
+  },
+  setMailDialog({commit},opt){
+    commit('SET_MAIL_DIALOG',opt);
+  }
+  // setUserInfo ({ commit }, data) {
+  //   commit('SET_USER_INFO', data)
+  // },
 }

@@ -4,15 +4,15 @@
     <div class="image-box">
       <!-- <img src="../assets/road.jpg" width="100%" alt=""> -->
       <!-- <p v-if="unknowNetwork">Unknow Network</p> -->
-      <div v-if="networkTest > 1 && account" class="wrapstatus">
+      <!-- <div v-if="networkTest > 1 && account" class="wrapstatus">
         <h1>Oops, you’re on the wrong network</h1>
         <p>Simply open MetaMask and switch over to the <strong>Main Ethereum Network</strong>.</p>
         <img src="@/assets/main-network.png" class="hero-image" alt="">
 
-      </div>
+      </div> -->
       <div v-if="!metaMask && !account" class="wrapstatus metaMask">
         <h1>Wanna Play?</h1>
-        <p>You’ll need a safe place to store all of your adorable CryptoKitties! The perfect place is in a secure wallet like MetaMask. This will also act as your login to the game (no extra password needed).</p>
+        <p>You’ll need a safe place to store all of your vows! The perfect place is in a secure wallet like MetaMask. This will also act as your login to the FLC (no extra password needed).</p>
         <el-button type="primary" disabled ><a href="https://chrome.google.com/webstore/detail/metamask/nkbihfbeogaeaoehlefnkodbefgpgknn?hl=en" target="_blank">Install MetaMask</a></el-button>
       </div>
       <div v-if="metaMask && !account" class="wrapstatus signIn ">
@@ -24,28 +24,28 @@
     <div class="collapse-box">
       <h3>Getting started</h3>
       <el-collapse v-model="activeNames" @change="handleChange">
-        <el-collapse-item class="el-collapse-item" title="What do I need to play CryptoKitties?" name="1">
+        <el-collapse-item class="el-collapse-item" title="What do I need to play FLC?" name="1">
           <div class="item-div">Here’s what you need to get started:</div>
           <ul>
             <li class="item-li">A computer or laptop running the desktop version of Chrome or Firefox</li>
             <li class="item-li">MetaMask, a digital wallet used specifically with web apps</li>
-            <li class="item-li">Ether, a form of digital payment that powers CryptoKitties</li>
+            <li class="item-li">Ether, a form of digital payment that powers FLC</li>
           </ul>
         </el-collapse-item>
         <el-collapse-item class="el-collapse-item" title="Installing MetaMask, your digital wallet" name="2">
-          <div class="item-div">To use CryptoKitties, you will need to install MetaMask, a digital wallet. You will need to put money in it to make your first purchase.</div>
+          <div class="item-div">To use FLC, you will need to install MetaMask, a digital wallet. You will need to put money in it to make your first purchase.</div>
           <div class="item-div"><strong>Note:</strong> A digital wallet like MetaMask acts like a bank account—treat it with respect and make sure you don’t forget your password or the seed words.</div>
           <img src="" alt="">
         </el-collapse-item>
         <el-collapse-item class="el-collapse-item" title="Why is MetaMask locked?" name="3">
-          <div class="item-div">Occasionally the ‘My Kitties’ page displays a lock screen. This happens because MetaMask locks your account after a certain period of time automatically. To unlock simply click on the MetaMask extension and type in your password.</div>
+          <div class="item-div">Occasionally the ‘My Vows’ page displays a lock screen. This happens because MetaMask locks your account after a certain period of time automatically. To unlock simply click on the MetaMask extension and type in your password.</div>
           <img src="../assets/screenshot-locked.png" width="100%" alt="">
         </el-collapse-item>
         <el-collapse-item class="el-collapse-item" title="Getting Ether, your digital currency" name="4">
           <div class="item-div"><strong>For U.S. citizens only:</strong> you can buy ether (ETH) in MetaMask. ETH is a digital currency that enables our game to run.</div>
           <img src="../assets/screenshot-buy-usa.png" width="100%" alt="">
-          <div class="item-div"><strong>For everyone else:</strong> you will need to purchase ETH from an exchange. The easiest way is using Coinbase and then transferring the ETH from your Coinbase wallet to your MetaMask wallet. Unfortunately, you cannot play CryptoKitties with a Coinbase wallet or any other wallets.</div>
-          <div class="item-div">You cannot use USD/CAD to buy a CryptoKitty—currencies need to be converted into ETH first.</div>
+          <div class="item-div"><strong>For everyone else:</strong> you will need to purchase ETH from an exchange. The easiest way is using Coinbase and then transferring the ETH from your Coinbase wallet to your MetaMask wallet. Unfortunately, you cannot play FLC with a Coinbase wallet or any other wallets.</div>
+          <div class="item-div">You cannot use USD/CAD to pay FLC. Currencies need to be converted into ETH first.</div>
         </el-collapse-item>
         <el-collapse-item class="el-collapse-item" title="How to send ETH to MetaMask" name="5">
           <div class="item-div"><strong>For U.S. citizens only:</strong> you are able to purchase ETH directly from the MetaMask wallet using the Coinbase widget. This is more convenient and doesn’t require you to create two accounts.</div>
@@ -59,17 +59,17 @@
 
 <script>
 import { mapState } from 'vuex'
-import { localWeb3, contractInstance } from '@/web3Contract';
-
+import utils from '@/assets/js/utils'
 export default {
   name: 'Guide',
   data() {
     return {
       activeNames: ['1'],
       metaMask:false,
-      networkTest:false,
+      // networkTest:false,
       // unknowNetwork:false,
       account:false,
+      queryObj:null,
     };
   },
   props:{
@@ -82,9 +82,11 @@ export default {
     // this.$store.dispatch('fetchAccount');
     console.log(this.$route.params);
     console.log(this.$store.state.accounts)
-    this.account = this.$store.state.account && this.$store.state.account[0];
+    this.account = this.$store.state.accounts !== null ? this.$store.state.accounts[0] : null;
+    console.log(this.account);
     this.metaMask = !!localWeb3;
-    this.networkTest = this.$store.state.network;
+    this.queryObj = this.$route.query;
+    // this.networkTest = this.$store.state.network;
     // if(this.$route.params){
       // this.network = this.$route.params.network;
       // this.unknowNetwork = this.$route.params.unknowNetwork;
@@ -96,21 +98,33 @@ export default {
     },
     jumpToDetail(){
       // debugger;
-      if(this.networkTest == 1 && this.account){
+      var that = this;
+      if( this.account){
         // 判断有没有账号
-        contractInstance.getInfo(function(error, result){
-          if(!error){
-            if(result.email){
-              this.push({
-                path:'/detail',
-                params:result
-              })
-            }else{
-              this.push({
-                path:'/register'
-              })
-            }
+        utils.getMemberInfo().then(res=>{
+          console.log(res);
+          // this.$store.dispatch('setUserInfo',result)
+          var arr = ['nickName','email','ID','certNumber'];
+          // console.log(res,web3.toAscii(res[1]));
+          var resultObj = utils.formatRes(arr,res);
+          console.log(resultObj);
+          if(this.queryObj.certId && resultObj.email.indexOf('@')>-1){
+            this.$router.push({
+              path:'/game/certificate',
+              query:this.queryObj
+            })
           }
+          if(resultObj.email.indexOf('@')>-1){
+            this.$router.push({
+              name:'detail',
+              params:resultObj
+            })
+          }else{
+            this.$router.push({
+              path:'/game/register'
+            })
+          }
+          
         })
       }
     }
@@ -123,20 +137,23 @@ export default {
   watch:{
     accounts:{
       handler(val, oldVal) {
-        this.account = val[0];
-        console.log(this.account)
-        this.jumpToDetail()
+        if(val !== null){
+
+          this.account = val[0];
+          console.log(this.account)
+          this.jumpToDetail()
+        }
       },
       deep: true
     },
-    network:{
-      handler(val, oldVal) {
-        console.log(val)
-        this.networkTest  = val ;
-        this.jumpToDetail()
-      },
-      deep: true
-    }
+    // network:{
+    //   handler(val, oldVal) {
+    //     console.log(val)
+    //     this.networkTest  = val ;
+    //     this.jumpToDetail()
+    //   },
+    //   deep: true
+    // }
 
     
   }

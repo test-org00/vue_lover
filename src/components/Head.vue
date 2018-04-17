@@ -1,133 +1,171 @@
 <template>
   <div class="header-wrap">
-    
-    <el-header  class="el-header-inner" >
-      <el-row type="flex" class="row-bg" justify="space-between">
-        <el-col :span="4">
-          <div class="grid-content bg-purple-light">
-            <p>CRYPTO<br>LOVES</p>
-          </div>
+    <el-header class="el-header-inner">
+      <el-row  type="flex">
+        <el-col :span="8" class="logo">
+          <router-link to="/"><img src="../assets/logo.png" alt="ForeverLove"></router-link>
         </el-col>
-        <el-col v-if="" :span="3">
-          <div class="grid-content bg-purple banner-nav">
-            <p v-if="!curWeb" >Install Metamask</p>
-            <p v-if="curWeb && !curAccount">Sign In</p>
-          </div>
+        <el-col :span="8" class="search-box">
+          <input class="searchInput" placeholder="Search love vows using name or email" @keyup.13="searching" v-model="searchInput" @keyup="storeSearch"></input>
+          <div class="search-icon" @click="searching"></div>
         </el-col>
-        <el-col :span="4">
-          <div class="grid-content bg-purple">
-            <a href="">Invite</a>            
-            <a href="">About</a>            
-            <a href="">FAQs</a>            
-          </div>
+        <el-col :span="8" class="btnArea">
+          <el-row>
+            <!--<el-col class="btn" :class="curName == 'invite' ? 'on' : ''" :span="8"><span  @click="inviteHandle">Invite</span></el-col>-->
+            <el-col class="btn" :class="curName == 'about' ? 'on' : ''" :span="8"><span  @click="aboutHandle">About</span></el-col>
+            <el-col class="btn" :class="curName == 'faqs' ? 'on' : ''" :span="8"><span @click="questionsHandle" >FAQs</span></el-col>
+            <el-col v-if="confess" :class="curName == 'locked' || curName =='installedMetaMask' || curName =='getMetaMask' || curName =='unsupport' || curName =='confess'? 'on' : ''"  class="btn" :span="8"><span @click="confessNow">My Vows</span></el-col>
+            <el-col v-else :class="curName == 'detail' ? 'on' : ''"  class="btn" :span="8"><span @click="myVows">My Vows</span></el-col>
+          </el-row>
         </el-col>
       </el-row>
     </el-header>
   </div>
 </template>
-
 <script>
+import utils from '@/assets/js/utils'
+import {mapState} from 'vuex'
 
 export default {
   name: 'pageHead',
-  props:{
-    localWeb:Boolean,// have metamask
-    account:String,// had sign in metamask
-  },
-  data () {
+  props: ['account','cur'],
+  data() {
     return {
-      curWeb:null,
-      curAccount:null,
-      // localWeb3:false,
+      searchInput: '',
+      // curName:''
     }
   },
-  created(){
-    this.curWeb = this.localWeb;
-    this.curAccount = this.account;
-    console.log(this.curWeb,this.curAccount);
+  created() {
+    // this.curOpt = this.$route.name;
+    // console.log('name',this.curOpt)
+    // this.$store.dispatch('fetchAccounts');
+  },
+  computed:{
+    ...mapState([
+      'search','confess','curName'
+    ])
+  },
+  methods: {
+    storeSearch(){
+      this.$store.dispatch('setSearch',this.searchInput);
+    },
+    searching(){
+      // this.curOpt = null;
+      this.$store.dispatch('setListSearch');
+      this.$router.push({
+        path:'/list',
+        params:{keyword:this.searchInput}
+      })
+    },
+    confessNow() {
+      // this.curOpt = 'confess';
+      utils.createVow(this);
+    },
+    myVows() {
+      this.$router.push({
+        path:'/game/detail',
+      })
+    },
+    inviteHandle(){
+      // this.curOpt = 'invite';
+      this.$router.push({
+        path:'/invite'
+      })
+    },
+    aboutHandle(){
+      // this.curOpt = 'about';
+      this.$router.push({
+        path:'/about'
+      })
+    },
+    questionsHandle() {
+      // this.curOpt = 'faqs';
+      this.$router.push({
+        path:'/faqs'
+      })
+    }
   },
   watch:{
-    // localWeb(){
-    //   this.curWeb = this.localWeb;
-    //   console.log(111)
-    // },
 
-    // account(){
-    //   console.log(222)
-
+    // accounts:{
+    //   handler(val, oldVal) {
+    //     console.log("head",val)
+    //     if(val !==null)
+    //     this.curAccount = val[0];
+    //   },
+    //   deep: true
     // },
-    account:{
-      handler(val, oldVal) {
-        console.log(222)
-        this.curAccount = this.account;
-      },
-      deep: true
+    account(val, oldVal){
+      console.log('account:', val)
+      // this.account = val;
+    },
+    search(val){
+      this.searchInput = val;
     }
   }
 
 }
-</script>
 
+</script>
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style lang="scss" scoped>
 @import url(../assets/scss/base.scss);
-.header-wrap{
-  height:114px;
-  border-bottom:1px solid #ccc;
+.header-wrap {
+  background-color: #f2f2f2;
+  flex:0 0 auto;
 }
-.el-header-inner{
-  max-width:1200px;
-  margin: 0 auto;
-  height:114px;
-}
-.grid-content{
-  line-height: 40px;
-  border-radius: 4px;
-  height:114px;
-  &.bg-purple-light{
-    padding-left:63px;
-    background:url(../assets/cryptolove_03.png) 0 center no-repeat;
-    background-size: 50px;
-    p{
-      padding-top:33px;
-      line-height:25px;
-      color:#603813;
-      font-size:16px;
-    }
+.search-box{
+  position:relative;
+  .search-icon{
+    position:absolute;
+    right:4px;
+    top:9px;
+    width:36px;
+    height:36px;
+    cursor:pointer;
   }
-  &.bg-purple{
-    display:flex;
-    flex-direction:row;
-    justify-content:space-between;
-    &.banner-nav{
-      justify-content:center;
-      p{
-        line-height:114px;
-        color:#ef52d1;
-        // box-shadow:0 0.2rem 0 0 #ef52d1;
-      }
+}
+.el-header-inner {
+  max-width: 1200px;
+  margin: 0 auto;
+  .logo {
+    height: 60px;
+    img{
+      margin-top:10px;
     }
-    a{
-      text-decoration:none;
-      color:#4d4d4d;
-      font-size:16px;
-      line-height:114px;
-      vertical-align:middle;
-      padding:10px;
-      &:hover{
+    // background: url(../assets/logo.png) left bottom no-repeat;
+  }
+  .searchInput {
+    height:38px;
+    width:100%;
+    border-radius:6px;
+    font-size:16px;
+    outline:none;
+    border:1px solid #ccc;
+    margin-top: 8px;
+    padding-left:8px;
+    padding-right: 15px;
+    box-sizing:border-box;
+    background:url(../assets/search_icon_gray.png) 95% center no-repeat;
+  }
+  .btnArea {
+    line-height: 60px;
+    .btn {
+      &.on{
+        color:#c5403e;
         text-decoration:underline;
       }
+      font-weight: 500;
+      color: #4d4d4d;
+      cursor:pointer;
+      text-align: center;
+      span{
+        &:hover{
+          text-decoration:underline;
+        }
+      }
     }
-  }
-  .header-nav{
-    font-size:16px;
-    color: #0b0b0b;
-    text-decoration: none;
-    &.router-link-exact-active {
-      color: #ef52d1;
-      box-shadow:0 2px 0 0 #ef52d1;
-    }
-
   }
 }
+
 </style>

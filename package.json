@@ -10,12 +10,21 @@
     "build": "node build/build.js"
   },
   "dependencies": {
+    "abi-decoder": "^1.0.6",
     "axios": "^0.17.1",
+    "ethereumjs-abi": "^0.6.5",
+    "extglob": "^2.0.4",
+    "file-loader": "^1.1.9",
+    "har-validator": "^5.1.0",
+    "html2canvas": "^1.0.0-alpha.10",
+    "qs": "^6.5.1",
+    "sha1": "^1.1.1",
+    "sha3": "^1.2.0",
     "vue": "^2.5.2",
     "vue-clipboard2": "^0.0.8",
     "vue-router": "^3.0.1",
     "vue-social-sharing": "^2.3.3",
-    "web3": "^1.0.0-beta.29"
+    "web3": "0.19.0"
   },
   "devDependencies": {
     "autoprefixer": "^7.1.2",
@@ -48,6 +57,7 @@
     "rimraf": "^2.6.0",
     "sass-loader": "^6.0.6",
     "semver": "^5.3.0",
+    "sha3": "^1.2.0",
     "shelljs": "^0.7.6",
     "uglifyjs-webpack-plugin": "^1.1.1",
     "url-loader": "^0.5.8",

@@ -18,6 +18,7 @@ module.exports = {
   output: {
     path: config.build.assetsRoot,
     filename: '[name].js',
+    chunkFilename: 'chunk[id].js',
     publicPath: process.env.NODE_ENV === 'production'
       ? config.build.assetsPublicPath
       : config.dev.assetsPublicPath
@@ -46,7 +47,15 @@ module.exports = {
         loader: 'url-loader',
         options: {
           limit: 10000,
-          name: utils.assetsPath('img/[name].[hash:7].[ext]')
+          name: utils.assetsPath('img/[name].[ext]')
+        }
+      },
+      {
+        test: /\.(ico)(\?.*)?$/,
+        loader: 'url-loader',
+        options: {
+          limit: 100,
+          name: utils.assetsPath('img/[name].[ext]')
         }
       },
       {
@@ -65,14 +74,14 @@ module.exports = {
           name: utils.assetsPath('fonts/[name].[hash:7].[ext]')
         }
       },
-      {  //从这一段上面是默认的！不用改！下面是没有的需要你手动添加，相当于是编译识别sass!
-        test: /\.scss$/,
-        use: [
-          { loader: 'style-loader'},
-          { loader: 'css-loader'},
-          { loader: 'sass-loader'}
-        ]
-      }
+      // {  //从这一段上面是默认的！不用改！下面是没有的需要你手动添加，相当于是编译识别sass!
+      //   test: /\.scss$/,
+      //   use: [
+      //     { loader: 'style-loader'},
+      //     { loader: 'css-loader'},
+      //     { loader: 'sass-loader'}
+      //   ]
+      // }
     ]
   },
   node: {

@@ -15,14 +15,15 @@
         <el-col v-if="" :span="2">
           <div class="grid-content bg-purple share">
             <!-- <v-share :hideEmail="true"></v-share> -->
-            <social-sharing url="https://vuejs.org/" inline-template>
+            <social-sharing url="http://foreverlovechain.com" inline-template>
                 
               <div class="icons-wrap" style="text-align:right;">
                 <network network="facebook">
                   <i style="padding:0 5px;font-size:20px; cursor:pointer;" class="icon-facebook"></i> 
                 </network>
                 
-               <!--  <network network="linkedin">
+                <!--  
+                <network network="linkedin">
                   <i class="fa fa-linkedin"></i> LinkedIn
                 </network>
                 <network network="pinterest">
@@ -30,14 +31,18 @@
                 </network>
                 <network network="reddit">
                   <i class="fa fa-reddit"></i> Reddit
-                </network> -->
+                </network>
+                -->
+                
                 <network network="twitter">
                   <i style="padding:0 5px;font-size:20px;cursor:pointer;" class="icon-twitter"></i>
                 </network>
-                <!-- <network network="googleplus">
+
+                <!--
+                <network network="googleplus">
                   <i style="padding:0 5px;font-size:20px;cursor:pointer;" class="icon-google"></i>
-                </network> -->
-                <!-- <network network="vk">
+                </network>
+                <network network="vk">
                   <i class="fa fa-vk"></i> VKontakte
                 </network>
                 <network network="weibo">
@@ -45,7 +50,9 @@
                 </network> 
                 <network network="whatsapp">
                   <i class="fa fa-whatsapp"></i> Whatsapp
-                </network> -->
+                </network>
+                -->
+
               </div>
             </social-sharing>  
           </div>
